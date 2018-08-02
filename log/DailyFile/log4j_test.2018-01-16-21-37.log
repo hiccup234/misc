@@ -1,0 +1,11 @@
+[FATAL][2018/01/16 21:37:46382][com.ocean.misc.Log4JTest.main(Log4JTest.java:15)]
+fatal msg
+ [ERROR][2018/01/16 21:37:46392][com.ocean.misc.Log4JTest.main(Log4JTest.java:16)]
+error msg
+ [WARN ][2018/01/16 21:37:46392][com.ocean.misc.Log4JTest.main(Log4JTest.java:17)]
+warn msg
+ [INFO ][2018/01/16 21:37:46393][com.ocean.misc.Log4JTest.main(Log4JTest.java:18)]
+info msg
+ [DEBUG][2018/01/16 21:37:46393][com.ocean.misc.Log4JTest.main(Log4JTest.java:19)]
+debug msg
+ 

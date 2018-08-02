@@ -1,0 +1,86 @@
+[DEBUG][2018/01/20 23:41:55280][org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:135)] Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+ [DEBUG][2018/01/20 23:41:55508][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/20 23:41:55509][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/20 23:41:55509][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/20 23:41:55510][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/20 23:41:55674][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55676][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55677][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55678][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55679][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55679][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55679][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55679][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55681][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:55682][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/20 23:41:5632 ][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 1264836741.
+ [DEBUG][2018/01/20 23:41:5632 ][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@4b63e085]
+ [DEBUG][2018/01/20 23:41:5637 ][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:5692 ][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 1577104524.
+ [DEBUG][2018/01/20 23:41:5693 ][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@5e00b48c]
+ [DEBUG][2018/01/20 23:41:56118][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56122][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56152][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56170][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56173][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56177][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 1129461636.
+ [DEBUG][2018/01/20 23:41:56178][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@43523784]
+ [DEBUG][2018/01/20 23:41:56179][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56180][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56184][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56210][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 775363285.
+ [DEBUG][2018/01/20 23:41:56210][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@2e371ad5]
+ [DEBUG][2018/01/20 23:41:56213][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56214][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56218][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56237][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 1136859577.
+ [DEBUG][2018/01/20 23:41:56237][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@43c319b9]
+ [DEBUG][2018/01/20 23:41:56248][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56250][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56254][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56280][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 77415586.
+ [DEBUG][2018/01/20 23:41:56281][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@49d44a2]
+ [DEBUG][2018/01/20 23:41:56282][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56283][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56287][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56315][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 578309168.
+ [DEBUG][2018/01/20 23:41:56315][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@22784c30]
+ [DEBUG][2018/01/20 23:41:56316][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56318][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56321][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56347][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 2096367617.
+ [DEBUG][2018/01/20 23:41:56348][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@7cf40801]
+ [DEBUG][2018/01/20 23:41:56350][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56352][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56358][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56374][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 607062277.
+ [DEBUG][2018/01/20 23:41:56374][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@242f0905]
+ [DEBUG][2018/01/20 23:41:56375][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56376][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56380][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56407][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 1515184734.
+ [DEBUG][2018/01/20 23:41:56408][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@5a4fe25e]
+ [DEBUG][2018/01/20 23:41:56411][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/20 23:41:56412][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/20 23:41:56420][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ [DEBUG][2018/01/20 23:41:56423][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56424][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56424][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56425][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56425][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56426][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56426][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56431][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56432][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ [DEBUG][2018/01/20 23:41:56432][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:448)] Waiting as long as 20000 milliseconds for connection.
+ 

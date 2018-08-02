@@ -1,0 +1,12 @@
+[DEBUG][2018/01/19 23:54:4281 ][org.apache.ibatis.logging.LogFactory.setImplementation(LogFactory.java:135)] Logging initialized using 'class org.apache.ibatis.logging.log4j.Log4jImpl' adapter.
+ [DEBUG][2018/01/19 23:54:42292][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/19 23:54:42294][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/19 23:54:42295][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/19 23:54:42296][org.apache.ibatis.datasource.pooled.PooledDataSource.forceCloseAll(PooledDataSource.java:335)] PooledDataSource forcefully closed/removed all connections.
+ [DEBUG][2018/01/19 23:54:42433][org.apache.ibatis.transaction.jdbc.JdbcTransaction.openConnection(JdbcTransaction.java:137)] Opening JDBC Connection
+ [DEBUG][2018/01/19 23:54:42732][org.apache.ibatis.datasource.pooled.PooledDataSource.popConnection(PooledDataSource.java:406)] Created connection 2113973089.
+ [DEBUG][2018/01/19 23:54:42733][org.apache.ibatis.transaction.jdbc.JdbcTransaction.setDesiredAutoCommit(JdbcTransaction.java:101)] Setting autocommit to false on JDBC Connection [com.mysql.jdbc.JDBC4Connection@7e00ab61]
+ [DEBUG][2018/01/19 23:54:42739][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==>  Preparing: select * from OrderInfo t where t.orderId = ? 
+ [DEBUG][2018/01/19 23:54:42831][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] ==> Parameters: 234001(Long)
+ [DEBUG][2018/01/19 23:54:42876][org.apache.ibatis.logging.jdbc.BaseJdbcLogger.debug(BaseJdbcLogger.java:159)] <==      Total: 1
+ 
