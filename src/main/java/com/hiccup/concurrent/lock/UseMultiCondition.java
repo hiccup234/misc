@@ -4,13 +4,13 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by wenhy on 2018/1/8.
+ * 多Condition使用示例
+ *
+ * @author wenhy
+ * @date 2018/1/8
  */
 public class UseMultiCondition {
 
-    /**
-     * 多Condition使用示例
-     */
     private ReentrantLock lock = new ReentrantLock();
     private Condition c1 = lock.newCondition();
     private Condition c2 = lock.newCondition();

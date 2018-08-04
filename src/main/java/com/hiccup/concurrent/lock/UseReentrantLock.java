@@ -4,13 +4,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by wenhy on 2018/1/8.
+ * ReentrantLock可重入锁使用示例
+ *
+ * @author wenhy
+ * @date 2018/1/8
  */
 public class UseReentrantLock {
 
-    /**
-     * ReentrantLock可重入锁使用示例
-     */
     private Lock lock = new ReentrantLock();
 //    private Lock lock = new ReentrantLock(true);    //公平锁，先请求锁的线程先获得锁
     public void method1(){

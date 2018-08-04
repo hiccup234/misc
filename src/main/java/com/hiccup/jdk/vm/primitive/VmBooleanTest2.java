@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm;
+package com.hiccup.jdk.vm.primitive;
 
 /**
  * JVM中boolean类型测试2
@@ -14,7 +14,7 @@ public class VmBooleanTest2 {
 
     public static void main(String[] args) {
         // 用asmtools修改为 2，3测试
-        // 改为2时不会打印内容，改为3时又会打印
+        // 改为2时不会打印内容，改为3时又会打印，原因见类注释
         flag = true;
         if(flag) {
             System.out.println("Hello Java");

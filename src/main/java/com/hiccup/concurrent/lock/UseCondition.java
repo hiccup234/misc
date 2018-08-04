@@ -5,27 +5,30 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by wenhy on 2018/1/8.
+ * Condition使用示例：类似wait notify notifyAll
+ *
+ * @author wenhy
+ * @date 2018/1/8
  */
 public class UseCondition {
 
-    /**
-     * Condition使用示例：类似wait notify notifyAll
-     */
     private Lock lock = new ReentrantLock();
     private Condition condition = lock.newCondition();
 
     public void method1(){
         try {
             lock.lock();
-            System.out.println("当前线程：" + Thread.currentThread().getName() + "进入等待状态..");
+            System.out.println("当前线程：" + Thread.currentThread().getName() + "进入..");
             Thread.sleep(3000);
             System.out.println("当前线程：" + Thread.currentThread().getName() + "释放锁..");
-            condition.await();	// Object wait
+            // Object wait
+            condition.await();
             System.out.println("当前线程：" + Thread.currentThread().getName() +"继续执行...");
+            Thread.sleep(3000);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
+            System.out.println("当前线程：" + Thread.currentThread().getName() + "释放锁..");
             lock.unlock();
         }
     }
@@ -36,8 +39,11 @@ public class UseCondition {
             System.out.println("当前线程：" + Thread.currentThread().getName() + "进入..");
             Thread.sleep(3000);
             System.out.println("当前线程：" + Thread.currentThread().getName() + "发出唤醒..");
-            condition.signal();		//Object notify   //signal也不会释放锁
-//            condition.signalAll();    //Object notifyAll
+            // Object notify   // signal也不会释放锁
+            condition.signal();
+            // Object notifyAll
+//            condition.signalAll();
+            Thread.sleep(3000);
             System.out.println("当前线程：" + Thread.currentThread().getName() + "继续执行..");
             Thread.sleep(3000);
         } catch (Exception e) {
@@ -53,8 +59,8 @@ public class UseCondition {
         }
     }
 
-    public static void main(String[] args) {
 
+    public static void main(String[] args) {
         final UseCondition uc = new UseCondition();
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -70,6 +76,7 @@ public class UseCondition {
         }, "t2");
         t1.start();
         try {
+            // 保证程序先执行t1线程
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();

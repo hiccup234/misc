@@ -3,13 +3,13 @@ package com.hiccup.concurrent.lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 /**
- * Created by wenhy on 2018/1/8.
+ * 读写锁使用示例：实现读写锁分离
+ *
+ * @author wenhy
+ * @date 2018/1/8
  */
 public class UseReentrantReadWriteLock {
 
-    /**
-     * 读写锁使用示例：实现读写锁分离
-     */
     private ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
     private ReentrantReadWriteLock.ReadLock readLock = rwLock.readLock();
     private ReentrantReadWriteLock.WriteLock writeLock = rwLock.writeLock();

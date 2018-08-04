@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm;
+package com.hiccup.jdk.vm.primitive;
 
 /**
  * JVM中boolean,byte,char,short作为本地变量存放在栈帧上时
