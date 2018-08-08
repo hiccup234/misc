@@ -7,13 +7,11 @@ public class Object {
         registerNatives();
     }
 
-//    // finnal的本地方法，子类不能重写
+    // finnal的本地方法，子类不能重写
 //    public final native Class<?> getClass();
 //    public final native void notify();
 //    public final native void notifyAll();
 //    public final native void wait(long timeout) throws InterruptedException;
-//
-//    // 本地方法wait的包装方法
 //    public final void wait(long timeout, int nanos) throws InterruptedException {
 //        if (timeout < 0) {
 //            throw new IllegalArgumentException("timeout value is negative");
@@ -30,7 +28,10 @@ public class Object {
 //        wait(0);
 //    }
 
-    // 为什么hashCode是本地方法，而equals却是成员方法呢？
+    /**
+     * 为什么hashCode是本地方法，而equals却是成员方法呢？
+     * @return
+     */
     public native int hashCode();
 
     public boolean equals(java.lang.Object obj) {
@@ -43,7 +44,10 @@ public class Object {
         return getClass().getName() + "@" + Integer.toHexString(hashCode());
     }
 
-    // 对象成员方法，对象被回收时执行的方法，一般不用来释放资源，因为GC的时机对程序员来说是不可控的
+    /**
+     * 对象成员方法，对象被回收时执行的方法，一般不用来释放资源，因为GC的时机对程序员来说是不可控的
+     * @throws Throwable
+     */
     protected void finalize() throws Throwable { }
 
 }

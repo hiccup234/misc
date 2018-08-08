@@ -8,21 +8,21 @@ package com.hiccup.jdk.vm.methodinvoke;
  */
 public class StaticMethodInvokeTest {
 
-    static class Father {
+    static class Super {
         static void staticMethod() {
-            System.out.println(Father.class.getName());
+            System.out.println(Super.class.getName());
         }
     }
 
-    static class Sub extends Father{
+    static class Sub extends Super{
         static void staticMethod() {
             System.out.println(Sub.class.getName());
         }
     }
 
     public static void main(String[] args) {
-        Father.staticMethod();
-        Father f = new Father();
+        Super.staticMethod();
+        Super f = new Super();
         f.staticMethod();
         f = new Sub();
         f.staticMethod();

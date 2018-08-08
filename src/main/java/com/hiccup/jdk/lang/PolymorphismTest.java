@@ -1,13 +1,16 @@
 package com.hiccup.jdk.lang;
 
 /**
- * Created by wenhy on 2018/1/26.
- * 多态性测试
+ * 多态性测试：属性域的访问的静态绑定，以及非final实例方法的动态绑定
+ *
+ * @author wenhy
+ * @date 2018/1/26
  */
 public class PolymorphismTest {
 
     public static void main(String[] args) {
         Super sup = new Sub();
+        // 这里的sup.field属于静态绑定，编译时已经确定了目标字段
         System.out.println(sup.field+" "+sup.getField());
 
         Sub sub = new Sub();

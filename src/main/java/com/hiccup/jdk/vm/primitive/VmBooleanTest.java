@@ -12,7 +12,7 @@ package com.hiccup.jdk.vm.primitive;
 public class VmBooleanTest {
 
     /**
-     * 用amstools.jar工具反编译VmBooleanTest.class文件
+     * 用字节码工具amstools.jar反编译VmBooleanTest.class文件
      * javac Foo.java
      * java Foo
      * java -cp[-classpath] ./asmtools.jar org.openjdk.asmtools.jdis.Main VmBooleanTest.class > VmBooleanTest.jasm

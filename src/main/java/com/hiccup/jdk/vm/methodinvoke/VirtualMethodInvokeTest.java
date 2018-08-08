@@ -34,17 +34,17 @@ public class VirtualMethodInvokeTest {
      *
      */
 
-    abstract class Father {
+    abstract class Super {
 
         abstract void method();
     }
 
-    class Sub1 extends Father {
+    class Sub1 extends Super {
         @Override
         void method() { }
     }
 
-    class Sub2 extends Father {
+    class Sub2 extends Super {
         @Override
         void method() { }
     }
@@ -61,7 +61,7 @@ public class VirtualMethodInvokeTest {
                 System.out.println(temp - current);
                 current = temp;
             }
-            Father f = i < 1_000_000_000 ? sub1 : sub2;
+            Super f = i < 1_000_000_000 ? sub1 : sub2;
             f.method();
         }
 

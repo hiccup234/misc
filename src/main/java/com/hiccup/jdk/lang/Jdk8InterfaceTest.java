@@ -10,7 +10,7 @@ public class Jdk8InterfaceTest implements Jdk8Intf1, Jdk8Intf2{
 
     @Override
     public void defaultMethod() {
-        // 同时实现了含有相同默认方法的接口时必须重写默认方法
+        // 同时实现了含有相同默认方法的接口时编译器要求必须重写默认方法
         System.out.println("Sub class`s defaultMethod.");
     }
 
@@ -23,11 +23,16 @@ public class Jdk8InterfaceTest implements Jdk8Intf1, Jdk8Intf2{
 }
 
 interface Jdk8Intf1 {
-
+    /**
+     * 注意修饰关键字：static
+     */
     static void staticMethod() {
         System.out.println("I`am a static method.");
     }
 
+    /**
+     * 注意修饰关键字：default
+     */
     default void defaultMethod() {
         System.out.println("I`am a default method.");
     }
