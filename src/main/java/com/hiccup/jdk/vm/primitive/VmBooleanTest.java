@@ -15,7 +15,7 @@ public class VmBooleanTest {
      * 用amstools.jar工具反编译VmBooleanTest.class文件
      * javac Foo.java
      * java Foo
-     * java -cp ./asmtools.jar org.openjdk.asmtools.jdis.Main VmBooleanTest.class > VmBooleanTest.jasm
+     * java -cp[-classpath] ./asmtools.jar org.openjdk.asmtools.jdis.Main VmBooleanTest.class > VmBooleanTest.jasm
      * [修改VmBooleanTest.jasm中第一个iconst_1为iconst_2]
      * java -cp ./asmtools.jar org.openjdk.asmtools.jasm.Main Foo.jasm
      * java Foo
