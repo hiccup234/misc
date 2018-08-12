@@ -6,7 +6,7 @@ package com.hiccup.jdk.lang;
  * @author wenhy
  * @date 2018/1/24
  */
-public class InheritTest {
+public class InheritOverrideTest {
 
     public static void main(String[] args) {
         System.out.println(Animal.age);

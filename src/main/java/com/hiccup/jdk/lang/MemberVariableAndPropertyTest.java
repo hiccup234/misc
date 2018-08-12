@@ -9,7 +9,7 @@ package com.hiccup.jdk.lang;
  * @author wenhy
  * @date 2018/1/17
  */
-public class MemberVariableAndProperty {
+public class MemberVariableAndPropertyTest {
 
     /**
      * 成员变量，私有的对外不可见
