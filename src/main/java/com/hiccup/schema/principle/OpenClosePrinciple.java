@@ -21,10 +21,10 @@ public class OpenClosePrinciple {
 
     /**
      * 对扩展不友好的写法：直接用if else判断
-     * @param user
+    * @param user
      * @param <T>
      */
-    <T extends User> void service(T user) {
+    public <T extends User> void service(T user) {
         if(user instanceof OrdinaryUser) {
             // 普通用户...
             System.out.println(user.getClass().getName());
@@ -43,7 +43,7 @@ public class OpenClosePrinciple {
      * @param user
      * @param <T>
      */
-    <T extends User> void service2(T user) {
+    public <T extends User> void service2(T user) {
         providers.get(user.getClass()).doService(user);
     }
     interface ServiceProvider {

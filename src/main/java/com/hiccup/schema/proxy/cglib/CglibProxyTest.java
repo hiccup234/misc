@@ -1,4 +1,4 @@
-package com.hiccup.proxy.cglib;
+package com.hiccup.schema.proxy.cglib;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;

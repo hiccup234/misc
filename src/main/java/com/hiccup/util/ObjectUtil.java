@@ -7,14 +7,17 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
- * 对象拷贝工具
+ * 对象工具类
  *
  * @author wenhy
  * @date 2018/3/11
  */
-public class CopyObjectUtil {
+public final class ObjectUtil {
 
-    private CopyObjectUtil() {
+    /**
+     * 设置为不可被实例化
+     */
+    private ObjectUtil() {
         throw new AssertionError();
     }
 
@@ -62,25 +65,6 @@ public class CopyObjectUtil {
         return (T) cloneObj;
     }
 
-    public static boolean isPrimitiveType(Class T){
-        Class c[] = new Class[9];
-        c[0] = Boolean.class;
-        c[1] = Byte.class;
-        c[2] = Character.class;
-        c[3] = Short.class;
-        c[4] = Integer.class;
-        c[5] = Long.class;
-        c[6] = Float.class;
-        c[7] = Double.class;
-        c[8] = Void.class;
-        c[8] = int.class;
-        for(int i=0;i<c.length;i++){
-            if(c[i]== T || T.equals(c[i])){
-                return true;
-            }
-        }
-        return false;
-    }
 
 
     static class Dog implements Serializable {
@@ -89,7 +73,7 @@ public class CopyObjectUtil {
 
     public static void main(String[] args) {
         Dog d1 = new Dog();
-        Dog d2 = CopyObjectUtil.deepClone(d1);
+        Dog d2 = ObjectUtil.deepClone(d1);
         System.out.println(d1);
         System.out.println(d2);
 
