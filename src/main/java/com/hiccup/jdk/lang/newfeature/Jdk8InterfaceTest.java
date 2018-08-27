@@ -1,4 +1,4 @@
-package com.hiccup.jdk.lang;
+package com.hiccup.jdk.lang.newfeature;
 
 /**
  * JDK1.8允许接口中定义方法的默认实现测试

@@ -27,7 +27,6 @@ package com.hiccup.misc.regex;
  * 但是胜在 NFA 的功能更加强大，所以包括 Java 、.NET、Perl、Python、Ruby、PHP 等语言都使用了 NFA 去实现其正则表达式
  *
  *
- *
  * 贪婪     懒惰     独占
  * X?      X??      X?+
  * X*      X*?      X*+
@@ -36,7 +35,7 @@ package com.hiccup.misc.regex;
  * X{n,}   X{n,}?   X{n,}+
  * X{n,m}  X{n,m}?  X{n,m}+
  *
- * https://regex101.com
+ * 可以到https://regex101.com验证正表达式的正确性
  *
  * @author wenhy
  * @date 2018/8/22
@@ -46,7 +45,18 @@ public class RegexTest {
     public static void main(String[] args) {
 
 
+        String r = "^([hH][tT]{2}[pP][sS]?://$)";
+        if("httPss://".matches(r)) {
+            System.out.println(r);
+            System.out.println("ffffffff");
+            System.out.println("ffffffff");
+            System.out.println("ffffffff");
 
+        } else {
+            System.out.println("ffffffff");
+            System.out.println("ffffffff");
+            System.out.println("ffffffff");
+        }
 
 
         // 第一部分匹配 http 和 https 协议
