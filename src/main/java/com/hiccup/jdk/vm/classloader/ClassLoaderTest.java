@@ -10,7 +10,8 @@ package com.hiccup.jdk.vm.classloader;
  *
  * 【链接】
  * 验证：验证class文件是否符合JVM规范（类似Spring加载完Resouce配置文件后，对xml的DTD和Schema验证）
- * 准备：为类和接口的静态字段分配内存[初始值]（初始化在稍后的初始化阶段），创建方法表（静态绑定、动态绑定）
+ * 准备：为类和接口的静态字段分配内存[初始值]（初始化在稍后的初始化阶段），如int、long设置为0，boolean设置为false，Object设置为null
+ *      创建方法表（静态绑定、动态绑定）
  * 解析：将常量池中的符号引用替换为直接引用
  *
  * 【初始化】
@@ -37,10 +38,32 @@ public class ClassLoaderTest extends ClassLoader {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ClassNotFoundException {
         InnerClass[] icArr = new InnerClass[10];
         System.out.println("===========================");
         InnerClass ic = new InnerClass();
+
+        Class clazz = OtherClass.class;
+        System.out.println("===========================");
+        System.out.println(clazz);
+        System.out.println("OtherClass.class 不会引起初始化");
+        Class.forName("com.hiccup.jdk.vm.classloader.OtherClass");
+//        try {
+//            clazz.newInstance();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        }
     }
 
+}
+
+/**
+ * OtherClass.class 不会引起初始化
+ */
+class OtherClass {
+    static {
+        System.out.println("OtherClass.<clinit>");
+    }
 }
