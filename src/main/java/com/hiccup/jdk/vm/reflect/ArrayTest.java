@@ -3,7 +3,7 @@ package com.hiccup.jdk.vm.reflect;
 import java.lang.reflect.Array;
 
 /**
- * 反射数组测试类（主要是通过本地方法实现的）
+ * 反射数组测试类（主要是通过本地方法实现）
  *
  * @author wenhy
  * @date 2018/8/30

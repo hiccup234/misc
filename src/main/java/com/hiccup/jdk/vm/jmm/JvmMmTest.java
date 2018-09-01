@@ -1,6 +1,10 @@
 package com.hiccup.jdk.vm.jmm;
 
 /**
+ * JVM内存模型
+ *
+ * 内部以补码表示数据（正数的补码是本身，负数的补码是按位取反再加1）
+ *
  * 【PC计数器】
  * 1.线程私有（每个线程拥有一个计数器），在线程创建的时候创建
  * 2.指向下一条指令的地址，执行本地方法(native)时，值为undefined
@@ -11,6 +15,7 @@ package com.hiccup.jdk.vm.jmm;
  * 2.方法区是JVM的一个规范，是一个逻辑分区，不同的虚拟机的实现不一样
  *  hotspot是把方法区放到了堆的永久代中(JDK8以前)，但在JDK8以后，永久代被移除，方法区放到了本地内存中(元空间)
  *  因此JDK8中的-XX:MaxPermSize已经失效了，取而代之的是-XX:MaxMetaspaceSize参数
+ * 3.JDK6时，String等常量信息置于方法区中的运行时常量池，JDK7时，已经移动到了堆中
  *
  * 【堆区】
  * 1.存放对象，所有线程共享
@@ -22,7 +27,7 @@ package com.hiccup.jdk.vm.jmm;
  *  老年代满了以后，会触发full gc,会清除老年代和永久代的非存活对象。
  * 4.新生代GC也叫Young GC或者Minor GC，老年代GC叫Full GC
  * 5.full gc对整个堆进行整理，包括Young、Tenured和Perm。Full GC因为需要对整个对进行回收，
- * 所以比Scavenge GC要慢，因此应该尽可能减少Full GC的次数。在对JVM调优的过程中，很大一部分工作就是对于FullGC的调节。
+ *  所以比Scavenge GC要慢，因此应该尽可能减少Full GC的次数。在对JVM调优的过程中，很大一部分工作就是对于FullGC的调节。
  *  有如下原因可能导致Full GC：
  *      年老代（Tenured）被写满
  *      永久代（Perm）被写满
@@ -36,7 +41,7 @@ package com.hiccup.jdk.vm.jmm;
  * @author wenhy
  * @date 2018/8/17
  */
-public class JmmTest {
+public class JvmMmTest {
 
     public static void main(String[] args) {
         int i = 0;

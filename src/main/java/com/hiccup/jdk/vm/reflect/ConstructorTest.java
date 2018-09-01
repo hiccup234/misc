@@ -24,6 +24,8 @@ public class ConstructorTest {
         }
         System.out.println("=====================================");
         Constructor<?> constructor = Super.class.getConstructor(int.class, String.class);
+        // 也可以用 Integer.TYPE 替代 int.class
+        System.out.println(int.class == Integer.TYPE);
 //        Constructor<?> constructor = Super.class.getConstructor(Integer.TYPE, String.class);
         System.out.println(constructor);
         constructor.newInstance(new Object[]{1, "abc"});
