@@ -57,7 +57,7 @@
     
 工具包：类依赖分析工具jdeps
 
-JVM方面：使用Metaspace（JEP 122）代替持久代（PermGen space）
+JVM方面：使用Metaspace（JEP 122）代替方法区持久代（PermGen space）
 
 #1.9
 1.改善锁竞争机制
@@ -70,6 +70,7 @@ JVM方面：使用Metaspace（JEP 122）代替持久代（PermGen space）
 #1.11
 
 
-###常用JVM工具###
+
+###常用JDK工具###
 字节码工具：asmtools.jar
 查看字节码反汇编：javap -p -v XXX.class
