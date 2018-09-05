@@ -1,5 +1,6 @@
-package com.hiccup.jdk.vm.jmm;
+package com.hiccup.jdk.vm.jmm.oom;
 
+import com.hiccup.jdk.vm.jmm.JvmMmTest;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;

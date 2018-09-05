@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm.jmm;
+package com.hiccup.jdk.vm.jmm.oom;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * 常量池内存溢出测试
  *
- * @VM args: -XX:MetaspaceSize=10M -XX:MaxMetaspaceSize=10M -XX:+PrintGCDetails
+ * @VM args: -XX:MetaspaceSize=10M -XX:MaxMetaspaceSize=10M -XX:+PrintGCDetails （JDK1.8）
  *
  * @author wenhy
  * @date 2018/8/31

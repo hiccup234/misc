@@ -23,11 +23,11 @@ package com.hiccup.jdk.vm.jmm;
  *  jdk1.8以前方法区在堆里面，1.8以后是单独的，在元空间)
  * 3.年轻代也叫新生代，分为1个eden区和2个servivor区(s0和s1)，新生代存放新创建的对象，满了以后，会触发Scavenge GC，回收非存活对象，
  *  同时将存活对象放入servivor区,servivor区的from和to会在gc时从from移动到to，当to满的时候，就把对象移动到老年代，
- *  同时from和to互换。因此只有多次Scavenge GC都存活的对象，才会放入老年代。Scavenge GC不会触发老年代和永久代的垃圾回收。
- *  老年代满了以后，会触发full gc,会清除老年代和永久代的非存活对象。
+ *  同时from和to互换。因此只有多次Scavenge GC都存活的对象，才会放入老年代。Scavenge GC不会触发老年代和永久代的垃圾回收
+ *  老年代满了以后，会触发full gc,会清除老年代和永久代的非存活对象
  * 4.新生代GC也叫Young GC或者Minor GC，老年代GC叫Full GC
  * 5.full gc对整个堆进行整理，包括Young、Tenured和Perm。Full GC因为需要对整个对进行回收，
- *  所以比Scavenge GC要慢，因此应该尽可能减少Full GC的次数。在对JVM调优的过程中，很大一部分工作就是对于FullGC的调节。
+ *  所以比Scavenge GC要慢，因此应该尽可能减少Full GC的次数。在对JVM调优的过程中，很大一部分工作就是对于FullGC的调节
  *  有如下原因可能导致Full GC：
  *      年老代（Tenured）被写满
  *      永久代（Perm）被写满
@@ -35,8 +35,10 @@ package com.hiccup.jdk.vm.jmm;
  *      上一次GC之后Heap的各域分配策略动态变化
  *
  * 【栈区】
- * 1.每个线程创建的时候创建一个栈，线程每一次调用方法时创建一个帧，然后压入线程栈中。
- * 2.帧由局部变量表、操作数栈、帧数据区(如常量池指针等)组成。
+ * 1.每个线程创建的时候创建一个栈，线程每一次调用方法时创建一个帧，然后压入线程栈中
+ * 2.帧由局部变量表、操作数栈、帧数据区(如常量池指针等)组成
+ * 3.Java没有数据寄存器，所有参数传递都靠”操作数栈”，有返回值的方法返回时，会把返回值放到调用者方法的操作数栈中
+ *
  *
  * @author wenhy
  * @date 2018/8/17
