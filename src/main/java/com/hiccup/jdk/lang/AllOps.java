@@ -1,12 +1,24 @@
 package com.hiccup.jdk.lang;
 
-// Tests all the operators on all the primitive data types
-// to show which ones are accepted by the Java compiler.
+
+/**
+ * Java基本类型支持的所有操作类型
+ *
+ * @author Bruce Eckel (Think In Java)
+ * @date 2007/6/1
+ */
 public class AllOps {
 
-  // To accept the results of a boolean test:
+  /**
+   * To accept the results of a boolean test:
+   */
   void f(boolean b) {}
 
+  /**
+   * boolean类型不支持算术、比较、位移、部分复合赋值及类型转换
+   * @param x
+   * @param y
+   */
   void boolTest(boolean x, boolean y) {
     // Arithmetic operators:
     //! x = x * y;
@@ -58,57 +70,12 @@ public class AllOps {
     //! double d = (double)x;
   }
 
-  void charTest(char x, char y) {
-    // Arithmetic operators:
-    x = (char)(x * y);
-    x = (char)(x / y);
-    x = (char)(x % y);
-    x = (char)(x + y);
-    x = (char)(x - y);
-    x++;
-    x--;
-    x = (char)+y;
-    x = (char)-y;
-    // Relational and logical:
-    f(x > y);
-    f(x >= y);
-    f(x < y);
-    f(x <= y);
-    f(x == y);
-    f(x != y);
-    //! f(!x);
-    //! f(x && y);
-    //! f(x || y);
-    // Bitwise operators:
-    x= (char)~y;
-    x = (char)(x & y);
-    x  = (char)(x | y);
-    x = (char)(x ^ y);
-    x = (char)(x << 1);
-    x = (char)(x >> 1);
-    x = (char)(x >>> 1);
-    // Compound assignment:
-    x += y;
-    x -= y;
-    x *= y;
-    x /= y;
-    x %= y;
-    x <<= 1;
-    x >>= 1;
-    x >>>= 1;
-    x &= y;
-    x ^= y;
-    x |= y;
-    // Casting:
-    //! boolean bl = (boolean)x;
-    byte b = (byte)x;
-    short s = (short)x;
-    int i = (int)x;
-    long l = (long)x;
-    float f = (float)x;
-    double d = (double)x;
-  }
-
+  /**
+   * byte char short int long所支持的操作类型相同
+   * 除逻辑与或非及类型转换为boolean之外其他操作均支持
+   * @param x
+   * @param y
+   */
   void byteTest(byte x, byte y) {
     // Arithmetic operators:
     x = (byte)(x* y);
@@ -153,6 +120,57 @@ public class AllOps {
     // Casting:
     //! boolean bl = (boolean)x;
     char c = (char)x;
+    short s = (short)x;
+    int i = (int)x;
+    long l = (long)x;
+    float f = (float)x;
+    double d = (double)x;
+  }
+
+  void charTest(char x, char y) {
+    // Arithmetic operators:
+    x = (char)(x * y);
+    x = (char)(x / y);
+    x = (char)(x % y);
+    x = (char)(x + y);
+    x = (char)(x - y);
+    x++;
+    x--;
+    x = (char)+y;
+    x = (char)-y;
+    // Relational and logical:
+    f(x > y);
+    f(x >= y);
+    f(x < y);
+    f(x <= y);
+    f(x == y);
+    f(x != y);
+    //! f(!x);
+    //! f(x && y);
+    //! f(x || y);
+    // Bitwise operators:
+    x= (char)~y;
+    x = (char)(x & y);
+    x  = (char)(x | y);
+    x = (char)(x ^ y);
+    x = (char)(x << 1);
+    x = (char)(x >> 1);
+    x = (char)(x >>> 1);
+    // Compound assignment:
+    x += y;
+    x -= y;
+    x *= y;
+    x /= y;
+    x %= y;
+    x <<= 1;
+    x >>= 1;
+    x >>>= 1;
+    x &= y;
+    x ^= y;
+    x |= y;
+    // Casting:
+    //! boolean bl = (boolean)x;
+    byte b = (byte)x;
     short s = (short)x;
     int i = (int)x;
     long l = (long)x;
@@ -313,6 +331,12 @@ public class AllOps {
     double d = (double)x;
   }
 
+  /**
+   * float double所支持的操作类型相同
+   * 除int不支持的操作类型外还有按位操作及其复合赋值操作（按位与和位移运算）
+   * @param x
+   * @param y
+   */
   void floatTest(float x, float y) {
     // Arithmetic operators:
     x = x * y;
