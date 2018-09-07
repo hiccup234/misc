@@ -6,6 +6,7 @@ package com.hiccup.jdk.vm.methodinvoke;
  * @author wenhy
  * @date 2018/8/8
  */
+@SuppressWarnings("all")
 public class StaticMethodInvokeTest {
 
     static class Super {

@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm.reflect;
+package com.hiccup.jdk.lang.reflect;
 
 import java.lang.reflect.Array;
 
@@ -11,7 +11,7 @@ import java.lang.reflect.Array;
 public class ArrayTest {
 
     public static void main(String[] args) throws Exception {
-        Class<?> element = Class.forName("com.hiccup.jdk.vm.reflect.ArrayElement");
+        Class<?> element = Class.forName("com.hiccup.jdk.lang.reflect.ArrayElement");
         // 通过反射创建数组
         Object arr = Array.newInstance(element, 5);
 

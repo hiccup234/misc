@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm.reflect;
+package com.hiccup.jdk.lang.reflect;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

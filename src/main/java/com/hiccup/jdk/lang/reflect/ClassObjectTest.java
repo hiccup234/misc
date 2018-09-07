@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm.reflect;
+package com.hiccup.jdk.lang.reflect;
 
 /**
  * 常见3种获得Class对象的方法
@@ -22,7 +22,7 @@ public class ClassObjectTest {
     public static void main(String[] args) {
         try {
             // 1.反射获取
-            Class<?> clazz = Class.forName("com.hiccup.jdk.vm.reflect.ClassObjectTest");
+            Class<?> clazz = Class.forName("com.hiccup.jdk.lang.reflect.ClassObjectTest");
             System.out.println(clazz);
 
             // 2.通过类属性获取

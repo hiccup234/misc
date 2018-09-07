@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm.reflect;
+package com.hiccup.jdk.lang.reflect;
 
 /**
  * 成员变量测试类

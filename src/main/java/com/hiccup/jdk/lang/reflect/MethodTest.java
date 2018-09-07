@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm.reflect;
+package com.hiccup.jdk.lang.reflect;
 
 /**
  * 反射方法测试类

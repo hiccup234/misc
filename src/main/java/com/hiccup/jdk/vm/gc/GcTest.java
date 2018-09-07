@@ -1,7 +1,7 @@
 package com.hiccup.jdk.vm.gc;
 
 /**
- * 垃圾回收算法分类（JVM采用了分代的思想）：
+ * 垃圾回收算法分类
  *
  * 【引用计数】
  * 为每个对象添加一个引用计数器，为0则可以回收该对象
@@ -33,15 +33,44 @@ package com.hiccup.jdk.vm.gc;
  * 3.复制（copy），把内存区域分为两个大小相同的区域：from & to 每次只用其中一个区域，GC时把存活的对象直接复制到另一块空闲区域
  *   缺点是：内存使用效率非常低，每次只能利用内存一半的空间
  *
+ * JVM采用了分代的思想：一般发生在堆区和元数据区
+ * 1、GC后少量对象存活，适合复制算法
+ * 2、GC后大量对象存活，适合标记清理或者标记压缩
  *
  * 垃圾收集器分类：
- * 1.新生代：串行垃圾回收器（Serial），并行垃圾回收器（Parallel New），Parallel Scavenge（更注重吞吐率，不能与CMS一起使用）
+ * 1.新生代：串行垃圾回收器（Serial），并行垃圾回收器（多线程版本）（Parallel New），Parallel Scavenge（更注重吞吐率，不能与CMS一起使用）
  *         这三个收集器都是采用的 标记- 复制 算法
  * 2.老年代：Serial Old（标记-压缩），Parallel Old（标记-压缩），CMS（标记-清除，并发回收，STW请求较少，Java 9已移除）
- *
  * 3.G1(Garbage First)：横跨新生代和老年代的垃圾回收器，直接将堆分成许多区域，采用 标记-压缩 算法，也是并发的惊喜垃圾回收
- *
  * 4.ZGC(Java 11)：主要参考Azul VM的Pauseless GC及Zing VM的C4
+ *
+ * JVM的GC参数设置（64位的JVM只有server模式）：
+ *    在client模式下采用-XX:+UseSerialGC 串行回收器（默认），-XX:+PrintGCDetails 为 “DefNew” “Tenured”
+ *    在server模式下采用-XX:+UseParNewGC 新生代并行回收器，-XX:+PrintGCDetails 为 “ParNew” “Tenured”（老年代任为串行回收）
+ *                   -XX:+UseParallelGC 并行回收期器（默认），-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”（有Full GC）
+ *                   -XX:+UseParallelOldGC 老年代并行回收器，-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”（有Full GC）
+ *                   -XX:+UseConcMarkSweepGC CMS并发回收器，-XX:+PrintGCDetails 为 “ParNew” “CMS”
+ *
+ *    Parallel Scavenge收集器：
+ *    PS的关注点与其他收集器不同，Parallel Scavenge收集器的目标则是达到一个可控制的吞吐量（Throughput）
+ *    所谓吞吐量就是CPU用于运行用户代码的时间与CPU总消耗时间的比值，即吞吐量 = 运行用户代码时间 /（运行用户代码时间 + 垃圾收集时间）
+ *    虚拟机总共运行了100分钟，其中垃圾收集花掉1分钟，那吞吐量就是99%，由于与吞吐量关系密切，Parallel Scavenge收集器也经常被称为“吞吐量优先”收集器
+ *    该垃圾收集器，是JVM在server模式下的默认值，使用server模式后，JVM使用Parallel Scavenge收集器（新生代）+ Parallel Old收集器（老年代）的收集器组合进行内存回收
+ *
+ *    Concurrent Mark Sweep简称CMS收集器：
+ *    可以同应用程序线程并发执行，大大降低系统停顿时间，采用并发的标记清除算法(不能用标记压缩算法，因为并行执行，被移动的对象可能正被使用)，只作用于老年代
+ *    缺点是：并发阶段由于占用cpu资源，会导致系统吞吐量降低，由于在清理阶段，应用程序还在运行，因此清理不彻底，没有一个时间点是垃圾完全清理完的状态
+ *    因为和用户线程一起运行，不能在空间快满时再清理
+ *
+ *    -XX:ParallelGCThreads=20 限制并行hui回收器线程数
+ *
+ *    -XX:MaxGCPauseMills 设定一次gc的最大停顿时间，jvm会尽力保证每次gc在该时间范围内(会自动调整堆大小等参数)，
+ *    如果设置过小，会导致gc次数增加，谨慎使用。GC停顿时间缩短是以牺牲吞吐量和新生代空间来换取的。
+ *
+ *    -XX:GCTimeRatio 设定应用程序线程占用的cpu时间比例(会自动调整各以达到该设定参数)，
+ *    gc占用cpu默认为1，如果设置为9，表示90%时间用于应用程序线程，10%时间用于gc线程。默认99，
+ *    即默认99%的时间用于应用程序线程，1%时间用于gc线程。应用程序线程的占用cpu时间比例决定了系统的吞吐量，因此值越大，吞吐量越高。
+ *
  *
  * @author wenhy
  * @date 2018/9/2
@@ -49,9 +78,9 @@ package com.hiccup.jdk.vm.gc;
 public class GcTest {
 
     /**
-     * -XX:+PrintGC -XX:+PrintGCApplicationStoppedTime -XX:+PrintSafepointStatistics -XX:+UseCountedLoopSafepoints
+     * @VM args: -XX:+PrintGCDetails -XX:+PrintGCApplicationStoppedTime -XX:+PrintSafepointStatistics -XX:+UseCountedLoopSafepoints
      */
-    private static double sum = 0;
+    private static double sum;
 
     public static void foo() {
         // 无安全点检测的计数循环会带来长STW
@@ -63,11 +92,12 @@ public class GcTest {
     public static void bar() {
         for(int i=0; i<200_000_000; i++) {
             new Object().hashCode();
+            byte[] bytes = new byte[20*1024*1024];
         }
     }
 
     public static void main(String[] args) {
-        new Thread(GcTest::foo).start();
+//        new Thread(GcTest::foo).start();
         new Thread(GcTest::bar).start();
     }
 

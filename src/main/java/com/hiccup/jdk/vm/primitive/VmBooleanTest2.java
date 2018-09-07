@@ -10,6 +10,9 @@ package com.hiccup.jdk.vm.primitive;
  */
 public class VmBooleanTest2 {
 
+    /**
+     * 注意这里是类的成员变量，存储在元数据区
+     */
     private static boolean flag;
 
     public static void main(String[] args) {

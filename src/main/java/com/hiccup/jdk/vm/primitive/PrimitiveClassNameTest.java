@@ -1,7 +1,5 @@
 package com.hiccup.jdk.vm.primitive;
 
-import java.lang.reflect.Array;
-
 /**
  * 原生类型与数组对象名称测试
  *

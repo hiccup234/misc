@@ -1,4 +1,4 @@
-package com.hiccup.jdk.vm.reflect;
+package com.hiccup.jdk.lang.reflect;
 
 import java.lang.reflect.Method;
 
@@ -17,8 +17,6 @@ import java.lang.reflect.Method;
  * JVM有个参数：-Dsun.reflect.inflationThreshold=32来调整反射调用次数的阈值
  * 小于32次则采用本地实现，超过32次则采用动态实现，默认值为ReflectionFactory.inflationThreshold = 15
  *            -Dsun.reflect.noInflation=true可以关闭Inflation，使得反射一开始就采用动态实现
- *
- *
  *
  *
  * @author wenhy
@@ -43,7 +41,7 @@ public class ReflectImplTest {
             ReflectImplTest.target(1);
 
             // 2.通过反射调用
-            Class<?> clazz = Class.forName("com.hiccup.jdk.vm.reflect.ReflectImplTest");
+            Class<?> clazz = Class.forName("com.hiccup.jdk.lang.reflect.ReflectImplTest");
             Method method = clazz.getMethod("target", int.class);
             // method.invoke不会再抛出原来方法签名上的异常，而是抛出经过统一包装的 InvocationTargetException
             for(int i=0; i<20; i++) {
@@ -61,7 +59,7 @@ public class ReflectImplTest {
 
     public static void test2() {
         try {
-            Class<?> clazz = Class.forName("com.hiccup.jdk.vm.reflect.ReflectImplTest");
+            Class<?> clazz = Class.forName("com.hiccup.jdk.lang.reflect.ReflectImplTest");
             Method method = clazz.getMethod("target2", Integer.TYPE);
             long startTime = System.currentTimeMillis();
             for(int i=1; i<2_000_000_000; i++) {
