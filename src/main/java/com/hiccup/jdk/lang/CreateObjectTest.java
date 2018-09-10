@@ -1,6 +1,6 @@
 package com.hiccup.jdk.lang;
 
-import com.hiccup.util.ObjectUtil;
+import top.hiccup.util.ObjectUtil;
 import sun.misc.Unsafe;
 
 import java.io.Serializable;
