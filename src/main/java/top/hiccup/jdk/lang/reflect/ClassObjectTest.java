@@ -31,7 +31,7 @@ public class ClassObjectTest {
             System.out.println(Integer.TYPE);
             System.out.println(int[].class);
 
-            // 3.通过对象获取
+            // 3.通过对象getClass方法获取
             System.out.println(new ClassObjectTest().getClass() == clazz);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

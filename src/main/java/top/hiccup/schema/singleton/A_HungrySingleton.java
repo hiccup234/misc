@@ -30,6 +30,7 @@ public class A_HungrySingleton {
         A_HungrySingleton AHungrySingleton2 = A_HungrySingleton.getInstance();
         System.out.println(AHungrySingleton1.hashCode());
         System.out.println(AHungrySingleton2.hashCode());
+        System.out.println(AHungrySingleton1 == AHungrySingleton2);
     }
 
 }
