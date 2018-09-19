@@ -10,7 +10,7 @@ package top.hiccup.jdk.lang.exception;
  * 1.Error: OutOfMemoryError, StackOverFlowError
  *
  * 2.RunTimeException: NullPointerException, ClassCastException, ArrayIndexOutOfBoundsException
- *                     NoSuchMethodException, NumberFormatException,
+ *                     NoSuchMethodException, NumberFormatException, ArithmeticException
  *
  * 3.CheckedException: IOException, 反射相关异常（NoSuchMethodException,NoSuchMethodException等）
  *

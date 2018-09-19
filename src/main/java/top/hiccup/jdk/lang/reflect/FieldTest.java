@@ -58,7 +58,7 @@ public class FieldTest {
         modifiersField.setAccessible(true);
         if (Modifier.isFinal(modifiersBak)) {
             // 如果判断出字段是被final修饰的，则直接修改修饰符modifiers的值
-            // 这里不能直接设置为Modifier.PUBLIC，因为Modifier的isFinal： return (mod & FINAL) != 0;
+            // 这里不能直接设置为Modifier.PUBLIC，因为Modifier的isFinal方法： return (mod & FINAL) != 0;
 //            modifiersField.setInt(field, Modifier.PUBLIC);
             modifiersField.setInt(field, modifiersBak & ~Modifier.FINAL);
 
