@@ -1,4 +1,4 @@
-package top.hiccup.jdk.lang;
+package top.hiccup.jdk.lang.exception;
 
 import java.util.Map;
 

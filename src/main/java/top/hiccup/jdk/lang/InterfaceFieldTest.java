@@ -7,7 +7,7 @@ package top.hiccup.jdk.lang;
  * @author wenhy
  * @date 2018/5/26
  */
-public class InInterfaceFieldTest {
+public class InterfaceFieldTest {
 
     public static void main(String[] args) {
         System.out.println(FieldInterface.NAME);

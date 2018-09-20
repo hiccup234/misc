@@ -4,15 +4,15 @@ package top.hiccup.jdk.lang.exception;
  * Throwable作为Java异常体系的根类，直接继承自Object
  * 两个子类:Error, Exception
  *
- * 异常通常又分为：运行时异常和受查异常（chencked）
+ * 异常通常又分为：运行时异常和受查异常（checked）
  *
  * 常见Error、运行时异常、受查异常：
- * 1.Error: OutOfMemoryError, StackOverFlowError
+ * 1.Error: OutOfMemoryError, StackOverFlowError, NoClassDefFoundError, InternalError, UnsupportedClassVersionError
  *
  * 2.RunTimeException: NullPointerException, ClassCastException, ArrayIndexOutOfBoundsException
- *                     NoSuchMethodException, NumberFormatException, ArithmeticException
+ *                     NoSuchMethodException, NumberFormatException, ArithmeticException（除0）
  *
- * 3.CheckedException: IOException, 反射相关异常（NoSuchMethodException,NoSuchMethodException等）
+ * 3.CheckedException: IOException, InterruptedException, 反射相关异常（NoSuchMethodException,NoSuchMethodException等）
  *
  * ===============================================================================
  * Q: NoClassDefFoundError与ClassNotFoundException的区别是什么?
@@ -27,4 +27,5 @@ package top.hiccup.jdk.lang.exception;
  * @date 2018/9/18
  */
 public class ErrorAndException extends Throwable {
+
 }

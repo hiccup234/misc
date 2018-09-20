@@ -1,8 +1,9 @@
 package top.hiccup.jdk.lang.exception;
 
 /**
- * finally块在一种特例情况下不会被执行
- *  System.exit(1);
+ * finally块在特定情况下不会被执行
+ *  1.System.exit(1);
+ *  2.多线程环境下线程被强制结束
  *
  * Tips: 一般情况下不要在finally块中return，因为这样会覆盖try中return的值
  *      （C#是禁止程序员从finally中return的）

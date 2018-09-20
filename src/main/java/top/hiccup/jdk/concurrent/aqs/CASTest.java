@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicStampedReference;
 
 /**
  * 【CAS】
- * (Compare And Swap)比较和替换算法，底层实现原理是基于CPU指令实现的，不同的CPU架构有不同的指令集，本质是一种乐观锁
+ * (Compare And Swap)比较和替换算法，底层原理是基于CPU指令实现的，不同的CPU架构有不同的指令集，本质是一种乐观锁
  *
  * 存在问题:
  * 1.ABA问题：如单链表表头（实现栈功能）变化后的ABA问题
@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicStampedReference;
 public class CASTest {
 
     private static AtomicLong atomicLong = new AtomicLong(100L);
-
     /**
      * 如果值是在-128~127会有LongCache
      */
