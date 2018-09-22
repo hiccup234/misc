@@ -1,4 +1,4 @@
-package top.hiccup.jdk.concurrent.sync;
+package top.hiccup.jdk.concurrent.thread;
 
 /**
  * 为什么wait方法必须要获得锁（同synchronized关键字一起使用）（不放同步块里的话会抛java.lang.IllegalMonitorStateException）？
