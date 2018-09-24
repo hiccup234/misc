@@ -47,7 +47,7 @@ public class InterruptThreadTest {
                 } catch (InterruptedException e) {
                     System.out.println("子线程休眠被中断，线程接着会不会退出呢？");
                 }
-                // 子线程不会退出，见Thread.sleep方法注释，抛出异常时会清楚线程中断标志
+                // 子线程不会退出，见Thread.sleep方法注释，抛出异常时会清除线程中断标志
                 /**
                  * @throws  InterruptedException
                  *          if any thread has interrupted the current thread. The
