@@ -21,7 +21,7 @@ import java.util.RandomAccess;
  * @author wenhy
  * @date 2018/3/7
  */
-public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
+public class MyArrayList7<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
 
     private static final long serialVersionUID = 8683452581122892189L;
     /**
@@ -34,7 +34,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
      */
     private int size;
 
-    public MyArrayList(int initialCapacity) {
+    public MyArrayList7(int initialCapacity) {
         // 显式调用父类无参构造器
         super();
         if (initialCapacity < 0)
@@ -43,11 +43,11 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
         this.elementData = new Object[initialCapacity];
     }
 
-    public MyArrayList() {
+    public MyArrayList7() {
         this(10);
     }
 
-    public MyArrayList(Collection<? extends E> c) {
+    public MyArrayList7(Collection<? extends E> c) {
         elementData = c.toArray();
         size = elementData.length;
 //         c.toArray might (incorrectly) not return Object[] (see 6260652)
@@ -181,7 +181,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
     public Object clone() {
         try {
             // 重写clone方法的第一句一定要调用super.clone()，Object中的本地方法
-            MyArrayList<E> v = (MyArrayList<E>) super.clone();
+            MyArrayList7<E> v = (MyArrayList7<E>) super.clone();
             // 这里拷贝了当前容器中持有的数组元素（对象引用）
             v.elementData = Arrays.copyOf(elementData, size);
             // 新对象的modCount置为0，表示创建后从未修改过
@@ -437,17 +437,17 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
     public ListIterator<E> listIterator(int index) {
         if (index < 0 || index > size)
             throw new IndexOutOfBoundsException("Index: "+index);
-        return new MyArrayList.ListItr(index);
+        return new MyArrayList7.ListItr(index);
     }
 
     @Override
     public ListIterator<E> listIterator() {
-        return new MyArrayList.ListItr(0);
+        return new MyArrayList7.ListItr(0);
     }
 
     @Override
     public Iterator<E> iterator() {
-        return new MyArrayList.Itr();
+        return new MyArrayList7.Itr();
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -468,7 +468,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
             int i = cursor;
             if (i >= size)
                 throw new NoSuchElementException();
-            Object[] elementData = MyArrayList.this.elementData;
+            Object[] elementData = MyArrayList7.this.elementData;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
             cursor = i + 1;
@@ -480,7 +480,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
                 throw new IllegalStateException();
             checkForComodification();
             try {
-                MyArrayList.this.remove(lastRet);
+                MyArrayList7.this.remove(lastRet);
                 cursor = lastRet;
                 lastRet = -1;
                 expectedModCount = modCount;
@@ -495,7 +495,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
         }
     }
 
-    private class ListItr extends MyArrayList<E>.Itr implements ListIterator<E> {
+    private class ListItr extends MyArrayList7<E>.Itr implements ListIterator<E> {
         ListItr(int index) {
             super();
             cursor = index;
@@ -519,7 +519,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
             int i = cursor - 1;
             if (i < 0)
                 throw new NoSuchElementException();
-            Object[] elementData = MyArrayList.this.elementData;
+            Object[] elementData = MyArrayList7.this.elementData;
             if (i >= elementData.length)
                 throw new ConcurrentModificationException();
             cursor = i;
@@ -531,7 +531,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
                 throw new IllegalStateException();
             checkForComodification();
             try {
-                MyArrayList.this.set(lastRet, e);
+                MyArrayList7.this.set(lastRet, e);
             } catch (IndexOutOfBoundsException ex) {
                 throw new ConcurrentModificationException();
             }
@@ -541,7 +541,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
             checkForComodification();
             try {
                 int i = cursor;
-                MyArrayList.this.add(i, e);
+                MyArrayList7.this.add(i, e);
                 cursor = i + 1;
                 lastRet = -1;
                 expectedModCount = modCount;
@@ -553,7 +553,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
 
     public List<E> subList(int fromIndex, int toIndex) {
         subListRangeCheck(fromIndex, toIndex, size);
-        return new MyArrayList.SubList(this, 0, fromIndex, toIndex);
+        return new MyArrayList7.SubList(this, 0, fromIndex, toIndex);
     }
 
     static void subListRangeCheck(int fromIndex, int toIndex, int size) {
@@ -584,21 +584,21 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
             this.parentOffset = fromIndex;
             this.offset = offset + fromIndex;
             this.size = toIndex - fromIndex;
-            this.modCount = MyArrayList.this.modCount;
+            this.modCount = MyArrayList7.this.modCount;
         }
 
         public E set(int index, E e) {
             rangeCheck(index);
             checkForComodification();
-            E oldValue = MyArrayList.this.elementData(offset + index);
-            MyArrayList.this.elementData[offset + index] = e;
+            E oldValue = MyArrayList7.this.elementData(offset + index);
+            MyArrayList7.this.elementData[offset + index] = e;
             return oldValue;
         }
 
         public E get(int index) {
             rangeCheck(index);
             checkForComodification();
-            return MyArrayList.this.elementData(offset + index);
+            return MyArrayList7.this.elementData(offset + index);
         }
 
         public int size() {
@@ -665,19 +665,19 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
             return new ListIterator<E>() {
                 int cursor = index;
                 int lastRet = -1;
-                int expectedModCount = MyArrayList.this.modCount;
+                int expectedModCount = MyArrayList7.this.modCount;
 
                 public boolean hasNext() {
-                    return cursor != MyArrayList.SubList.this.size;
+                    return cursor != MyArrayList7.SubList.this.size;
                 }
 
                 @SuppressWarnings("unchecked")
                 public E next() {
                     checkForComodification();
                     int i = cursor;
-                    if (i >= MyArrayList.SubList.this.size)
+                    if (i >= MyArrayList7.SubList.this.size)
                         throw new NoSuchElementException();
-                    Object[] elementData = MyArrayList.this.elementData;
+                    Object[] elementData = MyArrayList7.this.elementData;
                     if (offset + i >= elementData.length)
                         throw new ConcurrentModificationException();
                     cursor = i + 1;
@@ -694,7 +694,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
                     int i = cursor - 1;
                     if (i < 0)
                         throw new NoSuchElementException();
-                    Object[] elementData = MyArrayList.this.elementData;
+                    Object[] elementData = MyArrayList7.this.elementData;
                     if (offset + i >= elementData.length)
                         throw new ConcurrentModificationException();
                     cursor = i;
@@ -715,10 +715,10 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
                     checkForComodification();
 
                     try {
-                        MyArrayList.SubList.this.remove(lastRet);
+                        MyArrayList7.SubList.this.remove(lastRet);
                         cursor = lastRet;
                         lastRet = -1;
-                        expectedModCount = MyArrayList.this.modCount;
+                        expectedModCount = MyArrayList7.this.modCount;
                     } catch (IndexOutOfBoundsException ex) {
                         throw new ConcurrentModificationException();
                     }
@@ -730,7 +730,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
                     checkForComodification();
 
                     try {
-                        MyArrayList.this.set(offset + lastRet, e);
+                        MyArrayList7.this.set(offset + lastRet, e);
                     } catch (IndexOutOfBoundsException ex) {
                         throw new ConcurrentModificationException();
                     }
@@ -741,17 +741,17 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
 
                     try {
                         int i = cursor;
-                        MyArrayList.SubList.this.add(i, e);
+                        MyArrayList7.SubList.this.add(i, e);
                         cursor = i + 1;
                         lastRet = -1;
-                        expectedModCount = MyArrayList.this.modCount;
+                        expectedModCount = MyArrayList7.this.modCount;
                     } catch (IndexOutOfBoundsException ex) {
                         throw new ConcurrentModificationException();
                     }
                 }
 
                 final void checkForComodification() {
-                    if (expectedModCount != MyArrayList.this.modCount)
+                    if (expectedModCount != MyArrayList7.this.modCount)
                         throw new ConcurrentModificationException();
                 }
             };
@@ -759,7 +759,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
 
         public List<E> subList(int fromIndex, int toIndex) {
             subListRangeCheck(fromIndex, toIndex, size);
-            return new MyArrayList.SubList(this, offset, fromIndex, toIndex);
+            return new MyArrayList7.SubList(this, offset, fromIndex, toIndex);
         }
 
         private void rangeCheck(int index) {
@@ -778,7 +778,7 @@ public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAc
 
         private void checkForComodification() {
             // TODO 所有SubList的重要方法都调用此方法，依此判断原FullList是否做了同步修改
-            if (MyArrayList.this.modCount != this.modCount)
+            if (MyArrayList7.this.modCount != this.modCount)
                 throw new ConcurrentModificationException();
         }
     }
