@@ -1,4 +1,4 @@
-//package com.ocean.api.container;
+//package top.hiccup.jdk.container.mycontainer;
 //
 //import sun.misc.SharedSecrets;
 //
@@ -8,7 +8,9 @@
 //import java.util.function.UnaryOperator;
 //
 ///**
-// * Created by wenhy on 2018/5/17.
+// *
+// * @author wenhy
+// * @date 2018/5/17
 // */
 //public class MyArrayList18<E> extends AbstractList<E>
 //        implements List<E>, RandomAccess, Cloneable, java.io.Serializable {

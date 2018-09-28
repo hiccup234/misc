@@ -1,4 +1,4 @@
-package top.hiccup.jdk.container;
+package top.hiccup.jdk.container.mycontainer;
 
 import java.io.IOException;
 import java.io.InvalidObjectException;

@@ -1,4 +1,4 @@
-package top.hiccup.jdk.container;
+package top.hiccup.jdk.container.mycontainer;
 
 import java.util.AbstractList;
 import java.util.Arrays;
@@ -12,42 +12,52 @@ import java.util.RandomAccess;
 
 /**
  * 参考JDK1.7
+ *
+ * 1.默认初始化大小为10
+ * 2.每次扩容容量增大为1.5倍，如果int整数溢出了，则每次add容量只加1，addAll容量加原容器的size
+ * 3.允许null元素，且允许多个null
+ * 4.ArrayList的clone其实是浅拷贝
+ *
  * @author wenhy
  * @date 2018/3/7
  */
-public class MyArrayList<E> extends AbstractList<E>
-        implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
+public class MyArrayList<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
 
-    // 实现了Serializable接口
     private static final long serialVersionUID = 8683452581122892189L;
-    // 底层存放元素的Object数组，采用transient修饰，目的是避免冗余的数组容量（数组中空的那一部分）被序列化
-    // 而是提供了writeObject方法来序列化具体size个数的数组元素
+    /**
+     * 底层存放元素的Object数组，采用transient修饰，目的是避免冗余的数组容量（数组中空的那一部分）被序列化
+     * 而是提供了writeObject方法来序列化具体size个数的数组元素
+     */
     private transient Object[] elementData;
-    // 当前容器包含元素个数
+    /**
+     * 当前容器实际包含元素个数
+     */
     private int size;
-    // 带参构造器
+
     public MyArrayList(int initialCapacity) {
         // 显式调用父类无参构造器
         super();
         if (initialCapacity < 0)
             throw new IllegalArgumentException("Illegal Capacity: "+initialCapacity);
-        // 直接声明参数容量大小的数组
+        // 直接声明参数容量大小的数组（HashMap对容量会重新计算取2的x次方）
         this.elementData = new Object[initialCapacity];
     }
-    // 无参构造器，默认初始化容量为10
+
     public MyArrayList() {
         this(10);
     }
-    // 以Collection集合为参数的构造器
+
     public MyArrayList(Collection<? extends E> c) {
         elementData = c.toArray();
         size = elementData.length;
-        //TODO 这里什么意思呢？
-        // c.toArray might (incorrectly) not return Object[] (see 6260652)
+//         c.toArray might (incorrectly) not return Object[] (see 6260652)
         if (elementData.getClass() != Object[].class)
             elementData = Arrays.copyOf(elementData, size, Object[].class);
     }
-    // 修剪容器的数组大小（是不是一般在多次插入或删除后调用呢？）
+
+    /**
+     * 修剪容器的数组大小（是不是一般在多次插入或删除后调用呢？）
+     */
     public void trimToSize() {
         modCount++;
         int oldCapacity = elementData.length;
@@ -55,12 +65,16 @@ public class MyArrayList<E> extends AbstractList<E>
             elementData = Arrays.copyOf(elementData, size);
         }
     }
-    // 确保容器最小容量
+
+    /**
+     * 确保容器最小容量
+     * @param minCapacity
+     */
     public void ensureCapacity(int minCapacity) {
         if (minCapacity > 0)
             ensureCapacityInternal(minCapacity);
     }
-    // 内部调用方法
+
     private void ensureCapacityInternal(int minCapacity) {
         //TODO 直接修改了modCount，如果if条件不成立呢？
         modCount++;
@@ -69,47 +83,69 @@ public class MyArrayList<E> extends AbstractList<E>
             // 进行动态扩容
             grow(minCapacity);
     }
-    // 这里减8说是避免因某些虚拟机把头节点存在数组中而引起OutOfMemoryError
+
+    /**
+     * 这里减8说是避免因某些虚拟机把头节点存在数组中而引起OutOfMemoryError
+     * 不同JVM最大能申请的数组容量不一样，64位Hotspot最大是 Integer.MAX_VALUE - 2
+     */
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
-    // 动态扩容方法
+
+    /**
+     * 动态扩容方法
+     * @param minCapacity
+     */
     private void grow(int minCapacity) {
         // overflow-conscious code
         int oldCapacity = elementData.length;
         // 右移就是除以2，扩容后的容量为原数组的1.5倍
         int newCapacity = oldCapacity + (oldCapacity >> 1);
+        // 如果扩容为1.5倍后还是小于需要的容量，则直接扩为需要的容量
+        // 这里是先相减再跟0比较而不是直接比较就是考虑到了int溢出的问题
         if (newCapacity - minCapacity < 0)
             newCapacity = minCapacity;
         if (newCapacity - MAX_ARRAY_SIZE > 0)
+            // TODO 这里没明白什么意思？ 防止溢出吗？ 为什么还要返回Integer.MAX_VALUE
             newCapacity = hugeCapacity(minCapacity);
         // minCapacity is usually close to size, so this is a win:
         elementData = Arrays.copyOf(elementData, newCapacity);
     }
 
-    // 注意这个方法是静态的
+    /**
+     * 注意这个方法是静态的
+     * @param minCapacity
+     * @return
+     */
     private static int hugeCapacity(int minCapacity) {
-        if (minCapacity < 0) // overflow  说明容量溢出了（会有这种情况吗？）
+        // overflow  说明容量溢出了（会有这种情况吗？）
+        if (minCapacity < 0)
             throw new OutOfMemoryError();
-        return (minCapacity > MAX_ARRAY_SIZE) ?
-                Integer.MAX_VALUE :
-                MAX_ARRAY_SIZE;
+        return (minCapacity > MAX_ARRAY_SIZE) ? Integer.MAX_VALUE : MAX_ARRAY_SIZE;
     }
-    // 实现AbstractList的size抽象方法，直接方法成员变量size的值
+
     @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    @Override
     public boolean contains(Object o) {
+        // 这里不能直接判空（数组元素可能本来就是空）
         return indexOf(o) >= 0;
     }
 
-    // 定位数组中第一个等于o的下标
+    /**
+     * 定位数组中第一个等于o的下标，很重要的一个方法
+     * @param o
+     * @return
+     */
+    @Override
     public int indexOf(Object o) {
-        // 这里判断null是为了避免调用equals方法提高性能是吧
+        // 这里判断null是为了避免调用equals方法提高性能，JDK真是无处不存在着优化思想
         if (o == null) {
             for (int i = 0; i < size; i++)
                 if (elementData[i]==null)
@@ -122,7 +158,12 @@ public class MyArrayList<E> extends AbstractList<E>
         return -1;
     }
 
-    // 定位数组中最后一个等于o的下标，采用倒序遍历
+    /**
+     * 定位数组中最后一个等于o的下标，采用倒序遍历
+     * @param o
+     * @return
+     */
+    @Override
     public int lastIndexOf(Object o) {
         if (o == null) {
             for (int i = size-1; i >= 0; i--)
@@ -136,10 +177,12 @@ public class MyArrayList<E> extends AbstractList<E>
         return -1;
     }
 
+    @Override
     public Object clone() {
         try {
             // 重写clone方法的第一句一定要调用super.clone()，Object中的本地方法
             MyArrayList<E> v = (MyArrayList<E>) super.clone();
+            // 这里拷贝了当前容器中持有的数组元素（对象引用）
             v.elementData = Arrays.copyOf(elementData, size);
             // 新对象的modCount置为0，表示创建后从未修改过
             v.modCount = 0;
@@ -150,13 +193,13 @@ public class MyArrayList<E> extends AbstractList<E>
         }
     }
 
-    // 默认只能返回Object数组，不方便
+    @Override
     public Object[] toArray() {
-        // 返回对象数组的拷贝而不是直接返回数组引用
+        // 返回对象数组的拷贝而不是直接返回数组引用（容器持有的对象，而不是整个数组）
         return Arrays.copyOf(elementData, size);
     }
 
-    //TODO 为什么是要传一个T的数组呢？不太理解
+    @Override
     public <T> T[] toArray(T[] a) {
         if (a.length < size)
             // Make a new array of a's runtime type, but my contents:
@@ -167,16 +210,18 @@ public class MyArrayList<E> extends AbstractList<E>
         return a;
     }
 
-    // 这个方法怎么不做rangeCheck检查呢？--包访问权限，应该是默认内部调用吧
     E elementData(int index) {
         return (E) elementData[index];
     }
 
+    @Override
     public E get(int index) {
+        // 这里没判断index是否小于0
         rangeCheck(index);
         return elementData(index);
     }
 
+    @Override
     public E set(int index, E element) {
         rangeCheck(index);
         E oldValue = elementData(index);
@@ -184,6 +229,7 @@ public class MyArrayList<E> extends AbstractList<E>
         return oldValue;
     }
 
+    @Override
     public boolean add(E e) {
         // 当前容器中元素个数等于数组长度（数组被填满）才进行扩容
         ensureCapacityInternal(size + 1);  // Increments modCount!!
@@ -191,6 +237,7 @@ public class MyArrayList<E> extends AbstractList<E>
         return true;
     }
 
+    @Override
     public void add(int index, E element) {
         rangeCheckForAdd(index);
         ensureCapacityInternal(size + 1);  // Increments modCount!!
@@ -201,6 +248,7 @@ public class MyArrayList<E> extends AbstractList<E>
         size++;
     }
 
+    @Override
     public E remove(int index) {
         rangeCheck(index);
         modCount++;
@@ -210,11 +258,17 @@ public class MyArrayList<E> extends AbstractList<E>
             // 利用数组拷贝，而不是挨个挨个地移动元素
             System.arraycopy(elementData, index+1, elementData, index,
                     numMoved);
-        // 将容器最后一个元素值空
+        // 将容器最后一个元素值空（这里已经把index之后的元素都向前移动一位了）
         elementData[--size] = null; // Let gc do its work
         return oldValue;
     }
 
+    /**
+     * remove方法也要移动数组（ArrayList的元素都是紧密排列的，除非元素本身是null）
+     * @param o
+     * @return
+     */
+    @Override
     public boolean remove(Object o) {
         // 这里为什么不调用indexof()方法呢？
         if (o == null) {
@@ -242,7 +296,10 @@ public class MyArrayList<E> extends AbstractList<E>
         elementData[--size] = null; // Let gc do its work
     }
 
-    // 直接清空整个容器，但是数组长度并未改变
+    /**
+     *  直接清空整个容器，但是数组长度（容器容量）并未改变
+     */
+    @Override
     public void clear() {
         modCount++;
         // Let gc do its work
@@ -251,6 +308,7 @@ public class MyArrayList<E> extends AbstractList<E>
         size = 0;
     }
 
+    @Override
     public boolean addAll(Collection<? extends E> c) {
         Object[] a = c.toArray();
         int numNew = a.length;
@@ -260,6 +318,7 @@ public class MyArrayList<E> extends AbstractList<E>
         return numNew != 0;
     }
 
+    @Override
     public boolean addAll(int index, Collection<? extends E> c) {
         rangeCheckForAdd(index);
         Object[] a = c.toArray();
@@ -274,6 +333,7 @@ public class MyArrayList<E> extends AbstractList<E>
         return numNew != 0;
     }
 
+    @Override
     protected void removeRange(int fromIndex, int toIndex) {
         modCount++;
         // 算出要移动的距离
@@ -302,11 +362,17 @@ public class MyArrayList<E> extends AbstractList<E>
         return "Index: "+index+", Size: "+size;
     }
 
+    @Override
     public boolean removeAll(Collection<?> c) {
         return batchRemove(c, false);
     }
 
-    // 求两个集合的交集
+    /**
+     * 求两个集合的交集
+     * @param c
+     * @return
+     */
+    @Override
     public boolean retainAll(Collection<?> c) {
         return batchRemove(c, true);
     }
@@ -367,21 +433,28 @@ public class MyArrayList<E> extends AbstractList<E>
             a[i] = s.readObject();
     }
 
+    @Override
     public ListIterator<E> listIterator(int index) {
         if (index < 0 || index > size)
             throw new IndexOutOfBoundsException("Index: "+index);
         return new MyArrayList.ListItr(index);
     }
 
+    @Override
     public ListIterator<E> listIterator() {
         return new MyArrayList.ListItr(0);
     }
 
+    @Override
     public Iterator<E> iterator() {
         return new MyArrayList.Itr();
     }
 
-    // 内部迭代器的实现
+    ////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * 内部迭代器的实现
+     */
     private class Itr implements Iterator<E> {
         int cursor;       // index of next element to return
         int lastRet = -1; // index of last element returned; -1 if no such
@@ -493,10 +566,12 @@ public class MyArrayList<E> extends AbstractList<E>
                     ") > toIndex(" + toIndex + ")");
     }
 
-    // 内部类
+    /**
+     * TODO 为什么SubList要把List的功能都自己实现一遍呢？ 直接持有一个父list的引用并限制边界会不会更好
+     */
     private class SubList extends AbstractList<E> implements RandomAccess {
         private final AbstractList<E> parent;
-        // 这里要用到parent中modCount，因为不是同包路径下访问不到，所以挪过来
+        // TODO 这里要用到parent中modCount，因为不是同包路径下访问不到，所以挪过来
         protected transient int parentModCount = 0;
 
         private final int parentOffset;
@@ -702,6 +777,7 @@ public class MyArrayList<E> extends AbstractList<E>
         }
 
         private void checkForComodification() {
+            // TODO 所有SubList的重要方法都调用此方法，依此判断原FullList是否做了同步修改
             if (MyArrayList.this.modCount != this.modCount)
                 throw new ConcurrentModificationException();
         }
