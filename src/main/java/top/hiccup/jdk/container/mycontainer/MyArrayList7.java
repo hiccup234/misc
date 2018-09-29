@@ -51,6 +51,7 @@ public class MyArrayList7<E> extends AbstractList<E> implements List<E>, RandomA
         elementData = c.toArray();
         size = elementData.length;
 //         c.toArray might (incorrectly) not return Object[] (see 6260652)
+        // c.toArry 可能返回的不是Object数组，可能是泛型数组（见Arrays$ArrayList.toArray()），这时如果对数组做set就会报错
         if (elementData.getClass() != Object[].class)
             elementData = Arrays.copyOf(elementData, size, Object[].class);
     }

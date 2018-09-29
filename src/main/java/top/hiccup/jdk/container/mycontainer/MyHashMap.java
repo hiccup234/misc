@@ -14,39 +14,55 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 /**
- * Created by wenhy on 2018/3/8.
+ * 参考JDK1.7
+ *
+ * 1、HashMap中可以允许key和value同时为空（只能有一个为null的key，放在第一个桶中）
+ * 2、多线程并发访问时，动态扩容时可能会引起后面get或put方法的假死锁（CPU 100%）
+ * 3、动态扩容是把hash表的数组长度扩为原来的2倍（长度必须是2的x次方）
+ * 4、JDK1.8对hash表的链表长度默认超过8时做了优化，改成红黑树来实现
+ *
+ * @author wenhy
+ * @date 2018/3/8
  */
 public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
-    /**
-     * 1、HashMap中可以允许key和value同时为空
-     * 2、多线程并发访问时，动态扩容时可能会引起后面get或put方法的假死锁
-     * 3、动态扩容是把hash表的数组长度扩为原来的2倍
-     * 4、JDK1.8对hash表的链表长度默认超过8时做了优化，改成红黑树来实现
-     */
 
-    // The default initial capacity - MUST be a power of two.  HashMap初始化容量大小16，必须是2的N次方
-    // 为什么这里的常量都不是private的呢？
+    /**
+     * The default initial capacity - MUST be a power of two.
+     * HashMap初始化容量大小16，必须是2的x次方
+     * 为什么这里的常量都不是private的呢？
+     */
     static final int DEFAULT_INITIAL_CAPACITY = 16;
 
-    // 最大容量为2的30次方（Hash表中数组的大小）
+    /**
+     * 最大容量为2的30次方（Hash表中数组的大小，int能表示的最大2的x次方正整数）
+     */
     static final int MAXIMUM_CAPACITY = 1 << 30;
 
-    // 默认的加载因子为0.75
+    /**
+     *  默认的加载因子为0.75
+     */
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    // 注意这里也是transient修饰的，table是HashMap的底层的哈希表
+    /**
+     * 注意这里也是transient修饰的，table是HashMap的哈希表中的数组
+     */
     transient Entry<K,V>[] table;
 
-    // The number of key-value mappings contained in this map.
-    // 所有的键值对总数（注意跟Map容量作区分）
+    /**
+     * 所有的键值对总数（注意跟Map容量作区分：容量为哈希表数组的长度）
+     */
     transient int size;
 
-    // The next size value at which to resize (capacity * load factor).
-    // 下次扩容的阀值，size>=threshold就会扩容
+    /**
+     * The next size value at which to resize (capacity * load factor).
+     * 下次扩容的阀值，size>=threshold就会扩容
+     */
     int threshold;
 
     final float loadFactor;
-    // fast-fail模式 悲观模式
+    /**
+     * fast-fail模式 悲观模式
+     */
     transient int modCount;
 
     static final int ALTERNATIVE_HASHING_THRESHOLD_DEFAULT = Integer.MAX_VALUE;
@@ -115,6 +131,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         // Find a power of 2 >= initialCapacity
         int capacity = 1;
         // 大于initialCapacity的最近的2的次方， initialCapacity = 5 则 capacity = 8
+        // 每次左移一位就等价于乘以2
         while (capacity < initialCapacity)
             capacity <<= 1;
 
