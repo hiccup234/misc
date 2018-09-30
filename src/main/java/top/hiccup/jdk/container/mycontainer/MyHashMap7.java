@@ -8,6 +8,7 @@ import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
@@ -20,11 +21,14 @@ import java.util.Set;
  * 2、多线程并发访问时，动态扩容时可能会引起后面get或put方法的假死锁（CPU 100%）
  * 3、动态扩容是把hash表的数组长度扩为原来的2倍（长度必须是2的x次方）
  * 4、JDK1.8对hash表的链表长度默认超过8时做了优化，改成红黑树来实现
+ * 5.默认初始化容量（数组长度）为16，加载因子为0.75
+ * 6.如果加载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间）
+ *    如果考虑直接用数组存储的话，则没法处理hash冲突的问题
  *
  * @author wenhy
  * @date 2018/3/8
  */
-public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
+public class MyHashMap7<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
 
     /**
      * The default initial capacity - MUST be a power of two.
@@ -102,10 +106,12 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             }
             ALTERNATIVE_HASHING_THRESHOLD = threshold;
             try {
-                UNSAFE = sun.misc.Unsafe.getUnsafe();
-                HASHSEED_OFFSET = UNSAFE.objectFieldOffset(
-                        MyHashMap.class.getDeclaredField("hashSeed"));
-            } catch (NoSuchFieldException | SecurityException e) {
+//                UNSAFE = sun.misc.Unsafe.getUnsafe();
+//                HASHSEED_OFFSET = UNSAFE.objectFieldOffset(
+//                        MyHashMap7.class.getDeclaredField("hashSeed"));
+                UNSAFE = null;
+                HASHSEED_OFFSET = 0;
+            } catch (SecurityException e) {
                 throw new Error("Failed to record hashSeed offset", e);
             }
         }
@@ -118,7 +124,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
 
     transient final int hashSeed = 0;
 
-    public MyHashMap(int initialCapacity, float loadFactor) {
+    public MyHashMap7(int initialCapacity, float loadFactor) {
         if (initialCapacity < 0)
             throw new IllegalArgumentException("Illegal initial capacity: " +
                     initialCapacity);
@@ -145,15 +151,15 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         init();
     }
 
-    public MyHashMap(int initialCapacity) {
+    public MyHashMap7(int initialCapacity) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 
-    public MyHashMap() {
+    public MyHashMap7() {
         this(DEFAULT_INITIAL_CAPACITY, DEFAULT_LOAD_FACTOR);
     }
 
-    public MyHashMap(Map<? extends K, ? extends V> m) {
+    public MyHashMap7(Map<? extends K, ? extends V> m) {
         // 先构造一个同等大小的Map
         this(Math.max((int) (m.size() / DEFAULT_LOAD_FACTOR) + 1,
                 DEFAULT_INITIAL_CAPACITY), DEFAULT_LOAD_FACTOR);
@@ -161,11 +167,17 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         putAllForCreate(m);
     }
     // internal utilities
-    // 钩子方法，方便继承的子类做其他事情
+    /**
+     * 钩子方法，方便继承的子类做其他事情（为什么不是protected呢？）
+     */
     void init() {
     }
 
-    // hash算法（注意是final的），对key取hashCode然后再做其他操作
+    /**
+     * hash算法（注意是final的），对key取hashCode然后再做其他操作
+     * @param k
+     * @return
+     */
     final int hash(Object k) {
         int h = 0;
         if (useAltHashing) {
@@ -183,22 +195,31 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         return h ^ (h >>> 7) ^ (h >>> 4);
     }
 
-    // 返回key的hash值对应的哈希表数组的下标（注意这里用到了低位与运算，要求Map的容量必须是2的N次方）
+    /**
+     * 返回key的hash值对应的哈希表数组的下标（注意这里用到了低位与运算，所以要求Map的容量必须是2的N次方）
+     * @param h
+     * @param length
+     * @return
+     */
     static int indexFor(int h, int length) {
         // 这里相当于取模运算
+        // h为key的hashCode，length为数组的长度，2的x次方二进制表示只有一个1，减1则低位全为1，正好可以和h做与运算
         return h & (length-1);
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    @Override
     public V get(Object key) {
-        // get和put方法中，key为null值的情况下做单独处理
+        // get和put方法中，key为null值的情况下做单独处理（因为null没有hashCode，不能直接indexFor，所以默认为0）
         if (key == null)
             return getForNullKey();
         Entry<K,V> entry = getEntry(key);
@@ -206,7 +227,10 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         return null == entry ? null : entry.getValue();
     }
 
-    // 注意null 键是放在table[0]的位置
+    /**
+     * 注意null键是放在table[0]的位置
+     * @return
+     */
     private V getForNullKey() {
         for (Entry<K,V> e = table[0]; e != null; e = e.next) {
             if (e.key == null)
@@ -215,7 +239,9 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         return null;
     }
 
+    @Override
     public boolean containsKey(Object key) {
+        // 这里不用考虑key,value为空的情况，因为是通过Entry包装的
         return getEntry(key) != null;
     }
 
@@ -230,12 +256,13 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         return null;
     }
 
+    @Override
     public V put(K key, V value) {
         if (key == null)
             return putForNullKey(value);
         // 跟据hash方法计算出hash值
         int hash = hash(key);
-        // 再找出对应的数组下标
+        // 再找出对应的数组下标（这里为什么不直接调用getEntry方法呢？节省一次方法调用吗？）
         int i = indexFor(hash, table.length);
         // 然后遍历对应槽中的链表判断有没有存在对应的key
         for (Entry<K,V> e = table[i]; e != null; e = e.next) {
@@ -295,13 +322,18 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             putForCreate(e.getKey(), e.getValue());
     }
 
-    // 动态扩容，直接new一个Entry数组，再对hash表里的链表做遍历通过hash值(可能做reHash)做indexOf，再加入头节点
-    // 这里可能会造成问题：当多线程访问时，造成死锁现象，CPU 100%
+    /**
+     * TODO 面试的时候爱问的
+     * 动态扩容，直接new一个Entry数组，再对hash表里的链表做遍历通过hash值(可能做reHash)做indexOf，再加入头节点
+     * 这里可能会造成问题：当多线程访问时，造成死锁现象，CPU 100%
+     * @param newCapacity
+     */
     void resize(int newCapacity) {
         Entry[] oldTable = table;
         int oldCapacity = oldTable.length;
         // 如果当前容量已经达到，则直接把“下次扩容阀值”Integer.MAX_VALUE并返回
         if (oldCapacity == MAXIMUM_CAPACITY) {
+            // TODO 这里为什么不返回MAXIMUM_CAPACITY呢？
             threshold = Integer.MAX_VALUE;
             return;
         }
@@ -313,7 +345,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         boolean rehash = oldAltHashing ^ useAltHashing;
         transfer(newTable, rehash);
         table = newTable;
-        //TODO 这里为什么要加 1 呢
+        //TODO 这里为什么要加 1 呢？
         threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
     }
 
@@ -334,18 +366,22 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         }
     }
 
+    @Override
     public void putAll(Map<? extends K, ? extends V> m) {
         int numKeysToBeAdded = m.size();
         if (numKeysToBeAdded == 0)
             return;
-        // 这里的numKeysToBeAdded是不是应该要this.size+m.size()呢？
+        // TODO 这里的numKeysToBeAdded是不是应该要this.size+m.size()呢？
+        // TODO 这里确实有点问题，下面的for循环中put操作可能会导致再次resize，奇怪怎么没人提出这个问题呢？
         if (numKeysToBeAdded > threshold) {
+            // +1是为了补上被强转为int而抹去的小数部分
             int targetCapacity = (int)(numKeysToBeAdded / loadFactor + 1);
             if (targetCapacity > MAXIMUM_CAPACITY)
                 targetCapacity = MAXIMUM_CAPACITY;
             int newCapacity = table.length;
             while (newCapacity < targetCapacity)
                 newCapacity <<= 1;
+            // 这里是为了防止溢出吗？ 因为只要进到if语句里，targetCapacity一定大于table.length（numKeysToBeAdded > threshold >= this.size）
             if (newCapacity > table.length)
                 resize(newCapacity);
         }
@@ -354,6 +390,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             put(e.getKey(), e.getValue());
     }
 
+    @Override
     public V remove(Object key) {
         Entry<K,V> e = removeEntryForKey(key);
         return (e == null ? null : e.value);
@@ -386,7 +423,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         return e;
     }
 
-    //  Special version of remove for EntrySet using {@code Map.Entry.equals()} for matching.
+    // Special version of remove for EntrySet using {@code Map.Entry.equals()} for matching.
     final Entry<K,V> removeMapping(Object o) {
         //TODO 为什么不直接接收一个Map.Entry<K,V>类型的对象呢？
         if (!(o instanceof Map.Entry))
@@ -421,6 +458,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
      * Removes all of the mappings from this map.
      * The map will be empty after this call returns.
      */
+    @Override
     public void clear() {
         modCount++;
         Entry[] tab = table;
@@ -430,13 +468,16 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         size = 0;
     }
 
+    @Override
     public boolean containsValue(Object value) {
-        // 如果value是null就走分支直接用“==”判断来做优化，JDK的大神们真实无所不能其极啊
+        // 如果value是null就走分支直接用“==”判断来做优化，JDK的大神们真实无所不用其极啊
         if (value == null)
+            // 这里为什么要调方法而不直接把逻辑写这里呢？跟其他地方的优化思想不一样啊
             return containsNullValue();
         Entry[] tab = table;
         for (int i = 0; i < tab.length ; i++)
             for (Entry e = tab[i] ; e != null ; e = e.next)
+                // 这里怎么没用先判 == 判 null 再 equals 呢?
                 if (value.equals(e.value))
                     return true;
         return false;
@@ -457,13 +498,14 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
     /**
      * Returns a shallow copy of this <tt>HashMap</tt> instance: the keys and
      * values themselves are not cloned.
+     * clone只是做浅拷贝
      */
-    // clone只是做浅拷贝
+    @Override
     public Object clone() {
-        MyHashMap<K,V> result = null;
+        MyHashMap7<K,V> result = null;
         try {
             // 重写clone方法的第一步一定要调用super的clone()，最后会调用到Object的本地方法clone()
-            result = (MyHashMap<K,V>)super.clone();
+            result = (MyHashMap7<K,V>)super.clone();
         } catch (CloneNotSupportedException e) {
             // assert false;  TODO 这里为什么什么都不干啊？
         }
@@ -477,12 +519,19 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         return result;
     }
 
-    // hash表中保存的元素，重点，Entry不是final的，而ConcurrentHashMap的HashEntry是final的
+    /**
+     * hash表中保存的元素，重点，Entry不是final的，而ConcurrentHashMap的HashEntry是final的
+     * @param <K>
+     * @param <V>
+     */
     static class Entry<K,V> implements Map.Entry<K,V> {
         final K key;
         V value;
         Entry<K,V> next;
-        int hash;  // 用来缓存计算好的hash值，就不用每次取到key再調hash方法了
+        /**
+         * 用来缓存计算好的hash值，就不用每次取到key再調hash方法了
+         */
+        int hash;
 
         Entry(int h, K k, V v, Entry<K,V> n) {
             value = v;
@@ -511,7 +560,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             Map.Entry e = (Map.Entry)o;
             Object k1 = getKey();
             Object k2 = e.getKey();
-            // 先用==做判断，如果相等就直接短路，不等再調equals方法，这种思想在整个HashMap里到处都有体现
+            // 先用==做判断，如果相等就直接短路，不等再調equals方法，这种优化思想在整个HashMap里到处都有体现
             if (k1 == k2 || (k1 != null && k1.equals(k2))) {
                 Object v1 = getValue();
                 Object v2 = e.getValue();
@@ -536,20 +585,20 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
          * overwritten by an invocation of put(k,v) for a key k that's already
          * in the HashMap.
          */
-        void recordAccess(MyHashMap<K,V> m) {
+        void recordAccess(MyHashMap7<K,V> m) {
         }
 
         /**
          * This method is invoked whenever the entry is
          * removed from the table.
          */
-        void recordRemoval(MyHashMap<K,V> m) {
+        void recordRemoval(MyHashMap7<K,V> m) {
         }
     }
 
     void addEntry(int hash, K key, V value, int bucketIndex) {
         if ((size >= threshold) && (null != table[bucketIndex])) {
-            // 动态扩容，直接是按2倍来扩容，这里为什么不用右移呢 << 1
+            // 动态扩容，直接是按2倍来扩容，这里为什么不用左移呢 << 1
             resize(2 * table.length);
             hash = (null != key) ? hash(key) : 0;
             bucketIndex = indexFor(hash, table.length);
@@ -557,7 +606,6 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         createEntry(hash, key, value, bucketIndex);
     }
 
-    // bucket（桶，槽）
     void createEntry(int hash, K key, V value, int bucketIndex) {
         Entry<K,V> e = table[bucketIndex];
         // 直接是在hash表中链表的头部做插入，这样速度快
@@ -565,7 +613,10 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         size++;
     }
 
-    // 类似List中的ListIterator实现
+    /**
+     * 类似List中的ListIterator实现
+     * @param <E>
+     */
     private abstract class HashIterator<E> implements Iterator<E> {
         Entry<K,V> next;        // next entry to return
         int expectedModCount;   // For fast-fail
@@ -575,7 +626,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             expectedModCount = modCount;
             if (size > 0) { // advance to first entry
                 Entry[] t = table;
-                // 排除hash表数组中前段的空值（null,）
+                // 找到第一个Entry
                 while (index < t.length && (next = t[index++]) == null)
                     ;
             }
@@ -610,7 +661,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             Object k = current.key;
             // 注意这里current被置为null了，所以在一次迭代中调用两次remove()会造成抛出异常
             current = null;
-            MyHashMap.this.removeEntryForKey(k);
+            MyHashMap7.this.removeEntryForKey(k);
             // 重新修改expectedModCount
             expectedModCount = modCount;
         }
@@ -647,9 +698,13 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
 
     private transient Set<Map.Entry<K,V>> entrySet = null;
 
-    // 这两个变量是定义在AbstractMap中的，因为不在同一个包中访问不了，现在挪到这里来
+    /**
+     * 这两个变量是定义在AbstractMap中的，因为不在同一个包中访问不了，现在挪到这里来
+     */
     transient volatile Set<K>        keySet = null;
     transient volatile Collection<V> values = null;
+
+    @Override
     public Set<K> keySet() {
         Set<K> ks = keySet;
         return (ks != null ? ks : (keySet = new KeySet()));
@@ -666,13 +721,14 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             return containsKey(o);
         }
         public boolean remove(Object o) {
-            return MyHashMap.this.removeEntryForKey(o) != null;
+            return MyHashMap7.this.removeEntryForKey(o) != null;
         }
         public void clear() {
-            MyHashMap.this.clear();
+            MyHashMap7.this.clear();
         }
     }
 
+    @Override
     public Collection<V> values() {
         Collection<V> vs = values;
         return (vs != null ? vs : (values = new Values()));
@@ -689,10 +745,11 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             return containsValue(o);
         }
         public void clear() {
-            MyHashMap.this.clear();
+            MyHashMap7.this.clear();
         }
     }
 
+    @Override
     public Set<Map.Entry<K,V>> entrySet() {
         // 为什么还要調entrySet0()呢？这种写法有什么巧妙之处吗？
         return entrySet0();
@@ -721,7 +778,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
             return size;
         }
         public void clear() {
-            MyHashMap.this.clear();
+            MyHashMap7.this.clear();
         }
     }
 
@@ -743,7 +800,9 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
         }
     }
 
-    // 为什么想起来把serialVersionUID放这里呢，一般不是放头部的么
+    /**
+     * 为什么想起来把serialVersionUID放这里呢，一般不是放头部的么
+     */
     private static final long serialVersionUID = 362498820763181265L;
 
     private void readObject(java.io.ObjectInputStream s)
@@ -768,7 +827,7 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
                 // and desired load (if >= 0.25)
                 mappings * Math.min(1 / loadFactor, 4.0f),
                 // we have limits...
-                MyHashMap.MAXIMUM_CAPACITY);
+                MyHashMap7.MAXIMUM_CAPACITY);
         int capacity = 1;
         // find smallest power of two which holds all mappings
         while (capacity < initialCapacity) {
@@ -791,4 +850,20 @@ public class MyHashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clonea
     int   capacity()     { return table.length; }
     float loadFactor()   { return loadFactor;   }
 
+}
+
+
+class MainTest {
+    public static void main(String[] args) {
+        Map map = new MyHashMap7(4);
+        Map m = new HashMap(8);
+        map.put("a", "haha");
+        map.put("b", "haha");
+        map.put("c", "haha");
+        m.put("1", "a");
+        m.put("2", "a");
+        m.put("3", "a");
+        m.put("4", "a");
+        map.putAll(m);
+    }
 }
