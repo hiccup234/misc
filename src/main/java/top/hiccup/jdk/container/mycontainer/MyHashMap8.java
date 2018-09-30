@@ -589,7 +589,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
 
         public final Spliterator<K> spliterator() {
-            return new KeySpliterator<>(this, 0, -1, 0, 0);
+            return new KeySpliterator<>(MyHashMap8.this, 0, -1, 0, 0);
         }
 
         public final void forEach(Consumer<? super K> action) {
@@ -636,7 +636,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
 
         public final Spliterator<V> spliterator() {
-            return new ValueSpliterator<>(this, 0, -1, 0, 0);
+            return new ValueSpliterator<>(MyHashMap8.this, 0, -1, 0, 0);
         }
 
         public final void forEach(Consumer<? super V> action) {
@@ -1115,21 +1115,24 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
     }
 
-    final class KeyIterator extends MyHashMap8.HashIterator
+    final class KeyIterator extends HashIterator
             implements Iterator<K> {
         public final K next() {
             return nextNode().key;
         }
     }
 
-    final class ValueIterator extends MyHashMap8.HashIterator
+    /**
+     * TODO 有个疑惑的地方，如果extends MyHashMap8.HashIterator 则会报不兼容的类型（泛型擦除？）
+     */
+    final class ValueIterator extends HashIterator
             implements Iterator<V> {
         public final V next() {
             return nextNode().value;
         }
     }
 
-    final class EntryIterator extends MyHashMap8.HashIterator
+    final class EntryIterator extends HashIterator
             implements Iterator<Map.Entry<K, V>> {
         public final Map.Entry<K, V> next() {
             return nextNode();
@@ -1183,10 +1186,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             super(m, origin, fence, est, expectedModCount);
         }
 
-        public MyHashMap8.KeySpliterator<K, V> trySplit() {
+        public KeySpliterator<K, V> trySplit() {
             int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
             return (lo >= mid || current != null) ? null :
-                    new MyHashMap8.KeySpliterator<>(map, lo, index = mid, est >>>= 1,
+                    new KeySpliterator<>(map, lo, index = mid, est >>>= 1,
                             expectedModCount);
         }
 
@@ -1467,6 +1470,8 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             super(hash, key, value, next);
         }
     }
+
+
     /**
      * Entry for Tree bins. Extends LinkedHashMap.Entry (which in turn
      * extends Node) so can be used as extension of either regular or
