@@ -10,9 +10,7 @@ import java.util.AbstractMap;
 import java.util.AbstractSet;
 import java.util.Collection;
 import java.util.ConcurrentModificationException;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -38,9 +36,6 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
 
     private static final long serialVersionUID = 362498820763181265L;
 
-    /**
-     * The default initial capacity - MUST be a power of two.
-     */
     static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
 
     static final int MAXIMUM_CAPACITY = 1 << 30;
@@ -185,63 +180,20 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
 
     /* ---------------- Fields -------------- */
 
-    /**
-     * The table, initialized on first use, and resized as
-     * necessary. When allocated, length is always a power of two.
-     * (We also tolerate length zero in some operations to allow
-     * bootstrapping mechanics that are currently not needed.)
-     */
     transient Node<K, V>[] table;
 
-    /**
-     * Holds cached entrySet(). Note that AbstractMap fields are used
-     * for keySet() and values().
-     */
-    transient Set<Entry<K, V>> entrySet;
+    transient Set<Map.Entry<K, V>> entrySet;
 
-    /**
-     * The number of key-value mappings contained in this map.
-     */
     transient int size;
 
-    /**
-     * The number of times this HashMap has been structurally modified
-     * Structural modifications are those that change the number of mappings in
-     * the HashMap or otherwise modify its internal structure (e.g.,
-     * rehash).  This field is used to make iterators on Collection-views of
-     * the HashMap fail-fast.  (See ConcurrentModificationException).
-     */
     transient int modCount;
 
-    /**
-     * The next size value at which to resize (capacity * load factor).
-     *
-     * @serial
-     */
-    // (The javadoc description is true upon serialization.
-    // Additionally, if the table array has not been allocated, this
-    // field holds the initial array capacity, or zero signifying
-    // DEFAULT_INITIAL_CAPACITY.)
     int threshold;
 
-    /**
-     * The load factor for the hash table.
-     *
-     * @serial
-     */
     final float loadFactor;
 
     /* ---------------- Public operations -------------- */
 
-    /**
-     * Constructs an empty <tt>HashMap</tt> with the specified initial
-     * capacity and load factor.
-     *
-     * @param initialCapacity the initial capacity
-     * @param loadFactor      the load factor
-     * @throws IllegalArgumentException if the initial capacity is negative
-     *                                  or the load factor is nonpositive
-     */
     public MyHashMap8(int initialCapacity, float loadFactor) {
         if (initialCapacity < 0)
             throw new IllegalArgumentException("Illegal initial capacity: " +
@@ -255,46 +207,19 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         this.threshold = tableSizeFor(initialCapacity);
     }
 
-    /**
-     * Constructs an empty <tt>HashMap</tt> with the specified initial
-     * capacity and the default load factor (0.75).
-     *
-     * @param initialCapacity the initial capacity.
-     * @throws IllegalArgumentException if the initial capacity is negative.
-     */
     public MyHashMap8(int initialCapacity) {
         this(initialCapacity, DEFAULT_LOAD_FACTOR);
     }
 
-    /**
-     * Constructs an empty <tt>HashMap</tt> with the default initial capacity
-     * (16) and the default load factor (0.75).
-     */
     public MyHashMap8() {
         this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
     }
 
-    /**
-     * Constructs a new <tt>HashMap</tt> with the same mappings as the
-     * specified <tt>Map</tt>.  The <tt>HashMap</tt> is created with
-     * default load factor (0.75) and an initial capacity sufficient to
-     * hold the mappings in the specified <tt>Map</tt>.
-     *
-     * @param m the map whose mappings are to be placed in this map
-     * @throws NullPointerException if the specified map is null
-     */
     public MyHashMap8(Map<? extends K, ? extends V> m) {
         this.loadFactor = DEFAULT_LOAD_FACTOR;
         putMapEntries(m, false);
     }
 
-    /**
-     * Implements Map.putAll and Map constructor
-     *
-     * @param m     the map
-     * @param evict false when initially constructing this map, else
-     *              true (relayed to method afterNodeInsertion).
-     */
     final void putMapEntries(Map<? extends K, ? extends V> m, boolean evict) {
         int s = m.size();
         if (s > 0) {
@@ -330,7 +255,9 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         return (e = getNode(hash(key), key)) == null ? null : e.value;
     }
 
-    @Override
+    /**
+     * TODO JDK1.7里对应的是getEntry
+     */
     final Node<K, V> getNode(int hash, Object key) {
         Node<K, V>[] tab;
         Node<K, V> first, e;
@@ -342,8 +269,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     ((k = first.key) == key || (key != null && key.equals(k))))
                 return first;
             if ((e = first.next) != null) {
-                if (first instanceof MyHashMap8.TreeNode)
-                    return ((MyHashMap8.TreeNode<K, V>) first).getTreeNode(hash, key);
+                // 转换为红黑树后的节点
+                if (first instanceof TreeNode)
+                    return ((TreeNode<K, V>) first).getTreeNode(hash, key);
+                // 普通链表
                 do {
                     if (e.hash == hash &&
                             ((k = e.key) == key || (key != null && key.equals(k))))
@@ -354,30 +283,12 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         return null;
     }
 
-    /**
-     * Returns <tt>true</tt> if this map contains a mapping for the
-     * specified key.
-     *
-     * @param key The key whose presence in this map is to be tested
-     * @return <tt>true</tt> if this map contains a mapping for the specified
-     * key.
-     */
+    @Override
     public boolean containsKey(Object key) {
         return getNode(hash(key), key) != null;
     }
 
-    /**
-     * Associates the specified value with the specified key in this map.
-     * If the map previously contained a mapping for the key, the old
-     * value is replaced.
-     *
-     * @param key   key with which the specified value is to be associated
-     * @param value value to be associated with the specified key
-     * @return the previous value associated with <tt>key</tt>, or
-     * <tt>null</tt> if there was no mapping for <tt>key</tt>.
-     * (A <tt>null</tt> return can also indicate that the map
-     * previously associated <tt>null</tt> with <tt>key</tt>.)
-     */
+    @Override
     public V put(K key, V value) {
         return putVal(hash(key), key, value, false, true);
     }
@@ -385,11 +296,11 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
     /**
      * Implements Map.put and related methods
      *
-     * @param hash         hash for key
-     * @param key          the key
-     * @param value        the value to put
+     * @param hash hash for key
+     * @param key the key
+     * @param value the value to put
      * @param onlyIfAbsent if true, don't change existing value
-     * @param evict        if false, the table is in creation mode.
+     * @param evict if false, the table is in creation mode.
      * @return previous value, or null if none
      */
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
@@ -407,12 +318,13 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             if (p.hash == hash &&
                     ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
-            else if (p instanceof MyHashMap8.TreeNode)
-                e = ((MyHashMap8.TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
+            else if (p instanceof TreeNode)
+                e = ((TreeNode<K, V>) p).putTreeVal(this, tab, hash, key, value);
             else {
                 for (int binCount = 0; ; ++binCount) {
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
+                        // 如果链表的长度为8（binCount=7 >= 8-1）就转换为红黑树
                         if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
                             treeifyBin(tab, hash);
                         break;
@@ -439,13 +351,8 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
     }
 
     /**
-     * Initializes or doubles table size.  If null, allocates in
-     * accord with initial capacity target held in field threshold.
-     * Otherwise, because we are using power-of-two expansion, the
-     * elements from each bin must either stay at same index, or move
-     * with a power of two offset in the new table.
-     *
-     * @return the table
+     * TODO 这个方法值得好好学习下
+     * @return
      */
     final Node<K, V>[] resize() {
         Node<K, V>[] oldTab = table;
@@ -474,6 +381,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         @SuppressWarnings({"rawtypes", "unchecked"})
         Node<K, V>[] newTab = (Node<K, V>[]) new Node[newCap];
         table = newTab;
+        // 如果原table不为空，则所有元素需要做rehash，同一链表中的元素不用
         if (oldTab != null) {
             for (int j = 0; j < oldCap; ++j) {
                 Node<K, V> e;
@@ -481,9 +389,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     oldTab[j] = null;
                     if (e.next == null)
                         newTab[e.hash & (newCap - 1)] = e;
-                    else if (e instanceof MyHashMap8.TreeNode)
-                        ((MyHashMap8.TreeNode<K, V>) e).split(this, newTab, j, oldCap);
+                    else if (e instanceof TreeNode)
+                        ((TreeNode<K, V>) e).split(this, newTab, j, oldCap);
                     else { // preserve order
+                        // TODO 这里是防止JDK1.7中可能出现的环形链表问题
                         Node<K, V> loHead = null, loTail = null;
                         Node<K, V> hiHead = null, hiTail = null;
                         Node<K, V> next;
@@ -528,9 +437,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
             resize();
         else if ((e = tab[index = (n - 1) & hash]) != null) {
-            MyHashMap8.TreeNode<K, V> hd = null, tl = null;
+            // 将该链表的所有Node节点替换为TreeNode
+            TreeNode<K, V> hd = null, tl = null;
             do {
-                MyHashMap8.TreeNode<K, V> p = replacementTreeNode(e, null);
+                TreeNode<K, V> p = replacementTreeNode(e, null);
                 if (tl == null)
                     hd = p;
                 else {
@@ -539,32 +449,18 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                 }
                 tl = p;
             } while ((e = e.next) != null);
+            // 构建红黑树
             if ((tab[index] = hd) != null)
                 hd.treeify(tab);
         }
     }
 
-    /**
-     * Copies all of the mappings from the specified map to this map.
-     * These mappings will replace any mappings that this map had for
-     * any of the keys currently in the specified map.
-     *
-     * @param m mappings to be stored in this map
-     * @throws NullPointerException if the specified map is null
-     */
+    @Override
     public void putAll(Map<? extends K, ? extends V> m) {
         putMapEntries(m, true);
     }
 
-    /**
-     * Removes the mapping for the specified key from this map if present.
-     *
-     * @param key key whose mapping is to be removed from the map
-     * @return the previous value associated with <tt>key</tt>, or
-     * <tt>null</tt> if there was no mapping for <tt>key</tt>.
-     * (A <tt>null</tt> return can also indicate that the map
-     * previously associated <tt>null</tt> with <tt>key</tt>.)
-     */
+    @Override
     public V remove(Object key) {
         Node<K, V> e;
         return (e = removeNode(hash(key), key, null, false, true)) == null ?
@@ -595,8 +491,8 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     ((k = p.key) == key || (key != null && key.equals(k))))
                 node = p;
             else if ((e = p.next) != null) {
-                if (p instanceof MyHashMap8.TreeNode)
-                    node = ((MyHashMap8.TreeNode<K, V>) p).getTreeNode(hash, key);
+                if (p instanceof TreeNode)
+                    node = ((TreeNode<K, V>) p).getTreeNode(hash, key);
                 else {
                     do {
                         if (e.hash == hash &&
@@ -611,8 +507,8 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             }
             if (node != null && (!matchValue || (v = node.value) == value ||
                     (value != null && value.equals(v)))) {
-                if (node instanceof MyHashMap8.TreeNode)
-                    ((MyHashMap8.TreeNode<K, V>) node).removeTreeNode(this, tab, movable);
+                if (node instanceof TreeNode)
+                    ((TreeNode<K, V>) node).removeTreeNode(this, tab, movable);
                 else if (node == p)
                     tab[index] = node.next;
                 else
@@ -626,10 +522,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         return null;
     }
 
-    /**
-     * Removes all of the mappings from this map.
-     * The map will be empty after this call returns.
-     */
+    @Override
     public void clear() {
         Node<K, V>[] tab;
         modCount++;
@@ -640,18 +533,12 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
     }
 
-    /**
-     * Returns <tt>true</tt> if this map maps one or more keys to the
-     * specified value.
-     *
-     * @param value value whose presence in this map is to be tested
-     * @return <tt>true</tt> if this map maps one or more keys to the
-     * specified value
-     */
+    @Override
     public boolean containsValue(Object value) {
         Node<K, V>[] tab;
         V v;
         if ((tab = table) != null && size > 0) {
+            // 这里不判断链表是否是被树化过了
             for (int i = 0; i < tab.length; ++i) {
                 for (Node<K, V> e = tab[i]; e != null; e = e.next) {
                     if ((v = e.value) == value ||
@@ -664,24 +551,17 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
     }
 
     /**
-     * Returns a {@link Set} view of the keys contained in this map.
-     * The set is backed by the map, so changes to the map are
-     * reflected in the set, and vice-versa.  If the map is modified
-     * while an iteration over the set is in progress (except through
-     * the iterator's own <tt>remove</tt> operation), the results of
-     * the iteration are undefined.  The set supports element removal,
-     * which removes the corresponding mapping from the map, via the
-     * <tt>Iterator.remove</tt>, <tt>Set.remove</tt>,
-     * <tt>removeAll</tt>, <tt>retainAll</tt>, and <tt>clear</tt>
-     * operations.  It does not support the <tt>add</tt> or <tt>addAll</tt>
-     * operations.
-     *
-     * @return a set view of the keys contained in this map
+     * 这两个变量是定义在AbstractMap中的，因为不在同一个包中访问不了，现在挪到这里来
+     * TODO JDK1.8里这两个变量变成了非volatile的
      */
+    transient Set<K>        keySet;
+    transient Collection<V> values;
+
+    @Override
     public Set<K> keySet() {
         Set<K> ks = keySet;
         if (ks == null) {
-            ks = new MyHashMap8.KeySet();
+            ks = new KeySet();
             keySet = ks;
         }
         return ks;
@@ -693,11 +573,11 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
 
         public final void clear() {
-            MyHashMap8.this.clear();
+            this.clear();
         }
 
         public final Iterator<K> iterator() {
-            return new MyHashMap8.KeyIterator();
+            return new KeyIterator();
         }
 
         public final boolean contains(Object o) {
@@ -709,7 +589,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
 
         public final Spliterator<K> spliterator() {
-            return new MyHashMap8.KeySpliterator<>(MyHashMap8.this, 0, -1, 0, 0);
+            return new KeySpliterator<>(this, 0, -1, 0, 0);
         }
 
         public final void forEach(Consumer<? super K> action) {
@@ -728,25 +608,11 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
     }
 
-    /**
-     * Returns a {@link Collection} view of the values contained in this map.
-     * The collection is backed by the map, so changes to the map are
-     * reflected in the collection, and vice-versa.  If the map is
-     * modified while an iteration over the collection is in progress
-     * (except through the iterator's own <tt>remove</tt> operation),
-     * the results of the iteration are undefined.  The collection
-     * supports element removal, which removes the corresponding
-     * mapping from the map, via the <tt>Iterator.remove</tt>,
-     * <tt>Collection.remove</tt>, <tt>removeAll</tt>,
-     * <tt>retainAll</tt> and <tt>clear</tt> operations.  It does not
-     * support the <tt>add</tt> or <tt>addAll</tt> operations.
-     *
-     * @return a view of the values contained in this map
-     */
+    @Override
     public Collection<V> values() {
         Collection<V> vs = values;
         if (vs == null) {
-            vs = new MyHashMap8.Values();
+            vs = new Values();
             values = vs;
         }
         return vs;
@@ -758,11 +624,11 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
 
         public final void clear() {
-            MyHashMap8.this.clear();
+            this.clear();
         }
 
         public final Iterator<V> iterator() {
-            return new MyHashMap8.ValueIterator();
+            return new ValueIterator();
         }
 
         public final boolean contains(Object o) {
@@ -770,7 +636,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
 
         public final Spliterator<V> spliterator() {
-            return new MyHashMap8.ValueSpliterator<>(MyHashMap8.this, 0, -1, 0, 0);
+            return new ValueSpliterator<>(this, 0, -1, 0, 0);
         }
 
         public final void forEach(Consumer<? super V> action) {
@@ -789,25 +655,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         }
     }
 
-    /**
-     * Returns a {@link Set} view of the mappings contained in this map.
-     * The set is backed by the map, so changes to the map are
-     * reflected in the set, and vice-versa.  If the map is modified
-     * while an iteration over the set is in progress (except through
-     * the iterator's own <tt>remove</tt> operation, or through the
-     * <tt>setValue</tt> operation on a map entry returned by the
-     * iterator) the results of the iteration are undefined.  The set
-     * supports element removal, which removes the corresponding
-     * mapping from the map, via the <tt>Iterator.remove</tt>,
-     * <tt>Set.remove</tt>, <tt>removeAll</tt>, <tt>retainAll</tt> and
-     * <tt>clear</tt> operations.  It does not support the
-     * <tt>add</tt> or <tt>addAll</tt> operations.
-     *
-     * @return a set view of the mappings contained in this map
-     */
+    @Override
     public Set<Map.Entry<K, V>> entrySet() {
         Set<Map.Entry<K, V>> es;
-        return (es = entrySet) == null ? (entrySet = new MyHashMap8.EntrySet()) : es;
+        return (es = entrySet) == null ? (entrySet = new EntrySet()) : es;
     }
 
     final class EntrySet extends AbstractSet<Map.Entry<K, V>> {
@@ -915,14 +766,14 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         Node<K, V> first;
         int n, i;
         int binCount = 0;
-        MyHashMap8.TreeNode<K, V> t = null;
+        TreeNode<K, V> t = null;
         Node<K, V> old = null;
         if (size > threshold || (tab = table) == null ||
                 (n = tab.length) == 0)
             n = (tab = resize()).length;
         if ((first = tab[i = (n - 1) & hash]) != null) {
-            if (first instanceof MyHashMap8.TreeNode)
-                old = (t = (MyHashMap8.TreeNode<K, V>) first).getTreeNode(hash, key);
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode<K, V>) first).getTreeNode(hash, key);
             else {
                 Node<K, V> e = first;
                 K k;
@@ -991,14 +842,14 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         Node<K, V> first;
         int n, i;
         int binCount = 0;
-        MyHashMap8.TreeNode<K, V> t = null;
+        TreeNode<K, V> t = null;
         Node<K, V> old = null;
         if (size > threshold || (tab = table) == null ||
                 (n = tab.length) == 0)
             n = (tab = resize()).length;
         if ((first = tab[i = (n - 1) & hash]) != null) {
-            if (first instanceof MyHashMap8.TreeNode)
-                old = (t = (MyHashMap8.TreeNode<K, V>) first).getTreeNode(hash, key);
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode<K, V>) first).getTreeNode(hash, key);
             else {
                 Node<K, V> e = first;
                 K k;
@@ -1047,14 +898,14 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         Node<K, V> first;
         int n, i;
         int binCount = 0;
-        MyHashMap8.TreeNode<K, V> t = null;
+        TreeNode<K, V> t = null;
         Node<K, V> old = null;
         if (size > threshold || (tab = table) == null ||
                 (n = tab.length) == 0)
             n = (tab = resize()).length;
         if ((first = tab[i = (n - 1) & hash]) != null) {
-            if (first instanceof MyHashMap8.TreeNode)
-                old = (t = (MyHashMap8.TreeNode<K, V>) first).getTreeNode(hash, key);
+            if (first instanceof TreeNode)
+                old = (t = (TreeNode<K, V>) first).getTreeNode(hash, key);
             else {
                 Node<K, V> e = first;
                 K k;
@@ -1132,12 +983,6 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
     /* ------------------------------------------------------------ */
     // Cloning and serialization
 
-    /**
-     * Returns a shallow copy of this <tt>HashMap</tt> instance: the keys and
-     * values themselves are not cloned.
-     *
-     * @return a shallow copy of this map
-     */
     @SuppressWarnings("unchecked")
     @Override
     public Object clone() {
@@ -1164,17 +1009,6 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                         DEFAULT_INITIAL_CAPACITY;
     }
 
-    /**
-     * Save the state of the <tt>HashMap</tt> instance to a stream (i.e.,
-     * serialize it).
-     *
-     * @serialData The <i>capacity</i> of the HashMap (the length of the
-     * bucket array) is emitted (int), followed by the
-     * <i>size</i> (an int, the number of key-value
-     * mappings), followed by the key (Object) and value (Object)
-     * for each key-value mapping.  The key-value mappings are
-     * emitted in no particular order.
-     */
     private void writeObject(java.io.ObjectOutputStream s)
             throws IOException {
         int buckets = capacity();
@@ -1185,10 +1019,6 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         internalWriteEntries(s);
     }
 
-    /**
-     * Reconstitute the {@code HashMap} instance from a stream (i.e.,
-     * deserialize it).
-     */
     private void readObject(java.io.ObjectInputStream s)
             throws IOException, ClassNotFoundException {
         // Read in the threshold (ignored), loadfactor, and any hidden stuff
@@ -1580,13 +1410,13 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
     }
 
     // Create a tree bin node
-    MyHashMap8.TreeNode<K, V> newTreeNode(int hash, K key, V value, Node<K, V> next) {
-        return new MyHashMap8.TreeNode<>(hash, key, value, next);
+    TreeNode<K, V> newTreeNode(int hash, K key, V value, Node<K, V> next) {
+        return new TreeNode<>(hash, key, value, next);
     }
 
     // For treeifyBin
-    MyHashMap8.TreeNode<K, V> replacementTreeNode(Node<K, V> p, Node<K, V> next) {
-        return new MyHashMap8.TreeNode<>(p.hash, p.key, p.value, next);
+    TreeNode<K, V> replacementTreeNode(Node<K, V> p, Node<K, V> next) {
+        return new TreeNode<>(p.hash, p.key, p.value, next);
     }
 
     /**
@@ -1629,15 +1459,24 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
     // Tree bins
 
     /**
+     * TODO 从LinkedHashMap.Entry<K, V>拷贝过来
+     */
+    static class Entry<K,V> extends Node<K,V> {
+        Entry<K,V> before, after;
+        Entry(int hash, K key, V value, Node<K,V> next) {
+            super(hash, key, value, next);
+        }
+    }
+    /**
      * Entry for Tree bins. Extends LinkedHashMap.Entry (which in turn
      * extends Node) so can be used as extension of either regular or
      * linked node.
      */
-    static final class TreeNode<K, V> extends LinkedHashMap.Entry<K, V> {
-        MyHashMap8.TreeNode<K, V> parent;  // red-black tree links
-        MyHashMap8.TreeNode<K, V> left;
-        MyHashMap8.TreeNode<K, V> right;
-        MyHashMap8.TreeNode<K, V> prev;    // needed to unlink next upon deletion
+    static final class TreeNode<K, V> extends Entry<K, V> {
+        TreeNode<K, V> parent;  // red-black tree links
+        TreeNode<K, V> left;
+        TreeNode<K, V> right;
+        TreeNode<K, V> prev;    // needed to unlink next upon deletion
         boolean red;
 
         TreeNode(int hash, K key, V val, Node<K, V> next) {
@@ -1647,8 +1486,8 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         /**
          * Returns root of tree containing this node.
          */
-        final MyHashMap8.TreeNode<K, V> root() {
-            for (MyHashMap8.TreeNode<K, V> r = this, p; ; ) {
+        final TreeNode<K, V> root() {
+            for (TreeNode<K, V> r = this, p; ; ) {
                 if ((p = r.parent) == null)
                     return r;
                 r = p;
@@ -1658,17 +1497,17 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         /**
          * Ensures that the given root is the first node of its bin.
          */
-        static <K, V> void moveRootToFront(Node<K, V>[] tab, MyHashMap8.TreeNode<K, V> root) {
+        static <K, V> void moveRootToFront(Node<K, V>[] tab, TreeNode<K, V> root) {
             int n;
             if (root != null && tab != null && (n = tab.length) > 0) {
                 int index = (n - 1) & root.hash;
-                MyHashMap8.TreeNode<K, V> first = (MyHashMap8.TreeNode<K, V>) tab[index];
+                TreeNode<K, V> first = (TreeNode<K, V>) tab[index];
                 if (root != first) {
                     Node<K, V> rn;
                     tab[index] = root;
-                    MyHashMap8.TreeNode<K, V> rp = root.prev;
+                    TreeNode<K, V> rp = root.prev;
                     if ((rn = root.next) != null)
-                        ((MyHashMap8.TreeNode<K, V>) rn).prev = rp;
+                        ((TreeNode<K, V>) rn).prev = rp;
                     if (rp != null)
                         rp.next = rn;
                     if (first != null)
@@ -1685,12 +1524,12 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
          * The kc argument caches comparableClassFor(key) upon first use
          * comparing keys.
          */
-        final MyHashMap8.TreeNode<K, V> find(int h, Object k, Class<?> kc) {
-            MyHashMap8.TreeNode<K, V> p = this;
+        final TreeNode<K, V> find(int h, Object k, Class<?> kc) {
+            TreeNode<K, V> p = this;
             do {
                 int ph, dir;
                 K pk;
-                MyHashMap8.TreeNode<K, V> pl = p.left, pr = p.right, q;
+                TreeNode<K, V> pl = p.left, pr = p.right, q;
                 if ((ph = p.hash) > h)
                     p = pl;
                 else if (ph < h)
@@ -1716,7 +1555,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         /**
          * Calls find for root node.
          */
-        final MyHashMap8.TreeNode<K, V> getTreeNode(int h, Object k) {
+        final TreeNode<K, V> getTreeNode(int h, Object k) {
             return ((parent != null) ? root() : this).find(h, k, null);
         }
 
@@ -1743,9 +1582,9 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
          * @return root of tree
          */
         final void treeify(Node<K, V>[] tab) {
-            MyHashMap8.TreeNode<K, V> root = null;
-            for (MyHashMap8.TreeNode<K, V> x = this, next; x != null; x = next) {
-                next = (MyHashMap8.TreeNode<K, V>) x.next;
+            TreeNode<K, V> root = null;
+            for (TreeNode<K, V> x = this, next; x != null; x = next) {
+                next = (TreeNode<K, V>) x.next;
                 x.left = x.right = null;
                 if (root == null) {
                     x.parent = null;
@@ -1755,7 +1594,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     K k = x.key;
                     int h = x.hash;
                     Class<?> kc = null;
-                    for (MyHashMap8.TreeNode<K, V> p = root; ; ) {
+                    for (TreeNode<K, V> p = root; ; ) {
                         int dir, ph;
                         K pk = p.key;
                         if ((ph = p.hash) > h)
@@ -1767,7 +1606,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                                 (dir = compareComparables(kc, k, pk)) == 0)
                             dir = tieBreakOrder(k, pk);
 
-                        MyHashMap8.TreeNode<K, V> xp = p;
+                        TreeNode<K, V> xp = p;
                         if ((p = (dir <= 0) ? p.left : p.right) == null) {
                             x.parent = xp;
                             if (dir <= 0)
@@ -1803,12 +1642,12 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         /**
          * Tree version of putVal.
          */
-        final MyHashMap8.TreeNode<K, V> putTreeVal(MyHashMap8<K, V> map, Node<K, V>[] tab,
+        final TreeNode<K, V> putTreeVal(MyHashMap8<K, V> map, Node<K, V>[] tab,
                                                           int h, K k, V v) {
             Class<?> kc = null;
             boolean searched = false;
-            MyHashMap8.TreeNode<K, V> root = (parent != null) ? root() : this;
-            for (MyHashMap8.TreeNode<K, V> p = root; ; ) {
+            TreeNode<K, V> root = (parent != null) ? root() : this;
+            for (TreeNode<K, V> p = root; ; ) {
                 int dir, ph;
                 K pk;
                 if ((ph = p.hash) > h)
@@ -1821,7 +1660,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                         (kc = comparableClassFor(k)) == null) ||
                         (dir = compareComparables(kc, k, pk)) == 0) {
                     if (!searched) {
-                        MyHashMap8.TreeNode<K, V> q, ch;
+                        TreeNode<K, V> q, ch;
                         searched = true;
                         if (((ch = p.left) != null &&
                                 (q = ch.find(h, k, kc)) != null) ||
@@ -1832,10 +1671,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     dir = tieBreakOrder(k, pk);
                 }
 
-                MyHashMap8.TreeNode<K, V> xp = p;
+                TreeNode<K, V> xp = p;
                 if ((p = (dir <= 0) ? p.left : p.right) == null) {
                     Node<K, V> xpn = xp.next;
-                    MyHashMap8.TreeNode<K, V> x = map.newTreeNode(h, k, v, xpn);
+                    TreeNode<K, V> x = map.newTreeNode(h, k, v, xpn);
                     if (dir <= 0)
                         xp.left = x;
                     else
@@ -1843,7 +1682,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     xp.next = x;
                     x.parent = x.prev = xp;
                     if (xpn != null)
-                        ((MyHashMap8.TreeNode<K, V>) xpn).prev = x;
+                        ((TreeNode<K, V>) xpn).prev = x;
                     moveRootToFront(tab, balanceInsertion(root, x));
                     return null;
                 }
@@ -1866,8 +1705,8 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             if (tab == null || (n = tab.length) == 0)
                 return;
             int index = (n - 1) & hash;
-            MyHashMap8.TreeNode<K, V> first = (MyHashMap8.TreeNode<K, V>) tab[index], root = first, rl;
-            MyHashMap8.TreeNode<K, V> succ = (MyHashMap8.TreeNode<K, V>) next, pred = prev;
+            TreeNode<K, V> first = (TreeNode<K, V>) tab[index], root = first, rl;
+            TreeNode<K, V> succ = (TreeNode<K, V>) next, pred = prev;
             if (pred == null)
                 tab[index] = first = succ;
             else
@@ -1883,21 +1722,21 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                 tab[index] = first.untreeify(map);  // too small
                 return;
             }
-            MyHashMap8.TreeNode<K, V> p = this, pl = left, pr = right, replacement;
+            TreeNode<K, V> p = this, pl = left, pr = right, replacement;
             if (pl != null && pr != null) {
-                MyHashMap8.TreeNode<K, V> s = pr, sl;
+                TreeNode<K, V> s = pr, sl;
                 while ((sl = s.left) != null) // find successor
                     s = sl;
                 boolean c = s.red;
                 s.red = p.red;
                 p.red = c; // swap colors
-                MyHashMap8.TreeNode<K, V> sr = s.right;
-                MyHashMap8.TreeNode<K, V> pp = p.parent;
+                TreeNode<K, V> sr = s.right;
+                TreeNode<K, V> pp = p.parent;
                 if (s == pr) { // p was s's direct parent
                     p.parent = s;
                     s.right = p;
                 } else {
-                    MyHashMap8.TreeNode<K, V> sp = s.parent;
+                    TreeNode<K, V> sp = s.parent;
                     if ((p.parent = sp) != null) {
                         if (s == sp.left)
                             sp.left = p;
@@ -1929,7 +1768,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             else
                 replacement = p;
             if (replacement != p) {
-                MyHashMap8.TreeNode<K, V> pp = replacement.parent = p.parent;
+                TreeNode<K, V> pp = replacement.parent = p.parent;
                 if (pp == null)
                     root = replacement;
                 else if (p == pp.left)
@@ -1939,10 +1778,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                 p.left = p.right = p.parent = null;
             }
 
-            MyHashMap8.TreeNode<K, V> r = p.red ? root : balanceDeletion(root, replacement);
+            TreeNode<K, V> r = p.red ? root : balanceDeletion(root, replacement);
 
             if (replacement == p) {  // detach
-                MyHashMap8.TreeNode<K, V> pp = p.parent;
+                TreeNode<K, V> pp = p.parent;
                 p.parent = null;
                 if (pp != null) {
                     if (p == pp.left)
@@ -1966,13 +1805,13 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
          * @param bit   the bit of hash to split on
          */
         final void split(MyHashMap8<K, V> map, Node<K, V>[] tab, int index, int bit) {
-            MyHashMap8.TreeNode<K, V> b = this;
+            TreeNode<K, V> b = this;
             // Relink into lo and hi lists, preserving order
-            MyHashMap8.TreeNode<K, V> loHead = null, loTail = null;
-            MyHashMap8.TreeNode<K, V> hiHead = null, hiTail = null;
+            TreeNode<K, V> loHead = null, loTail = null;
+            TreeNode<K, V> hiHead = null, hiTail = null;
             int lc = 0, hc = 0;
-            for (MyHashMap8.TreeNode<K, V> e = b, next; e != null; e = next) {
-                next = (MyHashMap8.TreeNode<K, V>) e.next;
+            for (TreeNode<K, V> e = b, next; e != null; e = next) {
+                next = (TreeNode<K, V>) e.next;
                 e.next = null;
                 if ((e.hash & bit) == 0) {
                     if ((e.prev = loTail) == null)
@@ -2014,9 +1853,9 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         /* ------------------------------------------------------------ */
         // Red-black tree methods, all adapted from CLR
 
-        static <K, V> MyHashMap8.TreeNode<K, V> rotateLeft(MyHashMap8.TreeNode<K, V> root,
-                                                                  MyHashMap8.TreeNode<K, V> p) {
-            MyHashMap8.TreeNode<K, V> r, pp, rl;
+        static <K, V> TreeNode<K, V> rotateLeft(TreeNode<K, V> root,
+                                                                  TreeNode<K, V> p) {
+            TreeNode<K, V> r, pp, rl;
             if (p != null && (r = p.right) != null) {
                 if ((rl = p.right = r.left) != null)
                     rl.parent = p;
@@ -2032,9 +1871,9 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             return root;
         }
 
-        static <K, V> MyHashMap8.TreeNode<K, V> rotateRight(MyHashMap8.TreeNode<K, V> root,
-                                                                   MyHashMap8.TreeNode<K, V> p) {
-            MyHashMap8.TreeNode<K, V> l, pp, lr;
+        static <K, V> TreeNode<K, V> rotateRight(TreeNode<K, V> root,
+                                                                   TreeNode<K, V> p) {
+            TreeNode<K, V> l, pp, lr;
             if (p != null && (l = p.left) != null) {
                 if ((lr = p.left = l.right) != null)
                     lr.parent = p;
@@ -2050,10 +1889,10 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             return root;
         }
 
-        static <K, V> MyHashMap8.TreeNode<K, V> balanceInsertion(MyHashMap8.TreeNode<K, V> root,
-                                                                        MyHashMap8.TreeNode<K, V> x) {
+        static <K, V> TreeNode<K, V> balanceInsertion(TreeNode<K, V> root,
+                                                                        TreeNode<K, V> x) {
             x.red = true;
-            for (MyHashMap8.TreeNode<K, V> xp, xpp, xppl, xppr; ; ) {
+            for (TreeNode<K, V> xp, xpp, xppl, xppr; ; ) {
                 if ((xp = x.parent) == null) {
                     x.red = false;
                     return x;
@@ -2101,9 +1940,9 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
             }
         }
 
-        static <K, V> MyHashMap8.TreeNode<K, V> balanceDeletion(MyHashMap8.TreeNode<K, V> root,
-                                                                       MyHashMap8.TreeNode<K, V> x) {
-            for (MyHashMap8.TreeNode<K, V> xp, xpl, xpr; ; ) {
+        static <K, V> TreeNode<K, V> balanceDeletion(TreeNode<K, V> root,
+                                                                       TreeNode<K, V> x) {
+            for (TreeNode<K, V> xp, xpl, xpr; ; ) {
                 if (x == null || x == root)
                     return root;
                 else if ((xp = x.parent) == null) {
@@ -2122,7 +1961,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     if (xpr == null)
                         x = xp;
                     else {
-                        MyHashMap8.TreeNode<K, V> sl = xpr.left, sr = xpr.right;
+                        TreeNode<K, V> sl = xpr.left, sr = xpr.right;
                         if ((sr == null || !sr.red) &&
                                 (sl == null || !sl.red)) {
                             xpr.red = true;
@@ -2158,7 +1997,7 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
                     if (xpl == null)
                         x = xp;
                     else {
-                        MyHashMap8.TreeNode<K, V> sl = xpl.left, sr = xpl.right;
+                        TreeNode<K, V> sl = xpl.left, sr = xpl.right;
                         if ((sl == null || !sl.red) &&
                                 (sr == null || !sr.red)) {
                             xpl.red = true;
@@ -2191,9 +2030,9 @@ public class MyHashMap8<K, V> extends AbstractMap<K, V>
         /**
          * Recursive invariant check
          */
-        static <K, V> boolean checkInvariants(MyHashMap8.TreeNode<K, V> t) {
-            MyHashMap8.TreeNode<K, V> tp = t.parent, tl = t.left, tr = t.right,
-                    tb = t.prev, tn = (MyHashMap8.TreeNode<K, V>) t.next;
+        static <K, V> boolean checkInvariants(TreeNode<K, V> t) {
+            TreeNode<K, V> tp = t.parent, tl = t.left, tr = t.right,
+                    tb = t.prev, tn = (TreeNode<K, V>) t.next;
             if (tb != null && tb.next != t)
                 return false;
             if (tn != null && tn.prev != t)

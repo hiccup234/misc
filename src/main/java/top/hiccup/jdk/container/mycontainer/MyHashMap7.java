@@ -335,7 +335,7 @@ public class MyHashMap7<K,V> extends AbstractMap<K,V>
         int oldCapacity = oldTable.length;
         // 如果当前容量已经达到，则直接把“下次扩容阀值”Integer.MAX_VALUE并返回
         if (oldCapacity == MAXIMUM_CAPACITY) {
-            // TODO 这里为什么不返回MAXIMUM_CAPACITY呢？
+            // TODO 这里为什么不返回MAXIMUM_CAPACITY呢？ A: 这里赋值的是阈值，如果加载因子大于1，则threshold可以大于capacity
             threshold = Integer.MAX_VALUE;
             return;
         }

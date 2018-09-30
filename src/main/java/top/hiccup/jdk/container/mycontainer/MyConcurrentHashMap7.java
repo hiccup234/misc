@@ -187,7 +187,8 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
     private int hash(Object k) {
         int h = hashSeed;
         if ((0 != h) && (k instanceof String)) {
-            return sun.misc.Hashing.stringHash32((String) k);
+//            return sun.misc.Hashing.stringHash32((String) k);
+            return k.hashCode();
         }
         h ^= k.hashCode();
         // Spread bits to regularize both segment and index locations,
