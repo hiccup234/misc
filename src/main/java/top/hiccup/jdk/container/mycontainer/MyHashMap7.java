@@ -536,7 +536,7 @@ public class MyHashMap7<K,V> extends AbstractMap<K,V>
          */
         int hash;
 
-        Entry(int h, K k, V v, Entry<K,V> n) {hash
+        Entry(int h, K k, V v, Entry<K,V> n) {
             value = v;
             next = n;
             key = k;
