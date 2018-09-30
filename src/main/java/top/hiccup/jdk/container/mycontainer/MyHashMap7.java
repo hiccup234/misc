@@ -28,7 +28,8 @@ import java.util.Set;
  * @author wenhy
  * @date 2018/3/8
  */
-public class MyHashMap7<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable {
+public class MyHashMap7<K,V> extends AbstractMap<K,V>
+        implements Map<K,V>, Cloneable, Serializable {
 
     /**
      * The default initial capacity - MUST be a power of two.
@@ -106,6 +107,7 @@ public class MyHashMap7<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clone
             }
             ALTERNATIVE_HASHING_THRESHOLD = threshold;
             try {
+                // 不是系统类加载器加载的类不能直接获取Unsafe
 //                UNSAFE = sun.misc.Unsafe.getUnsafe();
 //                HASHSEED_OFFSET = UNSAFE.objectFieldOffset(
 //                        MyHashMap7.class.getDeclaredField("hashSeed"));
@@ -521,6 +523,7 @@ public class MyHashMap7<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clone
 
     /**
      * hash表中保存的元素，重点，Entry不是final的，而ConcurrentHashMap的HashEntry是final的
+     * int hash成员变量也不是final的，JDK1.8中Node为final int hash
      * @param <K>
      * @param <V>
      */
@@ -533,7 +536,7 @@ public class MyHashMap7<K,V> extends AbstractMap<K,V> implements Map<K,V>, Clone
          */
         int hash;
 
-        Entry(int h, K k, V v, Entry<K,V> n) {
+        Entry(int h, K k, V v, Entry<K,V> n) {hash
             value = v;
             next = n;
             key = k;

@@ -21,7 +21,8 @@ import java.util.RandomAccess;
  * @author wenhy
  * @date 2018/3/7
  */
-public class MyArrayList7<E> extends AbstractList<E> implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
+public class MyArrayList7<E> extends AbstractList<E>
+        implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
 
     private static final long serialVersionUID = 8683452581122892189L;
     /**
