@@ -854,19 +854,3 @@ public class MyHashMap7<K,V> extends AbstractMap<K,V>
     float loadFactor()   { return loadFactor;   }
 
 }
-
-
-class MainTest {
-    public static void main(String[] args) {
-        Map map = new MyHashMap7(4);
-        Map m = new HashMap(8);
-        map.put("a", "haha");
-        map.put("b", "haha");
-        map.put("c", "haha");
-        m.put("1", "a");
-        m.put("2", "a");
-        m.put("3", "a");
-        m.put("4", "a");
-        map.putAll(m);
-    }
-}

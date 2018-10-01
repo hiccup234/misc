@@ -18,22 +18,20 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * 参考JDK1.7
  *
+ * 1、实现了JDK1.5新增的ConcurrentMap接口
+ * 2、采用分段锁设计，锁粒度细化的思想
+ * 3、ConcurrentHashMap是弱一致性的：（CAP理论）（get与containsKey都未加锁，所以可能读到过时数据）
+ *      如果要求强一致性，那么必须使用Collections.synchronizedMap()方法来装饰一个普通的HashMap或者HashTable
+ * 4、get 和 containsKey 方法没有加锁做同步
+ *      containsValue 和 contains 是用来判断当前map是否存在参数value，要先给所有段加上锁，判断完之后再解锁
+ * 5、ConcurrentHashMap 跟 HashTable 一样，因为并发的原因它们并不支持空的key和value
+ *
  * @author wenhy
  * @date 2018/3/8
  */
 public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         implements ConcurrentMap<K, V>, Serializable {
-    /**
-     * 1、实现了JDK1.5新增的ConcurrentMap接口
-     * 2、采用分段锁设计，锁粒度细化的思想
-     * 3、ConcurrentHashMap是弱一致性的：（CAP理论）（get与containsKey都未加锁，所以可能读到过时数据）
-     *      如果要求强一致性，那么必须使用Collections.synchronizedMap()方法来装饰一个普通的HashMap或者HashTable
-     * 4、get 和 containsKey 方法没有加锁做同步
-     *      containsValue 和 contains 是用来判断当前map是否存在参数value，要先给所有段加上锁，判断完之后再解锁
-     * 5、ConcurrentHashMap 跟 HashTable 一样，因为并发的原因它们并不支持空的key和value
-     *
-     */
-    // 基于JDK1.7分析
+
     private static final long serialVersionUID = 7249069246763182397L;
 
     static final int DEFAULT_INITIAL_CAPACITY = 16;
@@ -88,10 +86,14 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
      * A randomizing value associated with this instance that is applied to
      * hash code of keys to make hash collisions harder to find.
      */
-    // hash种子：避免过多的hash碰撞（collisions）
+    /**
+     * hash种子：避免过多的hash碰撞（collisions）
+     */
     private transient final int hashSeed = randomHashSeed(this);
 
-    // 获取ConcurrentHashMap实例的随机种子
+    /**
+     * 获取ConcurrentHashMap实例的随机种子
+     */
     private static int randomHashSeed(MyConcurrentHashMap7 instance) {
 //        if (sun.misc.VM.isBooted() && Holder.ALTERNATIVE_HASHING) {
 ////            return sun.misc.Hashing.randomHashSeed(instance);
@@ -103,19 +105,25 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
      * Mask value for indexing into segments. The upper bits of a
      * key's hash code are used to choose the segment.
      */
-    // 段索引的掩码，通过hash值的高位来索引段的选择
+    /**
+     * 段索引的掩码，通过hash值的高位来索引段的选择
+     */
     final int segmentMask;
 
     /**
      * Shift value for indexing within segments.
      */
-    // 索引在片段中的偏移量
+    /**
+     * 索引在片段中的偏移量
+     */
     final int segmentShift;
 
     /**
      * The segments, each of which is a specialized hash table.
      */
-    // 注意这个Segment数组是final的
+    /**
+     * 注意这个Segment数组是final的
+     */
     final Segment<K,V>[] segments;
 
     transient Set<K> keySet;
@@ -126,13 +134,19 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
      * ConcurrentHashMap list entry. Note that this is never exported
      * out as a user-visible Map.Entry.
      */
-    // 这里与HashMap的Entry不同，这里是HashEntry，而且也是final的
+    /**
+     * 这里与HashMap的Entry不同，这里是HashEntry，而且也是final的
+     * @param <K>
+     * @param <V>
+     */
     static final class HashEntry<K,V> {
         // key和hash是final的，不可修改
         final int hash;
         final K key;
-        volatile V value; // 注意这里的volatile关键字，如果在get的时候有线程并发的put或者remove了的话，要保证当前读线程感知到
-        volatile HashEntry<K,V> next; // next引用也是volatile的
+        // 注意这里的volatile关键字，如果在get的时候有线程并发的put或者remove了的话，要保证当前读线程感知到
+        volatile V value;
+        // next引用也是volatile的
+        volatile HashEntry<K,V> next;
 
         HashEntry(int hash, K key, V value, HashEntry<K,V> next) {
             this.hash = hash;
@@ -152,7 +166,8 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         // Unsafe mechanics
         static final sun.misc.Unsafe UNSAFE;
         static final long nextOffset;
-        static { // 静态代码块
+        // 静态代码块
+        static {
             try {
                 UNSAFE = sun.misc.Unsafe.getUnsafe();
                 Class k = HashEntry.class;
@@ -183,7 +198,6 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         UNSAFE.putOrderedObject(tab, ((long)i << TSHIFT) + TBASE, e);
     }
 
-    // 好复杂的hash算法。。
     private int hash(Object k) {
         int h = hashSeed;
         if ((0 != h) && (k instanceof String)) {
@@ -207,14 +221,18 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
      * subclasses from ReentrantLock opportunistically, just to
      * simplify some locking and avoid separate construction.
      */
-    // Segment继承自ReentrantLock，提供可重入锁机制，一个Segment管理者一个小的 hash tables
+    /**
+     * Segment继承自ReentrantLock，提供可重入锁机制，一个Segment管理着一个小的 hash tables
+     * TODO 为什么是直接继承而不是组合 has a呢？
+     */
     static final class Segment<K,V> extends ReentrantLock implements Serializable {
         private static final long serialVersionUID = 2249069246763182397L;
         static final int MAX_SCAN_RETRIES =
                 Runtime.getRuntime().availableProcessors() > 1 ? 64 : 1;
         // 注意这里也是transient，类似HashMap的table，并且是volatile的
         transient volatile HashEntry<K,V>[] table;
-        transient int count; // 这里不再用size而是count
+        // 这里不再用size而是count
+        transient int count;
         transient int modCount;
         transient int threshold;
         final float loadFactor;
@@ -610,6 +628,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
      * map contains more than <tt>Integer.MAX_VALUE</tt> elements, returns
      * <tt>Integer.MAX_VALUE</tt>.
      */
+    @Override
     public int size() {
         // Try a few times to get accurate count. On failure due to
         // continuous async changes in table, resort to locking.
@@ -650,6 +669,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return overflow ? Integer.MAX_VALUE : size;
     }
 
+    @Override
     public V get(Object key) {
         Segment<K,V> s; // manually integrate access methods to reduce overhead
         HashEntry<K,V>[] tab;
@@ -668,6 +688,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return null;
     }
 
+    @Override
     public boolean containsKey(Object key) {
         Segment<K,V> s; // same as get() except no need for volatile value read
         HashEntry<K,V>[] tab;
@@ -686,12 +707,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return false;
     }
 
-    /**
-     * Returns <tt>true</tt> if this map maps one or more keys to the
-     * specified value. Note: This method requires a full internal
-     * traversal of the hash table, and so is much slower than
-     * method <tt>containsKey</tt>.
-     */
+    @Override
     public boolean containsValue(Object value) {
         // Same idea as size()
         if (value == null)
@@ -743,6 +759,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return containsValue(value);
     }
 
+    @Override
     public V put(K key, V value) {
         Segment<K,V> s;
         if (value == null) // ConcurrentHashMap不能put为null的value了。。
@@ -755,6 +772,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return s.put(key, hash, value, false);
     }
 
+    @Override
     public V putIfAbsent(K key, V value) {
         Segment<K,V> s;
         if (value == null)
@@ -767,21 +785,20 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return s.put(key, hash, value, true);
     }
 
+    @Override
     public void putAll(Map<? extends K, ? extends V> m) {
         for (Map.Entry<? extends K, ? extends V> e : m.entrySet())
             put(e.getKey(), e.getValue());
     }
 
-    /**
-     * Removes the key (and its corresponding value) from this map.
-     * This method does nothing if the key is not in the map.
-     */
+    @Override
     public V remove(Object key) {
         int hash = hash(key);
         Segment<K,V> s = segmentForHash(hash);
         return s == null ? null : s.remove(key, hash, null);
     }
 
+    @Override
     public boolean remove(Object key, Object value) {
         int hash = hash(key);
         Segment<K,V> s;
@@ -790,6 +807,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
                 s.remove(key, hash, value) != null;
     }
 
+    @Override
     public boolean replace(K key, V oldValue, V newValue) {
         int hash = hash(key);
         if (oldValue == null || newValue == null)
@@ -798,6 +816,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return s != null && s.replace(key, hash, oldValue, newValue);
     }
 
+    @Override
     public V replace(K key, V value) {
         int hash = hash(key);
         if (value == null)
@@ -806,6 +825,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         return s == null ? null : s.replace(key, hash, value);
     }
 
+    @Override
     public void clear() {
         final Segment<K,V>[] segments = this.segments;
         for (int j = 0; j < segments.length; ++j) {
@@ -815,16 +835,19 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
         }
     }
 
+    @Override
     public Set<K> keySet() {
         Set<K> ks = keySet;
         return (ks != null) ? ks : (keySet = new KeySet());
     }
 
+    @Override
     public Collection<V> values() {
         Collection<V> vs = values;
         return (vs != null) ? vs : (values = new Values());
     }
 
+    @Override
     public Set<Map.Entry<K,V>> entrySet() {
         Set<Map.Entry<K,V>> es = entrySet;
         return (es != null) ? es : (entrySet = new EntrySet());
@@ -1017,7 +1040,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
                 seg.unlock();
             }
         }
-        //TODO 为什么这里要写两个null呢？
+        //TODO 为什么这里要写两个null呢？一个引用4字节
         s.writeObject(null);
         s.writeObject(null);
     }
@@ -1055,7 +1078,7 @@ public class MyConcurrentHashMap7<K, V> extends AbstractMap<K, V>
     private static final int TSHIFT;
     private static final long HASHSEED_OFFSET;
 
-    // 静态代码块，放在代码最后，类加载完成切初始化完静态变量后执行这里
+    // 静态代码块，放在代码最后，类加载完成且初始化完静态变量后执行这里
     static {
         int ss, ts;
         try {

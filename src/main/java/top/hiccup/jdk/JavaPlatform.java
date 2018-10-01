@@ -1,5 +1,11 @@
 package top.hiccup.jdk;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  * 【Java平台总结】
  * "Write once, run anywhere": 一次编写到处运行，屏蔽了处理器架构、操作系统、硬件设备等的差异
@@ -22,6 +28,11 @@ package top.hiccup.jdk;
 public class JavaPlatform {
 
     public static void main(String[] args) {
+        Map map = new ConcurrentHashMap();
+        List list = new ArrayList();
+        map = new HashMap();
+
+
         System.out.println("Hello world!");
     }
 }
