@@ -1,4 +1,4 @@
-package com.hiccup.jdk.io.socket_nio;
+package top.hiccup.jdk.io.socket.nio;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;

@@ -1,4 +1,4 @@
-package com.hiccup.jdk.io.socket_aio;
+package top.hiccup.jdk.io.socket.aio;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;

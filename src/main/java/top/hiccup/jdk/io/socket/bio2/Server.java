@@ -1,13 +1,25 @@
-package com.hiccup.jdk.io.socket_bio2;
+package top.hiccup.jdk.io.socket.bio2;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
+/**
+ * 面向Socket（插座）编程简单示例：应用程序TCP/IP直连通信（进程通信）方式
+ *
+ * 改进：采用线程池而不是每来一个请求就创建一个线程
+ *
+ * @author wenhy
+ * @date 2018/2/5
+ */
 public class Server {
 
-	private static final int PORT = 234001;
+	private static final int PORT = 23401;
 
 	public static void main(String[] args) {
 		ServerSocket server = null;
@@ -18,10 +30,16 @@ public class Server {
 			System.out.println("server start");
 			Socket socket = null;
 			// 伪异步Socket实现：持有一个线程池
-			HandlerExecutorPool executorPool = new HandlerExecutorPool(50, 1000);
+			ExecutorService executorService = 	new ThreadPoolExecutor(
+					//可用处理器数
+					Runtime.getRuntime().availableProcessors(),
+					50,
+					120L,
+					TimeUnit.SECONDS,
+					new ArrayBlockingQueue<Runnable>(1000));
 			while(true){
 				socket = server.accept();
-				executorPool.execute(new ServerHandler(socket));
+				executorService.execute(new ServerHandler(socket));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

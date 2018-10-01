@@ -1,10 +1,16 @@
-package com.hiccup.jdk.io.socket_bio2;
+package top.hiccup.jdk.io.socket.bio2;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * 客户端类
+ *
+ * @author wenhy
+ * @date 2018/2/5
+ */
 public class Client {
 	
 	private static final String ADDRESS = "127.0.0.1";

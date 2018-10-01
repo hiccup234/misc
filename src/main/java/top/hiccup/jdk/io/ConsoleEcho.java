@@ -6,13 +6,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by wenhy on 2017/12/25.
+ * 从控制台获取输入再回显到控制台
+ *
+ * @author wenhy
+ * @date 2017/12/25
  */
 public class ConsoleEcho {
 
-    /**
-     *  从控制台获取输入再回显到控制台
-     */
     public static void main(String[] args) {
         BufferedReader br = null;
         try {

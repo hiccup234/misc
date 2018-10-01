@@ -1,4 +1,4 @@
-package com.hiccup.jdk.io.socket_bio;
+package top.hiccup.jdk.io.socket.bio;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,26 +7,34 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * Created by wenhy on 2018/2/5.
+ * 服务器端IO处理类
+ *
+ * @author wenhy
+ * @date 2018/2/5
  */
-public class Client {
+public class ServerHandler implements Runnable{
 
-    private static final String ADDRESS = "127.0.0.1";
-    private static final int PORT = 23401;
+    private Socket socket = null;
 
-    public static void main(String[] args) {
-        Socket socket = null;
+    public ServerHandler(Socket socket){
+        this.socket = socket;
+    }
+
+    @Override
+    public void run() {
         BufferedReader in = null;
         PrintWriter out = null;
         try {
-            socket = new Socket(ADDRESS, PORT);
-            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            out = new PrintWriter(socket.getOutputStream(), true);
-            //向服务器端发送数据
-            out.println("向服务器端发送数据...");
-            out.println("向服务器端发送数据2...");
-            String response = in.readLine();
-            System.out.println("客户端接收到数据：" + response);
+            in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            out = new PrintWriter(this.socket.getOutputStream(), true);
+            String body = null;
+            while(true){
+                body = in.readLine();
+                if(body == null) break;
+                System.out.println("Server :" + body);
+                out.println("服务器端回送响应数据...");
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -54,5 +62,5 @@ public class Client {
             socket = null;
         }
     }
-}
 
+}

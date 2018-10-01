@@ -12,13 +12,13 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by wenhy on 2017/12/25.
+ * 文件输入流示例
+ *
+ * @author wenhy
+ * @date 2017/12/25
  */
 public class FileStreamTest {
 
-    /**
-     *  文件输入流示例
-     */
     public void fileOutStreamTest() {
         BufferedReader br = null;
         BufferedWriter bw = null;
@@ -47,17 +47,11 @@ public class FileStreamTest {
         }
     }
 
-
-
     public static void main(String[] args) throws Exception {
-
         //文件输入流
-//        FileStreamTest fileStreamTest = new FileStreamTest();
-//        fileStreamTest.fileOutStreamTest();
+        FileStreamTest fileStreamTest = new FileStreamTest();
+        fileStreamTest.fileOutStreamTest();
 
-        HashMap hashMap = new HashMap();
-        Thread.sleep(1000);
-        Lock lock = new ReentrantLock();
         switch (4) {
             default:
                 System.out.println(4);
@@ -69,7 +63,6 @@ public class FileStreamTest {
                 System.out.println(3);
         }
 
-
         try{
             throw new Exception("1");
         }catch (IOException e){
@@ -79,7 +72,6 @@ public class FileStreamTest {
         }finally {
             throw new Exception("4");
         }
-
     }
 
 }

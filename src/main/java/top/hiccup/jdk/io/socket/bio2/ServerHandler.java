@@ -1,10 +1,16 @@
-package com.hiccup.jdk.io.socket_bio2;
+package top.hiccup.jdk.io.socket.bio2;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+/**
+ * 服务器端IO处理类
+ *
+ * @author wenhy
+ * @date 2018/2/5
+ */
 public class ServerHandler implements Runnable {
 
 	private Socket socket;

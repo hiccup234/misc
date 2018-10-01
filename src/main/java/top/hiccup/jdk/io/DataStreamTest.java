@@ -4,12 +4,13 @@ import java.io.DataInputStream;
 import java.net.URL;
 
 /**
- * Created by wenhy on 2018/2/28.
+ * 从读取网页读取内容
+ *
+ * @author wenhy
+ * @date 2018/2/28
  */
 public class DataStreamTest {
-    /**
-     *  从读取网页读取内容
-     */
+
     public static void main(String[] args) {
         try{
             int num;
@@ -25,20 +26,8 @@ public class DataStreamTest {
 //            }
 //            System.out.println(new String(buf));
 
-               Class cls = String.class;
-
-
-            String str1 = new String("123");
-            String str2 = new String("123");
-            System.out.println(str1.hashCode());
-            System.out.println(str2.hashCode());
-//            Proxy proxy = new Proxy();
         } catch (Exception e){
-            System.out.println("发生了"+e+"异常");
+            e.printStackTrace();
         }
     }
-}
-
-class Test {
-
 }
