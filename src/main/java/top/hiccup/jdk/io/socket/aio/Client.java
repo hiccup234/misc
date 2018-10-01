@@ -6,6 +6,12 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * 客户端类
+ *
+ * @author wenhy
+ * @date 2018/2/5
+ */
 public class Client implements Runnable{
 
 	private AsynchronousSocketChannel asc ;

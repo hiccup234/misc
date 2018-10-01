@@ -9,18 +9,28 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
+/**
+ * BIO：（伪异步）阻塞：如果网络传输速度很慢，应用程序就要一直等待，直到数据传输完毕
+ * NIO(Non-block IO)：同步非阻塞（JDK1.5）
+ * AIO(NIO2.0)：异步非阻塞（JDK1.7）
+ *
+ * @author wenhy
+ * @date 2018/2/5
+ */
 public class Server implements Runnable{
 
 	/**
-	 * NIO(Non-block IO)：同步非阻塞（JDK1.5）	AIO（NIO2.0）：异步非阻塞（JDK1.7）
-	 * IO：（伪异步）阻塞：如果网络传输速度很慢，应用程序就要一直等待，直到数据传输完毕
+	 * 1、多路复用器（管理所有的通道Channel）
+	 * Linux内核IO多路复用：select（轮询监听） 和 epoll（事件通知）
 	 */
-
-	//1 多路复用器（管理所有的通道Channel）
 	private Selector seletor;
-	//2 建立读缓冲区
+	/**
+	 * 2、建立读缓冲区
+	 */
 	private ByteBuffer readBuf = ByteBuffer.allocate(1024);
-	//3 建立写缓冲区
+	/**
+	 * 3、建立写缓冲区
+	 */
 	private ByteBuffer writeBuf = ByteBuffer.allocate(1024);
 	public Server(int port){
 		try {
@@ -134,6 +144,5 @@ public class Server implements Runnable{
 	public static void main(String[] args) {
 		new Thread(new Server(23401)).start();
 	}
-	
-	
+
 }

@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * 客户端类
@@ -24,9 +27,14 @@ public class Client {
 			socket = new Socket(ADDRESS, PORT);
 			in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			out = new PrintWriter(socket.getOutputStream(), true);
-			out.println("Client request");
-			String response = in.readLine();
-			System.out.println("Client:" + response);
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+			while (true) {
+				out.println(dateFormat.format(new Date()) + ":服务器你好..");
+				out.println(dateFormat.format(new Date()) + ":服务器你好2..");
+				String response = in.readLine();
+				System.out.println("Client:" + response);
+				Thread.sleep(100);
+			}
 		}  catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -46,6 +54,7 @@ public class Client {
 			}
 			if(socket != null){
 				try {
+					// 客户端socket记得也要关闭
 					socket.close();
 				} catch (Exception e3) {
 					e3.printStackTrace();

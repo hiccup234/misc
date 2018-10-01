@@ -25,11 +25,11 @@ public class Client {
             socket = new Socket(ADDRESS, PORT);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
-            //向服务器端发送数据
-            out.println("向服务器端发送数据...");
-            out.println("向服务器端发送数据2...");
+            // 向服务器端发送数据
+            out.println("你好服务器..");
+            out.println("你好服务器2..");
             String response = in.readLine();
-            System.out.println("客户端接收到数据：" + response);
+            System.out.println("Client:" + response);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -49,6 +49,7 @@ public class Client {
             }
             if(socket != null){
                 try {
+                    // 客户端socket记得也要关闭
                     socket.close();
                 } catch (IOException e) {
                     e.printStackTrace();

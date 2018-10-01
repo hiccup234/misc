@@ -5,6 +5,12 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+/**
+ * NIO缓冲区：Buffer	常用Buffer：ByteBuffer
+ *
+ * @author wenhy
+ * @date 2018/2/5
+ */
 public class Client {
 
 	//需要一个Selector 

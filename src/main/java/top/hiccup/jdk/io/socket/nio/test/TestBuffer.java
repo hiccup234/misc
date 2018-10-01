@@ -1,13 +1,15 @@
-package com.hiccup.jdk.io.socket_nio.test;
+package top.hiccup.jdk.io.socket.nio.test;
 
 import java.nio.IntBuffer;
 
+/**
+ * NIO缓冲区：Buffer	常用Buffer：ByteBuffer
+ *
+ * @author wenhy
+ * @date 2018/2/5
+ */
 public class TestBuffer {
 
-	/**
-	 * NIO缓冲区：Buffer	常用Buffer：ByteBuffer
-	 */
-	
 	public static void main(String[] args) {
 
 		// 1、基本操作
