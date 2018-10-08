@@ -5,13 +5,13 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
 /**
- * Created by wenhy on 2018/1/14.
+ * JDK 的动态代理测试
+ *
+ * @author wenhy
+ * @date 2018/1/14
  */
 public class JdkProxyTest {
 
-    /**
-     * JDK 的动态代理测试
-     */
     private interface IBusiService {
         String getStr();
     }

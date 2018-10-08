@@ -1,7 +1,10 @@
 package top.hiccup.schema.proxy.cglib;
 
 /**
- * Created by wenhy on 2018/1/14.
+ * 实现了接口的Service类
+ *
+ * @author wenhy
+ * @date 2018/1/14
  */
 public class BusiServiceImpl implements IBusiService {
 
@@ -9,6 +12,7 @@ public class BusiServiceImpl implements IBusiService {
 
     }
 
+    @Override
     public String getStr() {
         return new String("abc");
     }

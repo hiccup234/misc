@@ -1,7 +1,7 @@
 package top.hiccup.jdk.vm.jmm;
 
 /**
- * F
+ * Volatile关键字测试
  *
  * @author wenhy
  * @date 2018/9/3
