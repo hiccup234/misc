@@ -33,7 +33,7 @@ import java.util.List;
  * @author wenhy
  * @date 2018/1/21
  */
-    public class TopKTest {
+public class TopKTest {
 
     static int[] test1(int[] arr, int k) {
         int[] topk = new int[k];
