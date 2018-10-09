@@ -23,16 +23,17 @@ import java.util.List;
  *   由快排里的partition可以很容易的联想到减治法来实现topk的思想
  *     i = partition(arr, 1, n); 如果i大于k，则说明topk全在arr[i]左边（降序），如果i小于k则说明，有一部分top(k-i)在arr[i]右边，递归找到这部分即可
  *
- *
- *
- * 5.bitmap位图法（受限于数组值域范围以及是否有重复值）
+ * 5.bitmap位图法（受限于数组值域范围以及是否有重复值，换种思路，有时候就是要求不包括重复值）
+ *   假设topk的问题是对整型计算，值域为[-2^31~2^31-1]共计需要4G个bit
+ *   在数据量很小且取值范围很大的情况下，bitmap很难体现出优势来
  *
  * 6.bitmap位图法改进（允许有重复值）
+ *   相对于5中的用bit记录数组元素是否存在，这里换成int或者视可能出现的重复个数来缓存，这里程序不再实现
  *
  * @author wenhy
  * @date 2018/1/21
  */
-public class TopKTest {
+    public class TopKTest {
 
     static int[] test1(int[] arr, int k) {
         int[] topk = new int[k];
@@ -149,40 +150,65 @@ public class TopKTest {
         arr[i] = partition;
         return i;
     }
-    static int test4(int[] arr, int left, int right, int k) {
+    private static int nest(int[] arr, int left, int right, int k) {
         if (left >= right) {
             return arr[left];
         }
         int i = partition(arr, left, right);
         // 这里有个前提条件，从数组下标0开始计算topk
         if (i-left >= k) {
-            return test4(arr, left, i-1, k);
+            return nest(arr, left, i-1, k);
         } else {
             // 后半段只取k-i个，前i个都是属于topk的元素
-            return test4(arr, i+1, right, k-i);
+            return nest(arr, i+1, right, k-i);
         }
+    }
+    static int[] test4(int[] arr, int k) {
+        nest(arr, 0, arr.length-1, k);
+        int[] topk = new int[k];
+        System.arraycopy(arr, 0, topk, 0, k);
+        return topk;
     }
 
 
-
+    static int[] test5(int[] arr, int k) {
+        // 先跟据数组元素的值域范围申请相应的内存空间做缓存，一个byte有8bit
+        // TODO Java没有可以直接操纵bit的方法，如果内存限制不大，这里换成直接操作byte是不是更方便快捷
+        byte[] cache = new byte[2<<29];
+        for (int i=0; i<arr.length; i++) {
+            int index = arr[i] >> 3;
+            byte b = cache[index];
+            // 对arr[i]取8的余数
+            int t = arr[i]&(8-1);
+            b |= 1 << t;
+            cache[index] = b;
+        }
+        int[] topk = new int[k];
+        int count = 0;
+//        for (int i=2<<29-1; i>=0 && count<k; i--) {
+        for (int i=2<<12-1; i>=0 && count<k; i--) {
+            byte b = cache[i];
+            for (int j=7; j>=0 && count < k; j--) {
+                int offset = 1<<j;
+                if ((b & offset) == offset) {
+                    topk[count] = (i << 3) + j;
+                    count++;
+                }
+            }
+        }
+        return topk;
+    }
 
     public static void main(String[] args) {
         int[] arr = {9, 7, 2, 5, 8, 4, 3, 7, 3, 9};
+        int[] data = {9,275,12,6,45,999,41,12306,456,12,532,45};
         int[] topk;
-
 //        topk = test1(arr, 3);
 //        topk = test2(arr, 4);
-
-        int[] data = {56,275,12,6,45,478,41,1236,456,12,546,45};
 //        topk = test3(data, 5);
-
-        test4(data, 0, data.length-1, 4);
-        topk = data;
-
+//        topk = test4(arr, 4);
+        topk = test5(data, 4);
         Arrays.stream(topk).forEach(System.out::println);
     }
-
-
-
 
 }
