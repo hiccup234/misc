@@ -17,4 +17,16 @@ package top.hiccup.arithmetic.sort;
  * @date 2018/9/26
  */
 public class SortTest {
+
+    public static void main(String[] args) {
+        int[] data = {9,275,12,6,45,999,41,12306,456,12,532,89};
+//        BubbleSort.sort(data, data.length);
+//        InsertionSort.sort(data, data.length);
+        SelectSort.sort(data, data.length);
+
+
+        for (int i=0; i<data.length; i++) {
+            System.out.println(data[i]);
+        }
+    }
 }
