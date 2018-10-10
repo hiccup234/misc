@@ -1,4 +1,4 @@
-package com.hiccup.jdk.io.netty.discard;
+package top.hiccup.jdk.io.netty.simple;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
@@ -10,33 +10,35 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
- * Created by wenhy on 2018/2/6.
+ * Netty简单客户端
+ *
+ * @author wenhy
+ * @date 2018/2/6
  */
-public class DiscardClient {
+public class NettyClient {
+
+    private static String ip = "127.0.0.1";
+    private static int port = 23401;
 
     public static void main(String[] arsg) throws InterruptedException {
-        EventLoopGroup group = new NioEventLoopGroup();
+        EventLoopGroup workerGroup = new NioEventLoopGroup();
         Bootstrap bootstrap = new Bootstrap();
-        bootstrap.group(group)
+        bootstrap.group(workerGroup)
                 .channel(NioSocketChannel.class)
+                // TODO 这里的handler与服务端的childHandler有什么区别?
                 .handler(new ChannelInitializer<SocketChannel>() {
                     @Override
                     protected void initChannel(SocketChannel socketChannel) throws Exception {
-                        socketChannel.pipeline().addLast(new DiscardClientHandler());
+                        socketChannel.pipeline().addLast(new NettyClientHandler());
                     }
                 });
-        String ip = "127.0.0.1";
-        int prot = 23401;
-        ChannelFuture channelFuture = bootstrap.connect(ip, prot).sync();
-
+        ChannelFuture channelFuture = bootstrap.connect(ip, port).sync();
         // 向缓冲区写数据
-        channelFuture.channel().write(Unpooled.copiedBuffer("abcde".getBytes()));
-        // 强制刷新缓存
+        channelFuture.channel().write(Unpooled.copiedBuffer("服务器你好..".getBytes()));
+        // 强制刷新缓冲区
         channelFuture.channel().flush();
 
-
         channelFuture.channel().closeFuture().sync();
-        group.shutdownGracefully();
+        workerGroup.shutdownGracefully();
     }
-
 }
