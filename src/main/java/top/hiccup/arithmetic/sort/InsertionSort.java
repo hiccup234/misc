@@ -1,7 +1,7 @@
 package top.hiccup.arithmetic.sort;
 
 /**
- * 直接插入排序：向一个有序的数组中插入元素
+ * 简单插入排序：向一个有序的数组中插入元素
  *
  * @author wenhy
  * @date 2018/10/9

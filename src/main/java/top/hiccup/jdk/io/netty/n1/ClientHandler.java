@@ -1,4 +1,4 @@
-package com.hiccup.jdk.io.netty.n1;
+package top.hiccup.jdk.io.netty.n1;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerAdapter;

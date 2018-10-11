@@ -6,7 +6,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 从控制台获取输入再回显到控制台
+ * IO练习：从控制台获取输入再回显到控制台
  *
  * @author wenhy
  * @date 2017/12/25
@@ -20,8 +20,6 @@ public class ConsoleEcho {
             while (true) {
                 String lineStr = br.readLine();
                 if("Q".equals(lineStr.toUpperCase())) {
-                    //如果直接exit，程序就不会再执行finally语句
-//                    System.exit(0);
                     break;
                 }
                 System.out.println(lineStr);
@@ -31,7 +29,7 @@ public class ConsoleEcho {
         } finally {
             if(null != br) {
                 try {
-                    //一定要记得关闭流
+                    // 一定要记得关闭流
                     br.close();
                 } catch (IOException e) {
                     e.printStackTrace();

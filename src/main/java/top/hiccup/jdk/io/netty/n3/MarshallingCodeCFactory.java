@@ -1,4 +1,4 @@
-package com.hiccup.jdk.io.netty.n3;
+package top.hiccup.jdk.io.netty.n3;
 
 import io.netty.handler.codec.marshalling.DefaultMarshallerProvider;
 import io.netty.handler.codec.marshalling.DefaultUnmarshallerProvider;

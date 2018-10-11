@@ -1,17 +1,18 @@
-package top.hiccup.jdk.io.socket.nio.test;
+package top.hiccup.jdk.io.socket.nio;
 
 import java.nio.IntBuffer;
 
 /**
- * NIO缓冲区：Buffer	常用Buffer：ByteBuffer
+ * NIO缓冲区：Buffer
+ *
+ * 常用Buffer：ByteBuffer
  *
  * @author wenhy
  * @date 2018/2/5
  */
-public class TestBuffer {
+public class BufferTest {
 
 	public static void main(String[] args) {
-
 		// 1、基本操作
 		// 创建指定长度的缓冲区（IntBuffer是abstract的）
 //		IntBuffer buf = IntBuffer.allocate(10);
@@ -71,7 +72,5 @@ public class TestBuffer {
 		for(int i : arr33){
 			System.out.print(Integer.toString(i) + ",");
 		}
-
-		
 	}
 }

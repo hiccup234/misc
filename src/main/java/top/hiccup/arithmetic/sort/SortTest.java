@@ -7,6 +7,10 @@ package top.hiccup.arithmetic.sort;
  *
  * 2.选择排序
  *
+ * 3.简单插入排序：
+ *
+ * 4.希尔排序：
+ *
  * 3.快速排序
  *
  * 4.堆排序

@@ -12,7 +12,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 文件输入流示例
+ * IO练习：文件输入流示例
  *
  * @author wenhy
  * @date 2017/12/25
