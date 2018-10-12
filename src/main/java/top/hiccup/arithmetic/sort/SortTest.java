@@ -15,7 +15,7 @@ package top.hiccup.arithmetic.sort;
  *
  * 4.堆排序
  *
- * 5.
+ * 5.归并排序、桶排序、基数排序
  *
  * @author wenhy
  * @date 2018/9/26
@@ -26,8 +26,9 @@ public class SortTest {
         int[] data = {9,275,12,6,45,999,41,12306,456,12,532,89};
 //        BubbleSort.sort(data, data.length);
 //        InsertionSort.sort(data, data.length);
-        SelectSort.sort(data, data.length);
-
+//        SelectSort.sort(data, data.length);
+//        RadixSort.sort(data, data.length);
+        RadixSort.sort2(data, data.length);
 
         for (int i=0; i<data.length; i++) {
             System.out.println(data[i]);

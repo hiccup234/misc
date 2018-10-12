@@ -1,7 +1,7 @@
 package top.hiccup.arithmetic.sort;
 
 /**
- * 希尔排序
+ * 希尔排序：
  *
  * 基于简单插入排序改进而来，本身还是插入排序的思想
  *

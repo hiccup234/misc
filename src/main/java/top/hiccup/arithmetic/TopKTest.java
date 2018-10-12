@@ -31,7 +31,7 @@ import java.util.List;
  *   相对于5中的用bit记录数组元素是否存在，这里换成int或者视可能出现的重复个数来缓存，这里程序不再实现
  *
  * @author wenhy
- * @date 2018/1/21
+ * @date 2018/9/21
  */
 public class TopKTest {
 
