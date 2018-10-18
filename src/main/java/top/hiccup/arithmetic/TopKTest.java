@@ -81,10 +81,10 @@ public class TopKTest {
         // 将这k个元素转换为一颗最小堆（完全二叉树），则k/2 - 1为最后一个非叶子节点
         for (int i=topk.length/2 - 1; i>=0; i--) {
             // 遍历每个非叶子节点
-            heapify(topk, i);
+            adjustHeap(topk, i);
         }
     }
-    private static void heapify(int[] topk, int i) {
+    private static void adjustHeap(int[] topk, int i) {
         int leftChild = (i + 1) * 2 - 1;
         int rightChild = (i + 1) * 2;
         int minIndex = i;
@@ -106,7 +106,7 @@ public class TopKTest {
         topk[minIndex] = tmp;
         // TODO 由于替换后左右子树的最小堆特性可能会收到影响，所以要对子树再进行heapify，一定要记得
         // TODO 可以考虑把递归优化为循环遍历
-        heapify(topk, minIndex);
+        adjustHeap(topk, minIndex);
 
     }
     static int[] test3(int[] arr, int k) {
@@ -118,7 +118,7 @@ public class TopKTest {
         for (int i=k; i<arr.length; i++) {
             if (arr[i] > topk[0]) {
                 topk[0] = arr[i];
-                heapify(topk, 0);
+                adjustHeap(topk, 0);
             }
         }
 

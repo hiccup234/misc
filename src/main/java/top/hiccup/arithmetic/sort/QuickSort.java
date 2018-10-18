@@ -1,11 +1,9 @@
 package top.hiccup.arithmetic.sort;
 
 /**
- * 快速排序的几种实现：
+ * 快速排序：
  *
- * 分治的思想
- *
- * 非稳定排序
+ * 采用分治的思想
  *
  * @author wenhy
  * @date 2017/1/6
@@ -73,10 +71,4 @@ public class QuickSort {
         quickSort2(arr, left, i - 1);
         quickSort2(arr, i + 1, right);
     }
-
-
-    public static void main(String[] args) {
-
-    }
-
  }

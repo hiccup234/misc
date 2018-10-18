@@ -28,7 +28,9 @@ public class SortTest {
 //        InsertionSort.sort(data, data.length);
 //        SelectSort.sort(data, data.length);
 //        RadixSort.sort(data, data.length);
-        RadixSort.sort2(data, data.length);
+//        RadixSort.sort2(data, data.length);
+//        ShellSort.sort(data, data.length);
+        HeapSort.sort(data, data.length);
 
         for (int i=0; i<data.length; i++) {
             System.out.println(data[i]);
