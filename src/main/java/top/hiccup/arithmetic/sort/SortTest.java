@@ -1,5 +1,7 @@
 package top.hiccup.arithmetic.sort;
 
+import java.util.Arrays;
+
 /**
  * 排序实现方式：
  *
@@ -30,7 +32,8 @@ public class SortTest {
 //        RadixSort.sort(data, data.length);
 //        RadixSort.sort2(data, data.length);
 //        ShellSort.sort(data, data.length);
-        HeapSort.sort(data, data.length);
+//        HeapSort.sort(data, data.length);
+        MergeSort.sort(data, data.length);
 
         for (int i=0; i<data.length; i++) {
             System.out.println(data[i]);
