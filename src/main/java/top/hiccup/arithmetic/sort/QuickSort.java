@@ -1,5 +1,7 @@
 package top.hiccup.arithmetic.sort;
 
+import java.util.Random;
+
 /**
  * 快速排序：
  *
@@ -10,14 +12,14 @@ package top.hiccup.arithmetic.sort;
  * 意义：加强随机性，使得其成为一个真正的随机化算法，即使在元素全部逆序的情况下也能保持Θ(nlgn)的速度
  *
  * 【优化二】（与插入排序结合）
- * 方法：当n≤k(可能为500)时候，改用插入排序（O(n)~O(n²)）
+ * 方法：当n≤k(k)时候，改用插入排序（O(n)~O(n²)）
  * 意义：减少递归的次数，且当数组"几乎有序"时，插入排序较快
  *
  * 【优化三】（三数取中划分）
  * 方法：取三个数的中位数作为pivot
  * 意义：增大"好的划分"的概率
  *
- * 【优化四】（尾递归优化）
+ * 【优化四】（尾递归优化，编译器默认会做尾递归优化）
  * 方法：快排函数在函数尾部有两次递归操作，可以优化为一次递归，减少调用栈的深度
  * 意义：如果待排序的序列划分极端不平衡，递归的深度将趋近于n，而栈的大小是很有限的，
  *      每次递归调用都会耗费一定的栈空间，函数的参数越多，每次递归耗费的空间也越多。
@@ -30,9 +32,6 @@ public class QuickSort {
 
     /**
      * 基础快排实现
-     * @param arr
-     * @param left
-     * @param right
      */
     private static int partition(int[] arr, int left, int right) {
         int i = left, j = right;
@@ -65,31 +64,40 @@ public class QuickSort {
     }
 
     /**
-     * 快排实现优化一
-     * @param arr
-     * @param left
-     * @param right
+     * 快排实现优化一：随机化快排
      */
+    private static int randPartition(int[] arr, int left, int right) {
+        int i = left, j = right;
+        Random random = new Random();
+        int pivot = random.nextInt(right)%(right - left) + left;
+        swap(arr, left, pivot);
+        return partition(arr, left, right);
+    }
     public static void quickSortImprove(int[] arr, int left, int right) {
         if (left >= right) {
             return ;
         }
-        int i = left, j = right;
-        int temp = arr[left];
-        while (i < j) {
-            while (i < j && temp <= arr[j]) {
-                j--;
-            }
-            arr[i] = arr[j];
-            while (i < j && temp >= arr[i]) {
-                i++;
-            }
-            arr[j] = arr[i];
-        }
-        arr[i] = temp;
-        quickSortImprove(arr, left, i - 1);
-        quickSortImprove(arr, i + 1, right);
+        int pivot = randPartition(arr, left, right);
+        quickSortImprove(arr, left, pivot - 1);
+        quickSortImprove(arr, pivot + 1, right);
     }
+
+    /**
+     * 快排实现优化二：插入排序 + 随机化快排
+     */
+    public static void quickSortImprove2(int[] arr, int left, int right) {
+        if (left >= right) {
+            return ;
+        }
+        if (right - left < 7) {
+            InsertionSort.sort(arr, left, right);
+            return ;
+        }
+        int pivot = randPartition(arr, left, right);
+        quickSortImprove2(arr, left, pivot - 1);
+        quickSortImprove2(arr, pivot + 1, right);
+    }
+
 
     private static void swap(int []arr,int a, int b){
         int temp = arr[a];

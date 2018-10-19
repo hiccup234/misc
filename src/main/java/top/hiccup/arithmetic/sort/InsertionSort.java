@@ -10,8 +10,8 @@ package top.hiccup.arithmetic.sort;
  */
 public class InsertionSort {
 
-    public static void sort(int[] arr, int n) {
-         for (int i=1; i<n; i++) {
+    public static void sort(int[] arr, int left, int right) {
+         for (int i=left+1; i<=right; i++) {
             int temp = arr[i];
             int j = i;
             // 这里直接跟arr[i]做比较，而不是arr[j]与arr[j-1]比较，

@@ -24,8 +24,8 @@ public class SortTest {
 
     public static void main(String[] args) {
         int[] data = {9,275,12,6,45,999,41,12306,456,12,532,89};
-        BubbleSort.sortImprove(data, data.length);
-//        InsertionSort.sort(data, data.length);
+//        BubbleSort.sortImprove(data, data.length);
+//        InsertionSort.sort(data, 0, data.length-1);
 //        SelectSort.sort(data, data.length);
 //        RadixSort.sort(data, data.length);
 //        RadixSort.sort2(data, data.length);
@@ -33,6 +33,7 @@ public class SortTest {
 //        HeapSort.sort(data, data.length);
 //        MergeSort.sort(data, data.length);
 //        QuickSort.quickSort(data, 0, data.length-1);
+        QuickSort.quickSortImprove2(data, 0, data.length-1);
 
         for (int i=0; i<data.length; i++) {
             System.out.println(data[i]);
