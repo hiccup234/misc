@@ -1,7 +1,7 @@
 package top.hiccup.arithmetic.sort;
 
 /**
- * 冒泡排序
+ * 冒泡排序：
  *
  * @author wenhy
  * @date 2018/10/9
@@ -9,14 +9,11 @@ package top.hiccup.arithmetic.sort;
 public class BubbleSort {
 
     public static void sort(int[] arr, int n) {
-        int temp;
         for (int i=0; i<n; i++) {
             // 这里需要注意边界问题，已经冒过就不用再遍历了
             for (int j=0; j<n-i-1; j++) {
                 if (arr[j] > arr[j+1]) {
-                    temp = arr[j+1];
-                    arr[j+1] = arr[j];
-                    arr[j] = temp;
+                    swap(arr, j, j+1);
                 }
             }
         }
@@ -28,15 +25,12 @@ public class BubbleSort {
      * @param n
      */
     public static void sortImprove(int[] arr, int n) {
-        int temp;
         boolean flag;
         for (int i=0; i<n; i++) {
             flag = true;
             for (int j=0; j<n-i-1; j++) {
                 if (arr[j] > arr[j+1]) {
-                    temp = arr[j+1];
-                    arr[j+1] = arr[j];
-                    arr[j] = temp;
+                    swap(arr, j, j+1);
                     flag = false;
                 }
             }
@@ -44,5 +38,11 @@ public class BubbleSort {
                 break;
             }
         }
+    }
+
+    private static void swap(int []arr,int a, int b){
+        int temp = arr[a];
+        arr[a] = arr[b];
+        arr[b] = temp;
     }
 }
