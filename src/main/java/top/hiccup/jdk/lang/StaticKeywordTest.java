@@ -1,7 +1,7 @@
 package top.hiccup.jdk.lang;
 
 /**
- * 4.静态导入，可以导入静态字段和方法
+ * 4.静态导入，可以导入静态字段和静态方法
  */
 import static top.hiccup.jdk.lang.CreateObjectTest.Foo;
 import static top.hiccup.jdk.lang.CreateObjectTest.main;
@@ -29,11 +29,11 @@ public class StaticKeywordTest {
     /**
      * 3.修饰方法
      */
-    private static void f() { }
+    static void f() { }
 
     private Foo foo = new Foo();
     static {
+        // 静态导入，可以导入静态字段和静态方法
         main(null);
     }
-
 }

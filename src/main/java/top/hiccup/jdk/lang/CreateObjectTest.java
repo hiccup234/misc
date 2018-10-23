@@ -73,5 +73,4 @@ public class CreateObjectTest {
             e.printStackTrace();
         }
     }
-
 }
