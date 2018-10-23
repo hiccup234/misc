@@ -33,7 +33,9 @@ public class SortTest {
 //        HeapSort.sort(data, data.length);
 //        MergeSort.sort(data, data.length);
 //        QuickSort.quickSort(data, 0, data.length-1);
-        QuickSort.quickSortImprove2(data, 0, data.length-1);
+//        QuickSort.quickSortImprove(data, 0, data.length-1);
+//        QuickSort.quickSortImprove2(data, 0, data.length-1);
+        QuickSort.quickSortImprove3(data, 0, data.length-1);
 
         for (int i=0; i<data.length; i++) {
             System.out.println(data[i]);

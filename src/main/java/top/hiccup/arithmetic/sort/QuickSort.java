@@ -16,10 +16,14 @@ import java.util.Random;
  * 意义：减少递归的次数，且当数组"几乎有序"时，插入排序较快
  *
  * 【优化三】（三数取中划分）
- * 方法：取三个数的中位数作为pivot
- * 意义：增大"好的划分"的概率
+ * 方法：取数组的left,mid,right三个数的中位数作为pivot
+ * 意义：增大"好的划分"的概率，最佳的划分是将待排序的序列分成等长的子序列，最佳的状态我们可以使用序列的中间的值，也就是第N/2个数。
  *
- * 【优化四】（尾递归优化，编译器默认会做尾递归优化）
+ * 【优化四】（聚集重复元素）
+ * 方法：
+ * 意义：
+ *
+ * 【优化五】（尾递归优化，编译器默认会做尾递归优化）
  * 方法：快排函数在函数尾部有两次递归操作，可以优化为一次递归，减少调用栈的深度
  * 意义：如果待排序的序列划分极端不平衡，递归的深度将趋近于n，而栈的大小是很有限的，
  *      每次递归调用都会耗费一定的栈空间，函数的参数越多，每次递归耗费的空间也越多。
@@ -98,6 +102,50 @@ public class QuickSort {
         quickSortImprove2(arr, pivot + 1, right);
     }
 
+    /**
+     * 快排实现优化三：三数取中 + 插入排序
+     */
+    private static int medianPartition(int[] arr, int left, int right) {
+        int median = left + (left+right)/2;
+        if (arr[median] > arr[right]) {
+            swap(arr, median, right);
+        }
+        if (arr[left] > arr[right]) {
+            swap(arr, left, right);
+        }
+        if (arr[left] > arr[median]) {
+            swap(arr, left, median);
+        }
+        return partition(arr, left, right);
+    }
+    public static void quickSortImprove3(int[] arr, int left, int right) {
+        if (left >= right) {
+            return ;
+        }
+        if (right - left < 7) {
+            InsertionSort.sort(arr, left, right);
+            return ;
+        }
+        int pivot = medianPartition(arr, left, right);
+        quickSortImprove3(arr, left, pivot - 1);
+        quickSortImprove3(arr, pivot + 1, right);
+    }
+
+    /**
+     * 快排实现优化四：聚集重复元素
+     */
+    public static void quickSortImprove4(int[] arr, int left, int right) {
+        if (left >= right) {
+            return ;
+        }
+        if (right - left < 7) {
+            InsertionSort.sort(arr, left, right);
+            return ;
+        }
+        int pivot = medianPartition(arr, left, right);
+        quickSortImprove4(arr, left, pivot - 1);
+        quickSortImprove4(arr, pivot + 1, right);
+    }
 
     private static void swap(int []arr,int a, int b){
         int temp = arr[a];
