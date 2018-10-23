@@ -8,13 +8,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
- * Created by wenhy on 2018/1/6.
+ * 模拟实现Master-Worker设计模式
+ *
+ * @author wenhy
+ * @date 2018/1/6
  */
 public class MockMasterWorkerSchema {
 
-    /**
-     * 模式实现Master-Worker设计模式
-     */
     public static void main(String[] args) throws InterruptedException {
         Master master = new Master();
         Worker worker = new Worker(master);

@@ -1,13 +1,13 @@
 package top.hiccup.schema.design;
 
 /**
- * Created by wenhy on 2018/1/6.
+ * 模拟实现Future设计模式
+ *
+ * @author wenhy
+ * @date 2018/1/6
  */
 public class MockFutureSchema {
 
-    /**
-     * 模拟实现Future设计模式
-     */
     public static void main(String[] args) throws InterruptedException {
         FutureClient fc = new FutureClient();
         FutureData futureData = fc.sendRequest("发送请求");

@@ -21,7 +21,7 @@ public class OpenClosePrinciple {
 
     /**
      * 对扩展不友好的写法：直接用if else判断
-    * @param user
+     * @param user
      * @param <T>
      */
     public <T extends User> void service(T user) {
