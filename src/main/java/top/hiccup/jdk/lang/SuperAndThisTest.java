@@ -29,6 +29,7 @@ class B extends A {
     }
 
     B(String str) {
+        // 构造器里面this()和super()只能二选一
         this();
 //        super();
         System.out.println(str);
