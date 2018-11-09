@@ -1,8 +1,8 @@
 package top.hiccup.jdk.lang;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Vector;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * String类相关方法的测试
@@ -12,78 +12,42 @@ import java.util.Vector;
  */
 public class StringTest {
 
-
-
-    public static String[] split(String strInfo, String strSplit) {
-        //第1步计算数组大小
-        int size    = 0;
+    public static String[] split(String str, String split) {
+        // 第一步计算返回结果数组大小
+        int size = 0;
         int index = 0;
         do{
             size++;
             index++;
-            index = strInfo.indexOf(strSplit ,index);
-        }while(index!=-1);
-        String[] arrRtn    = new String[size]; //返回数组
-        //-------------------------------------------------------
-        //第2步给数组赋值(25行程序)
+            index = str.indexOf(split, index);
+        }while(index != -1);
+        // 返回的数组
+        String[] retArr = new String[size];
         int startIndex = 0;
-        int endIndex     = 0;
-        for(int i = 0; i < size; i++){
-            endIndex = strInfo.indexOf(strSplit, startIndex);
-            if(endIndex == -1) {
-                arrRtn[i] = strInfo.substring(startIndex);
+        int endIndex = 0;
+        for(int i=0; i<size; i++){
+            endIndex = str.indexOf(split, startIndex);
+            if (endIndex == -1) {
+                retArr[i] = str.substring(startIndex);
             } else {
-                arrRtn[i] = strInfo.substring(startIndex, endIndex);
+                retArr[i] = str.substring(startIndex, endIndex);
             }
             startIndex = endIndex+1;
         }
-        return arrRtn;
+        return retArr;
     }
+
 
     /**
-     * 分割字符串
-     *
-     * @param util
-     *            要分割的字符串
-     * @param split
-     *            分割点
-     * @return
+     * 面试问题
      */
-    public static String[] split2(String util, String split) {
-        String splits[] = null;
-        Vector vector = new Vector();
-        int startIndex = 0;// 字符串的起始位置
-        int index = 0;// 存取字符串时起始位置
-        startIndex = util.indexOf(split);// 获得匹配字符串的位置
-        // 如果起始字符串的位置小于字符串的长度，则证明没有取到字符串末尾 -1代表末尾
-        while (startIndex < util.length() & startIndex != -1) {
-            String temp = util.substring(index, startIndex);
-            vector.addElement(temp);
-            // 设置取字串的起始位置
-            index = startIndex + split.length();
-            // 获得匹配字串的位置
-            startIndex = util.indexOf(split, startIndex + split.length());
-
-        }
-        // 取结束的子串
-        vector.addElement(util.substring(index + 1 - split.length()));
-        // 将VECTOR对象转换成数组
-        splits = new String[vector.size()];
-        for (int i = 0; i < splits.length; i++) {
-            splits[i] = (String) vector.elementAt(i);
-        }
-        return splits;
-    }
-
-
-
     public static String[] split3(String s, char split, boolean preToken) {
         if (null == s) {
             return null;
         }
         char[] chars = s.toCharArray();
         char[] temp = new char[chars.length];
-        ArrayList<String> list = new ArrayList<>();
+        List<String> list = new LinkedList<>();
         int index = 0;
         for (char c : chars) {
             if (c == split) {
