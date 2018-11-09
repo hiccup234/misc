@@ -12,7 +12,7 @@ import static top.hiccup.jdk.lang.CreateObjectTest.main;
  * @author wenhy
  * @date 2018/9/19
  */
-public class StaticKeywordTest {
+public class StaticTest {
 
     /**
      * 1.修饰成员变量
