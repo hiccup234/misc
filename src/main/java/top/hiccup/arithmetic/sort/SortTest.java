@@ -17,6 +17,11 @@ package top.hiccup.arithmetic.sort;
  *
  * 5.归并排序、桶排序、基数排序
  *
+ * 时间复杂度为O(n)的排序，常见的有三种：
+ * 基数排序(Radix Sort)
+ * 计数排序(Counting Sort)
+ * 桶排序(Bucket Sort)
+ *
  * @author wenhy
  * @date 2018/9/26
  */
