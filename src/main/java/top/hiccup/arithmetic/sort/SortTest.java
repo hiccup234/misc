@@ -35,8 +35,9 @@ public class SortTest {
 //        QuickSort.quickSort(data, 0, data.length-1);
 //        QuickSort.quickSortImprove(data, 0, data.length-1);
 //        QuickSort.quickSortImprove2(data, 0, data.length-1);
-        QuickSort.quickSortImprove3(data, 0, data.length-1);
+//        QuickSort.quickSortImprove3(data, 0, data.length-1);
 
+        PerfectSort.sort(data, 0, 11);
         for (int i=0; i<data.length; i++) {
             System.out.println(data[i]);
         }
