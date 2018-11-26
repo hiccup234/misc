@@ -1,16 +1,16 @@
-package top.hiccup.jdk.lang;
+package top.hiccup.jdk.lang.string;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 /**
- * String类相关方法的测试
+ * String类split方法的测试
  *
  * @author wenhy
  * @date 2018/11/7
  */
-public class StringTest {
+public class SplitTest {
 
     public static String[] split(String str, String split) {
         // 第一步计算返回结果数组大小
