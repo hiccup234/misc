@@ -122,16 +122,44 @@ public class GroupCoverTest {
                         break;
                     }
                 }
-
             }
         }
     }
 
     /**
      * 2、染色法
-     * “排序之后相同的元素会相邻”，就是一次性找出所有可合并集合的关键，这是染色法的核心
+     * 把每个集合染上不同的颜色，然后对所有元素做排序（基数排序？），
+     * 排序之后相同的元素会相邻，且颜色必定不相同，就可以一次性找出所有可合并的集合，这是染色法的核心
+     * 这里有个问题就是：如何通过元素找到其所在的集合
      */
+    class Node {
+        int val;
+        Set set;
+        public Node(int val, Set set) {
+            this.val = val;
+            this.set = set;
+        }
+    }
     public static void dyeing() {
+        // 准备数据
+        long startTime = System.currentTimeMillis();
+        groups[0] = new HashSet<>();
+        groups[0].add(1);
+        groups[0].add(5);
+        groups[0].add(13);
+        groups[0].add(9);
+        groups[1] = new HashSet<>();
+        groups[1].add(1);
+        groups[1].add(2);
+        groups[1].add(6);
+        groups[2] = new HashSet<>();
+        groups[2].add(45);
+        groups[3] = new HashSet<>();
+        groups[3].add(66);
+        groups[3].add(23);
+        groups[4] = new HashSet<>();
+        groups[4].add(66);
+        groups[4].add(99);
 
     }
 
@@ -146,6 +174,4 @@ public class GroupCoverTest {
         }
         System.out.println("总计耗时：" + (System.currentTimeMillis() - startTime));
     }
-
-
 }
