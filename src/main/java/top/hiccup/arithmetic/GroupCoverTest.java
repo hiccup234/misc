@@ -132,7 +132,7 @@ public class GroupCoverTest {
      * 排序之后相同的元素会相邻，且颜色必定不相同，就可以一次性找出所有可合并的集合，这是染色法的核心
      * 这里有个问题就是：如何通过元素找到其所在的集合
      */
-    class Node {
+    static class Node {
         int val;
         Set set;
         public Node(int val, Set set) {
@@ -143,23 +143,24 @@ public class GroupCoverTest {
     public static void dyeing() {
         // 准备数据
         long startTime = System.currentTimeMillis();
+        Set<Node>[] groups = new Set[groupSize];
         groups[0] = new HashSet<>();
-        groups[0].add(1);
-        groups[0].add(5);
-        groups[0].add(13);
-        groups[0].add(9);
+        groups[0].add(new Node(1, groups[0]));
+        groups[0].add(new Node(5, groups[0]));
+        groups[0].add(new Node(13, groups[0]));
+        groups[0].add(new Node(9, groups[0]));
         groups[1] = new HashSet<>();
-        groups[1].add(1);
-        groups[1].add(2);
-        groups[1].add(6);
+        groups[1].add(new Node(1, groups[1]));
+        groups[1].add(new Node(2, groups[1]));
+        groups[1].add(new Node(6, groups[1]));
         groups[2] = new HashSet<>();
-        groups[2].add(45);
+        groups[2].add(new Node(45, groups[2]));
         groups[3] = new HashSet<>();
-        groups[3].add(66);
-        groups[3].add(23);
+        groups[3].add(new Node(55, groups[3]));
+        groups[3].add(new Node(23, groups[3]));
         groups[4] = new HashSet<>();
-        groups[4].add(66);
-        groups[4].add(99);
+        groups[4].add(new Node(66, groups[4]));
+        groups[4].add(new Node(99, groups[4]));
 
     }
 
