@@ -126,6 +126,7 @@ public class GroupCoverTest {
         }
     }
 
+
     /**
      * 2、染色法
      * 把每个集合染上不同的颜色，然后对所有元素做排序（基数排序？），
@@ -138,6 +139,57 @@ public class GroupCoverTest {
         public Node(int val, Set set) {
             this.val = val;
             this.set = set;
+        }
+        @Override
+        public String toString() {
+            return String.valueOf(val);
+        }
+        @Override
+        public int hashCode() {
+            return val;
+        }
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            } else if (this.val == ((Node)o).val) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    /**
+     * 基数排序
+     * @param arr
+     */
+    public static void radixSort(Node[] arr) {
+        // 一般int采用十进制表示，这里采用二维数组定义10个桶，如果数据量特别大的话会比较浪费空间
+        int[][] buckets = new int[10][arr.length];
+        // 统计每个桶中存放的元素个数
+        int[] counts = new int[10];
+        // 先从个位开始
+        int divisor = 1;
+        // 一个int的取值范围为-2^31~2^31-1（-2147483648~2147483647）对应10个基，需要循环10趟
+        for (int i=0; i<10; i++) {
+            // 第一步：遍历元素，放入对应的桶
+            for (int j=0; j<arr.length; j++) {
+                int radix = (arr[j].val/divisor)%10;
+                buckets[radix][counts[radix]++] = arr[j].val;
+            }
+            // 第二步：遍历桶，放回数组，先入桶的先出桶（很重要）
+            int index = 0;
+            for (int k=0; k<10; k++) {
+                if (counts[k] == 0) {
+                    continue;
+                }
+                for (int m=0; m<counts[k]; m++) {
+                    arr[index++].val = buckets[k][m];
+                }
+                // 桶中所有元素已经全部取出来了，记得要把基数归0
+                counts[k] = 0;
+            }
+            divisor *= 10;
         }
     }
     public static void dyeing() {
@@ -162,17 +214,52 @@ public class GroupCoverTest {
         groups[4].add(new Node(66, groups[4]));
         groups[4].add(new Node(99, groups[4]));
 
-    }
-
-    public static void main(String[] args) {
-        long startTime = System.currentTimeMillis();
-        violence();
+        int arrLength = 0;
+        for (Set<Node> set : groups) {
+            arrLength += set.size();
+        }
+        Node[] arr = new Node[arrLength];
+        int index = 0;
+        for (Set<Node> set : groups) {
+            for (Node node : set) {
+                arr[index++] = node;
+            }
+        }
+        radixSort(arr);
+        Node fristNode = arr[0];
+        for (int i=1; i<arr.length; i++) {
+            if (arr[i].val == fristNode.val) {
+                fristNode.set.addAll(arr[i].set);
+                arr[i] = null;
+            } else {
+                fristNode = arr[i];
+            }
+        }
+        //
         System.out.println("算法耗时：" + (System.currentTimeMillis() - startTime));
         for (Set g : groups) {
             if (null != g) {
                 System.out.println(g);
             }
         }
-        System.out.println("总计耗时：" + (System.currentTimeMillis() - startTime));
+    }
+
+
+
+    public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+        // 1.暴力法
+//        violence();
+//        System.out.println("算法耗时：" + (System.currentTimeMillis() - startTime));
+//        for (Set g : groups) {
+//            if (null != g) {
+//                System.out.println(g);
+//            }
+//        }
+//        System.out.println("总计耗时：" + (System.currentTimeMillis() - startTime));
+
+        // 2.染色法
+        dyeing();
+
     }
 }
