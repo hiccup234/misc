@@ -103,7 +103,9 @@ import sun.misc.SharedSecrets;
  * @see     Vector
  * @since   1.2
  *
- * TODO 参考JDK1.8（相对1.7主要修改了容器初始化容量，做了懒加载）
+ *
+ * TODO 参考JDK1.8
+ * 相对1.7主要修改了容器初始化容量，做了懒加载
  */
 
 public class ArrayList<E> extends AbstractList<E>
@@ -133,7 +135,9 @@ public class ArrayList<E> extends AbstractList<E>
      * The capacity of the ArrayList is the length of this array buffer. Any
      * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
      * will be expanded to DEFAULT_CAPACITY when the first element is added.
-	 * TODO 这里去掉了private
+     *
+	 * TODO 相对于1.7这里去掉了private，方便子类访问
+     * 注意transient修饰符，重写了序列化的writeObject和readObject方法
      */
     transient Object[] elementData; // non-private to simplify nested class access
 
@@ -164,6 +168,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Constructs an empty list with an initial capacity of ten.
+     *
 	 * TODO 默认构造器不会再直接初始化10个元素的数组
      */
     public ArrayList() {
