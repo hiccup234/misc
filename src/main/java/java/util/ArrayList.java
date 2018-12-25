@@ -103,7 +103,6 @@ import sun.misc.SharedSecrets;
  * @see     Vector
  * @since   1.2
  *
- *
  * TODO 参考JDK1.8
  * 相对1.7主要修改了容器初始化容量，做了懒加载
  */
