@@ -16,23 +16,23 @@ public class SplitTest {
         // 第一步计算返回结果数组大小
         int size = 0;
         int index = 0;
-        do{
+        do {
             size++;
             index++;
             index = str.indexOf(split, index);
-        }while(index != -1);
+        } while (index != -1);
         // 返回的数组
         String[] retArr = new String[size];
         int startIndex = 0;
         int endIndex = 0;
-        for(int i=0; i<size; i++){
+        for (int i = 0; i < size; i++) {
             endIndex = str.indexOf(split, startIndex);
             if (endIndex == -1) {
                 retArr[i] = str.substring(startIndex);
             } else {
                 retArr[i] = str.substring(startIndex, endIndex);
             }
-            startIndex = endIndex+1;
+            startIndex = endIndex + 1;
         }
         return retArr;
     }
@@ -79,13 +79,13 @@ public class SplitTest {
         System.out.println(Arrays.toString(s.split("#")));
 
         long start = System.currentTimeMillis();
-        for (int i=0; i<50_000_000; i++) {
+        for (int i = 0; i < 50_000_000; i++) {
             split3(s, '#', false);
         }
-        System.out.println("fff"+(System.currentTimeMillis() - start));
+        System.out.println("fff" + (System.currentTimeMillis() - start));
 
         start = System.currentTimeMillis();
-        for (int i=0; i<50_000_000; i++) {
+        for (int i = 0; i < 50_000_000; i++) {
             s.split("#");
         }
         System.out.println(System.currentTimeMillis() - start);
