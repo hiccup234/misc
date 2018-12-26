@@ -15,7 +15,7 @@ package top.hiccup.jdk.lang.string;
 public class StringBuilderAndBufferTest {
 
     /**
-     * javac StringConcat.java
+     * javac -encoding utf-8 StringConcat.java
      * 再javap -v StringConcat.class查看反编译后的结果
      */
     public static void main(String[] args) {
@@ -23,7 +23,7 @@ public class StringBuilderAndBufferTest {
         // 编译器会直接优化成 “aabbccdd”
         String strByConcat = "aa" + "bb" + "cc" + "dd";
         System.out.println(strByBuilder == strByConcat);
-        // 编译器会优化成 “aabbcc”，然后 new StringBuilder("aabbcc").append(new String("dd"));
+        // JDK1.8编译器会优化成 “aabbcc”，然后 new StringBuilder("aabbcc").append(new String("dd"));
         String strByConcat2 = "aa" + "bb" + "cc" + new String("dd");
         System.out.println("strByConcat2:" + strByConcat2);
     }

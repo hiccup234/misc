@@ -29,9 +29,10 @@ public class JdkProxyTest {
         IBusiService busiServiceProxy = (IBusiService) Proxy.newProxyInstance(target.getClass().getClassLoader(),
                 target.getClass().getInterfaces(),
                 new InvocationHandler() {
+                    @Override
                     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                         // 反射机制调用原对象方法逻辑
-                        String str = (String)method.invoke(target, args);
+                        String str = (String) method.invoke(target, args);
                         return str.toUpperCase();
                     }
                 });

@@ -17,9 +17,9 @@ import java.util.concurrent.ConcurrentHashMap;
  * 2.class文件格式
  * 3.JVM规范
  * 4.类加载体系
- * 5.JRE，JDK工具集
+ * 5.JRE，JDK工具集(JDK11将会取消单独的jre)
  *
- * JIT：即时编译，在Java程序运行时进行部分编译（Just in Time Compile） @VM args: -XX:+PrintCompilation
+ * JIT：即时编译，在Java程序运行时进行部分热点代码编译成本地机器码（Just in Time Compile） @VM args: -XX:+PrintCompilation
  * AOT：预编译为平台机器码，避免JIT的预热开销（Ahead of Time Compile）
  *
  * @author wenhy
@@ -28,11 +28,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class JavaPlatform {
 
     public static void main(String[] args) {
-        Map map = new ConcurrentHashMap();
-        List list = new ArrayList();
-        map = new HashMap();
-
-
         System.out.println("Hello world!");
     }
 }

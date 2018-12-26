@@ -1,8 +1,5 @@
 package top.hiccup.arithmetic.sort;
 
-import java.util.ArrayList;
-import java.util.Collections;
-
 /**
  * 桶排序(Bucket Sort)，总结：
  * 桶排序，是一种复杂度为O(n)的排序
@@ -22,5 +19,4 @@ public class BucketSort {
 
 
     }
-
 }

@@ -14,9 +14,9 @@ import java.lang.reflect.Method;
  * 　动态生成字节码，使用invoke指令来调用目标方法，动态实现效率比本地实现快20倍左右
  * 　但是因为生成字节码比较耗时，所以仅调用几次的话反而性能不好
  *
- * JVM有个参数：-Dsun.reflect.inflationThreshold=32来调整反射调用次数的阈值
- * 小于32次则采用本地实现，超过32次则采用动态实现，默认值为ReflectionFactory.inflationThreshold = 15
- *            -Dsun.reflect.noInflation=true可以关闭Inflation，使得反射一开始就采用动态实现
+ * @VM args: -Dsun.reflect.inflationThreshold=32 来调整反射调用次数的阈值
+ *        小于32次则采用本地实现，超过32次则采用动态实现，默认值为ReflectionFactory.inflationThreshold = 15
+ * @VM args: -Dsun.reflect.noInflation=true 可以关闭Inflation，使得反射一开始就采用动态实现
  *
  *
  * @author wenhy
