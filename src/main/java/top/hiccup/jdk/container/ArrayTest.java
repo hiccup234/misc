@@ -1,7 +1,7 @@
 package top.hiccup.jdk.container;
 
 /**
- * 数组元素类型要求匹配
+ * 数组元素的类型要求匹配
  *
  * @author wenhy
  * @date 2018/9/29

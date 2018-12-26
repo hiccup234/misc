@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * 5种初始化List的方式
  *
- * :: 论茴香豆的6种写法 ^_^
+ * ==> 论茴香豆的6种写法 ^_^
  *
  * @author wenhy
  * @date 2018/12/6
@@ -47,7 +47,7 @@ public class ListInitTest {
         System.out.println(list5);
 
 
-        // 6、JDK1.9 List.of
+        // 6、JDK1.9 List.of Set.of等（接口默认实现：default方法）
 //        List list6 = List.of("aa", "bb", "cc");
 //        System.out.println(list6);
     }

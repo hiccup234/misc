@@ -3,7 +3,7 @@ package top.hiccup.jdk.container;
 import java.util.*;
 
 /**
- * 几种集合去重方法
+ * 几种集合去重的方法
  *
  * @author wenhy
  * @date 2018/1/3
