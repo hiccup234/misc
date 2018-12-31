@@ -10,7 +10,7 @@ import java.util.List;
  * @author wenhy
  * @date 2018/11/7
  */
-public class SplitTest {
+public class SplitStringTest {
 
     public static String[] split(String str, String split) {
         // 第一步计算返回结果数组大小

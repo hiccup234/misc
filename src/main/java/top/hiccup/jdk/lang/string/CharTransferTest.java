@@ -8,7 +8,7 @@ package top.hiccup.jdk.lang.string;
  * @author wenhy
  * @date 2018/11/26
  */
-public class TransferTest {
+public class CharTransferTest {
 
     public static void transfer() {
         String str = "ABC123abcfadfjbJ##BHJHJDsa##";
