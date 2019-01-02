@@ -1,7 +1,7 @@
 package top.hiccup.jdk.lang.string;
 
 /**
- * 重载的 + 与 concat 的区别：
+ * 重载的 + 与 concat 方法的区别：
  *
  * 1、+ 可以是字符串或者数字及其他基本类型数据，而concat只能接收字符串。
  * 2、+ 左右可以为null，concat为会空指针。

@@ -7,7 +7,8 @@ package top.hiccup.jdk.lang.string;
  *
  * 2、JDK1.8已经对String的“+”做了优化，javac会自动优化为StringBuilder的操作。
  *
- * 3、JDK1.9对String做出了巨大改动，底层存储的数据结构有char[]改为了byte[]
+ * 3、JDK1.9对String做出了巨大改动，底层存储的数据结构由char[]改为了byte[]
+ *   （大部分西欧字符均可由一个字节编码，而char是两个字节存储，所以底层采用char[]会造成较大的空间浪费）
  *
  * @author wenhy
  * @date 2018/12/25

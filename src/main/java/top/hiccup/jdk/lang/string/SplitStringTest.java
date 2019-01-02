@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * String类split方法的测试
+ * String类split方法的测试类
  *
  * @author wenhy
  * @date 2018/11/7
