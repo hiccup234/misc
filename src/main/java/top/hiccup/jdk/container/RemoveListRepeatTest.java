@@ -8,7 +8,7 @@ import java.util.*;
  * @author wenhy
  * @date 2018/1/3
  */
-public class RemoveListRepeat {
+public class RemoveListRepeatTest {
 
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();

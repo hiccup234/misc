@@ -6,7 +6,7 @@ package top.hiccup.jdk.container;
  * @author wenhy
  * @date 2018/9/29
  */
-public class ArrayTest {
+public class ArrayElementTypeTest {
 
     public static void main(String[] args) {
         String[] arr = {"aaa"};
