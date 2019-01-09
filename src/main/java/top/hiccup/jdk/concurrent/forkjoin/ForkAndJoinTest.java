@@ -11,7 +11,7 @@ import java.util.concurrent.RecursiveTask;
  * 为了实现工作窃取，在工作线程中维护了双端队列，窃取任务线程从队尾获取任务，被窃取任务线程从队头获取任务。
  * 这种机制充分利用线程进行并行计算，减少了线程竞争。但是当队列中只存在一个任务了时，两个线程去取反而会造成资源浪费。
  *
- * Fork/Join框架中实际执行任务的类，有以下两种实现，一般继承这两种实现类即可（类似Runable和Callable）
+ * Fork/Join框架中实际执行任务的类，有以下两种实现，一般继承这两种实现类即可（类似Runnable和Callable）
  *  1、RecursiveAction：用于无结果返回的子任务。
  *  2、RecursiveTask：用于有结果返回的子任务。
  *

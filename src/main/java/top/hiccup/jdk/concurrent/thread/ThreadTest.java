@@ -1,4 +1,4 @@
-package top.hiccup.jdk.concurrent;
+package top.hiccup.jdk.concurrent.thread;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,14 +6,14 @@ import java.util.List;
 /**
  * 【并发】
  * Concurrency，即一段时间内多个任务在执行，但不一定是同时在执行，它们可能是交替在运行，也有可能是串行运行的。
- * <p>
+ *
  * 【并行】
  * Parallelism，多个任务在同时执行，单核CPU不会有并行操作，因为一个CPU一次只能执行一条指令，并行操作只存在于多核CPU中。
  *
  * @author wenhy
  * @date 2017/12/23
  */
-public class ThreadMain {
+public class ThreadTest {
 
     /**
      * volatile关键字保证线程间的可见性
@@ -24,7 +24,7 @@ public class ThreadMain {
 //    private static List list = new ArrayList();
 
     public static void main(String[] args) {
-        final ThreadMain list1 = new ThreadMain();
+        final ThreadTest list1 = new ThreadTest();
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {

@@ -11,7 +11,7 @@ public class InterruptThreadTest {
     public static void test1() {
         Thread t = new Thread(() -> {
             while (true) {
-                System.out.println("haha");
+                System.out.println("hahaha");
             }
         });
         t.start();
@@ -22,7 +22,7 @@ public class InterruptThreadTest {
     public static void test2() {
         Thread t = new Thread(() -> {
             while (true) {
-                System.out.println("haha");
+                System.out.println("hahaha");
                 if (Thread.currentThread().isInterrupted()) {
                     System.out.println("子线程结束");
                     return ;
@@ -41,7 +41,7 @@ public class InterruptThreadTest {
     public static void test3() {
         Thread t = new Thread(() -> {
             while (true) {
-                System.out.println("haha");
+                System.out.println("hahaha");
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
@@ -72,7 +72,7 @@ public class InterruptThreadTest {
     public static void test4() {
         Thread t = new Thread(() -> {
             while (true) {
-                System.out.println("haha");
+                System.out.println("hahaha");
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {
