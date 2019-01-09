@@ -5,13 +5,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Semaphore;
 
 /**
- * Created by wenhy on 2018/1/8.
+ * Semaphore使用示例
+ *
+ * @author wenhy
+ * @date 2018/1/8
  */
-public class UseSemaphore {
+public class SemaphoreTest {
 
-    /**
-     * Semaphore使用示例
-     */
     public static void main(String[] args) {
         // 线程池
         ExecutorService exec = Executors.newCachedThreadPool();
@@ -21,6 +21,7 @@ public class UseSemaphore {
         for (int index = 0; index < 20; index++) {
             final int NO = index;
             Runnable run = new Runnable() {
+                @Override
                 public void run() {
                     try {
                         // 获取许可
@@ -38,11 +39,11 @@ public class UseSemaphore {
         }
 
         try {
-            Thread.sleep(10);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //System.out.println(semp.getQueueLength());
+        System.out.println(semp.getQueueLength());
         // 退出线程池
         exec.shutdown();
     }

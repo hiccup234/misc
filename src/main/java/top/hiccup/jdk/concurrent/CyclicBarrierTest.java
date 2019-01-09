@@ -8,9 +8,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by wenhy on 2018/1/7.
+ * 使用CyclicBarrier的场景：多个运动员准备就绪后就开始跑
+ * 有点类似Thread的fork/join方法
+ *
+ * @author wenhy
+ * @date 2018/1/7
  */
-public class UseCyclicBarrier {
+public class CyclicBarrierTest {
 
     /**
      * 使用CyclicBarrier的场景：多个运动员准备就绪后就开始跑
