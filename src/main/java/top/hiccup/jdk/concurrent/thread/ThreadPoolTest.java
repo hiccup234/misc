@@ -46,6 +46,7 @@ public class ThreadPoolTest {
 
         // 4、缓冲线程池，核心线程数为0，工作队列为SynchronousQueue（直接提交队列，不会阻塞线程）
         ExecutorService threadPool4 = Executors.newCachedThreadPool();
+
         // 5、调度线程池，按一定的周期执行任务（定时任务），工作队列为DelayedWorkQueue
         ExecutorService threadPool5 = Executors.newScheduledThreadPool(8);
 
