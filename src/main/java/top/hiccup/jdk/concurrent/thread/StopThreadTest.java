@@ -3,11 +3,11 @@ package top.hiccup.jdk.concurrent.thread;
 /**
  * 如何停止一个线程？
  *
- * 1.stop方法：stop会释放目标线程的锁并强制终止目标线程（可能会造成数据一致性问题），已被标记为@Deprecated
+ * 1.stop方法：stop会释放目标线程的锁并强制终止目标线程，可能会造成数据一致性问题（类似kill - 9），已被标记为@Deprecated
  *
  * 2.利用volatile变量来控制目标线程的运行
  *
- * 3.interrupt方法：利用线程中断来停止目标线程
+ * 3.interrupt方法：利用线程中断来停止目标线程（kill - 15）
  *
  * @author wenhy
  * @date 2018/9/22
