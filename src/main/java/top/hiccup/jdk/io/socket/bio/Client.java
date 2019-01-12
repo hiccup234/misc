@@ -27,7 +27,6 @@ public class Client {
             out = new PrintWriter(socket.getOutputStream(), true);
             // 向服务器端发送数据
             out.println("你好服务器..");
-            out.println("你好服务器2..");
             String response = in.readLine();
             System.out.println("Client接收到:" + response);
         } catch (Exception e) {
