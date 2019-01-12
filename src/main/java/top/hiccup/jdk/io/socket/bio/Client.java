@@ -32,21 +32,21 @@ public class Client {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(in != null){
+            if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(out != null){
+            if (out != null) {
                 try {
                     out.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if(socket != null){
+            if (socket != null) {
                 try {
                     // 客户端socket记得也要关闭
                     socket.close();

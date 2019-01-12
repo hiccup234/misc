@@ -4,7 +4,7 @@ import java.nio.IntBuffer;
 
 /**
  * NIO缓冲区：Buffer
- *
+ * <p>
  * 常用Buffer：ByteBuffer
  *
  * @author wenhy
@@ -12,9 +12,9 @@ import java.nio.IntBuffer;
  */
 public class BufferTest {
 
-	public static void main(String[] args) {
-		// 1、基本操作
-		// 创建指定长度的缓冲区（IntBuffer是abstract的）
+    public static void main(String[] args) {
+        // 1、基本操作
+        // 创建指定长度的缓冲区（IntBuffer是abstract的）
 //		IntBuffer buf = IntBuffer.allocate(10);
 //		buf.put(13);// position位置：0 - > 1
 //		buf.put(21);// position位置：1 - > 2
@@ -36,12 +36,12 @@ public class BufferTest {
 //		}
 //		System.out.println("buf对象遍历之后为: " + buf + "\n\n");
 //
-		
-		// 2 wrap方法使用
-		/**
-		 * wrap方法会包裹一个数组: 一般这种用法不会先初始化缓存对象的长度，因为没有意义，最后还会被wrap所包裹的数组覆盖掉。
-		 * 并且wrap方法修改缓冲区对象的时候，数组本身也会跟着发生变化。
-		 */
+
+        // 2 wrap方法使用
+        /**
+         * wrap方法会包裹一个数组: 一般这种用法不会先初始化缓存对象的长度，因为没有意义，最后还会被wrap所包裹的数组覆盖掉。
+         * 并且wrap方法修改缓冲区对象的时候，数组本身也会跟着发生变化。
+         */
 //		int[] arr = new int[]{1,2,5};
 //		IntBuffer buf1 = IntBuffer.wrap(arr);
 //		System.out.println(buf1);
@@ -50,27 +50,27 @@ public class BufferTest {
 //		System.out.println(buf2 + "\n\n");
 
 
-		// 3 其他方法
-		IntBuffer buf3 = IntBuffer.allocate(10);
-		int[] arr3 = new int[]{1,2,5};
-		buf3.put(arr3);
-		System.out.println("buf3" + buf3);
-		//一种复制方法
-		IntBuffer buf4 = buf3.duplicate();
-		System.out.println("buf4" + buf4);
-		
-		//设置buf1的位置属性
-		//buf1.position(0);
-		buf3.flip();
-		System.out.println(buf3);
-		
-		System.out.println("可读数据为：" + buf3.remaining());
-		
-		int[] arr33 = new int[buf3.remaining()];
-		//将缓冲区数据放入arr2数组中去
-		buf3.get(arr33);
-		for(int i : arr33){
-			System.out.print(Integer.toString(i) + ",");
-		}
-	}
+        // 3 其他方法
+        IntBuffer buf3 = IntBuffer.allocate(10);
+        int[] arr3 = new int[]{1, 2, 5};
+        buf3.put(arr3);
+        System.out.println("buf3" + buf3);
+        //一种复制方法
+        IntBuffer buf4 = buf3.duplicate();
+        System.out.println("buf4" + buf4);
+
+        //设置buf1的位置属性
+        //buf1.position(0);
+        buf3.flip();
+        System.out.println(buf3);
+
+        System.out.println("可读数据为：" + buf3.remaining());
+
+        int[] arr33 = new int[buf3.remaining()];
+        //将缓冲区数据放入arr2数组中去
+        buf3.get(arr33);
+        for (int i : arr33) {
+            System.out.print(Integer.toString(i) + ",");
+        }
+    }
 }

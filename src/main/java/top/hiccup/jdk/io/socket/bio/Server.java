@@ -9,7 +9,7 @@ import java.net.Socket;
 
 /**
  * 面向Socket（插座）编程简单示例：应用程序TCP/IP直连通信（进程通信）方式
- *
+ * <p>
  * Socket是位于传输层和网络层的
  *
  * @author wenhy
@@ -32,7 +32,7 @@ public class Server {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(serverSocket != null) {
+            if (serverSocket != null) {
                 try {
                     // 关闭Socket
                     serverSocket.close();
@@ -46,11 +46,11 @@ public class Server {
     }
 }
 
-class ServerHandler implements Runnable{
+class ServerHandler implements Runnable {
 
     private Socket socket = null;
 
-    public ServerHandler(Socket socket){
+    public ServerHandler(Socket socket) {
         this.socket = socket;
     }
 
@@ -63,9 +63,9 @@ class ServerHandler implements Runnable{
             in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
             out = new PrintWriter(this.socket.getOutputStream(), true);
             String body = null;
-            while(true){
+            while (true) {
                 body = in.readLine();
-                if(body == null) {
+                if (body == null) {
                     break;
                 }
                 System.out.println("Server接收到:" + body);
@@ -75,21 +75,21 @@ class ServerHandler implements Runnable{
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(in != null){
+            if (in != null) {
                 try {
                     in.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            if(out != null){
+            if (out != null) {
                 try {
                     out.close();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            if(socket != null){
+            if (socket != null) {
                 try {
                     // 监听返回的socket也要关闭
                     socket.close();

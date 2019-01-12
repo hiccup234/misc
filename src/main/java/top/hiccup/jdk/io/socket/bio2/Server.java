@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 面向Socket（插座）编程简单示例：应用程序TCP/IP直连通信（进程通信）方式
- *
+ * <p>
  * 改进：采用线程池而不是每来一个请求就创建一个线程，这样可以大幅减少操作系统创建线程带来的性能开销
  *
  * @author wenhy
@@ -23,106 +23,107 @@ import java.util.concurrent.TimeUnit;
  */
 public class Server {
 
-	private static final int PORT = 23401;
+    private static final int PORT = 23401;
 
-	public static void main(String[] args) {
-		ServerSocket server = null;
-		BufferedReader in = null;
-		PrintWriter out = null;
-		try {
-			server = new ServerSocket(PORT);
-			System.out.println("Server started..");
-			Socket socket = null;
-			// 持有一个线程池
-			ExecutorService executorService = 	new ThreadPoolExecutor(
-					// 可用处理器数
-					Runtime.getRuntime().availableProcessors(),
-					50,
-					120L,
-					TimeUnit.SECONDS,
-					new ArrayBlockingQueue<Runnable>(1000));
-			while(true){
-				socket = server.accept();
-				executorService.execute(new ServerHandler(socket));
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null){
-				try {
-					in.close();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-			if(out != null){
-				try {
-					out.close();
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-			}
-			if(server != null){
-				try {
-					server.close();
-				} catch (Exception e3) {
-					e3.printStackTrace();
-				}
-			}
-			server = null;				
-		}
-	}
+    public static void main(String[] args) {
+        ServerSocket server = null;
+        BufferedReader in = null;
+        PrintWriter out = null;
+        try {
+            server = new ServerSocket(PORT);
+            System.out.println("Server started..");
+            Socket socket = null;
+            // 持有一个线程池
+            ExecutorService executorService = new ThreadPoolExecutor(
+                    // 可用处理器数
+                    Runtime.getRuntime().availableProcessors(),
+                    50,
+                    120L,
+                    TimeUnit.SECONDS,
+                    new ArrayBlockingQueue<Runnable>(1000));
+            while (true) {
+                socket = server.accept();
+                executorService.execute(new ServerHandler(socket));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+            if (server != null) {
+                try {
+                    server.close();
+                } catch (Exception e3) {
+                    e3.printStackTrace();
+                }
+            }
+            server = null;
+        }
+    }
 }
 
 class ServerHandler implements Runnable {
 
-	private Socket socket;
-	public ServerHandler (Socket socket){
-		this.socket = socket;
-	}
+    private Socket socket;
 
-	@Override
-	public void run() {
-		BufferedReader in = null;
-		PrintWriter out = null;
-		try {
-			in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-			out = new PrintWriter(this.socket.getOutputStream(), true);
-			String body = null;
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-			while(true){
-				body = in.readLine();
-				if(body == null) {
-					break;
-				}
-				System.out.println("Server:" + body);
-				out.println(dateFormat.format(new Date()) + ":客户端你好..");
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if(in != null){
-				try {
-					in.close();
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-			}
-			if(out != null){
-				try {
-					out.close();
-				} catch (Exception e2) {
-					e2.printStackTrace();
-				}
-			}
-			if(socket != null){
-				try {
-					socket.close();
-				} catch (Exception e3) {
-					e3.printStackTrace();
-				}
-			}
-			socket = null;
-		}
-	}
+    public ServerHandler(Socket socket) {
+        this.socket = socket;
+    }
+
+    @Override
+    public void run() {
+        BufferedReader in = null;
+        PrintWriter out = null;
+        try {
+            in = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+            out = new PrintWriter(this.socket.getOutputStream(), true);
+            String body = null;
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            while (true) {
+                body = in.readLine();
+                if (body == null) {
+                    break;
+                }
+                System.out.println("Server:" + body);
+                out.println(dateFormat.format(new Date()) + ":客户端你好..");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+            if (socket != null) {
+                try {
+                    socket.close();
+                } catch (Exception e3) {
+                    e3.printStackTrace();
+                }
+            }
+            socket = null;
+        }
+    }
 }
