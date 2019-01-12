@@ -56,6 +56,5 @@ public class WaitAndSynchronizedTest {
         // 如果把start()放在这里，则main线程会一直阻塞等待下去
 //        anotherThread.start();
         System.out.println("main Thread is completed");
-
     }
 }

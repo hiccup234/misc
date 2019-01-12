@@ -1,7 +1,7 @@
 package top.hiccup.jdk.concurrent;
 
 /**
- * 一个简单的死锁案例（100%会发生死锁）
+ * 一个简单的死锁案例（100%会发生死锁，再也不怕面试官让手写死锁了）
  *
  * 如何避免死锁：
  * 1、按顺序加锁：如果线程对资源按1，2，3的顺序加锁就不会出现死锁的情况
@@ -59,6 +59,5 @@ public class DeadLockTest {
         }).start();
 
         System.out.println("main thread end");
-
     }
 }
