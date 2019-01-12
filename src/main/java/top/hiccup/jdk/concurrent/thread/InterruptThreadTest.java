@@ -3,6 +3,14 @@ package top.hiccup.jdk.concurrent.thread;
 /**
  * 线程中断测试：目标线程必须要有响应中断的逻辑
  *
+ * 1、java.lang.Thread#interrupt() 中断目标线程，给目标线程发一个中断信号，线程被打上中断标记。
+ *
+ * 2、java.lang.Thread#isInterrupted() 判断目标线程是否被中断，不会清除中断标记。
+ *
+ * 3、java.lang.Thread#interrupted()  判断目标线程是否被中断，会清除中断标记。
+ *
+ * 【注意】java.lang.Thread#sleep()抛出中断异常后会清除中断标记
+ *
  * @author wenhy
  * @date 2018/9/22
  */
@@ -79,6 +87,10 @@ public class InterruptThreadTest {
                     System.out.println("子线程休眠被中断，线程接着会不会退出呢？");
                     // 在处理异常后发起对当前线程的中断，重新设置中断标志
                     Thread.currentThread().interrupt();
+                }
+                if (Thread.interrupted()) {
+                    // interrupted()方法会清除中断标志，所以这个示例的子线程不会结束
+                    System.out.println("子线程结束?");
                 }
                 if (Thread.currentThread().isInterrupted()) {
                     System.out.println("子线程结束");
