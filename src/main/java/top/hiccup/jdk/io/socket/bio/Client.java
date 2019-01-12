@@ -29,7 +29,7 @@ public class Client {
             out.println("你好服务器..");
             out.println("你好服务器2..");
             String response = in.readLine();
-            System.out.println("Client:" + response);
+            System.out.println("Client接收到:" + response);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
