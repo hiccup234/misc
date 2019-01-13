@@ -5,15 +5,15 @@ import io.netty.channel.ChannelHandlerContext;
 
 public class ServerHandler extends ChannelHandlerAdapter{
 
-	@Override
+//	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
 	}
 
-	@Override
+//	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		Request request = (Request)msg;
-		System.out.println("Server : " + request.getId() + ", " + request.getName() + ", " + request.getRequestMessage());
+		System.out.println("NettyServer : " + request.getId() + ", " + request.getName() + ", " + request.getRequestMessage());
 		Response response = new Response();
 		response.setId(request.getId());
 		response.setName("response" + request.getId());
@@ -21,7 +21,7 @@ public class ServerHandler extends ChannelHandlerAdapter{
 		ctx.writeAndFlush(response);//.addListener(ChannelFutureListener.CLOSE);
 	}
 
-	@Override
+//	@Override
 	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 		
 	}

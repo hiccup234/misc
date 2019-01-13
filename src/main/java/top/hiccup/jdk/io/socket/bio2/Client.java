@@ -16,7 +16,7 @@ import java.util.Date;
  */
 public class Client {
 
-    private static final String ADDRESS = "127.0.0.1";
+    private static final String HOST = "127.0.0.1";
     private static final int PORT = 23401;
 
     public static void main(String[] args) {
@@ -25,7 +25,7 @@ public class Client {
             BufferedReader in = null;
             PrintWriter out = null;
             try {
-                socket = new Socket(ADDRESS, PORT);
+                socket = new Socket(HOST, PORT);
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");

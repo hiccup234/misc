@@ -31,7 +31,7 @@ public class Server {
         PrintWriter out = null;
         try {
             server = new ServerSocket(PORT);
-            System.out.println("Server started..");
+            System.out.println("NettyServer start at port: " + PORT);
             Socket socket = null;
             // 持有一个线程池
             ExecutorService executorService = new ThreadPoolExecutor(
@@ -96,7 +96,7 @@ class ServerHandler implements Runnable {
                 if (body == null) {
                     break;
                 }
-                System.out.println("Server:" + body);
+                System.out.println("NettyServer:" + body);
                 out.println(dateFormat.format(new Date()) + ":客户端你好..");
             }
         } catch (Exception e) {

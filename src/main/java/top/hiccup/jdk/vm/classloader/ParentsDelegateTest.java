@@ -3,13 +3,13 @@ package top.hiccup.jdk.vm.classloader;
 /**
  * 双亲委派模型：
  *
- * BootStrap ClassLoader(启动类加载器，用C++实现)   >> rt.jar
+ * 1.Bootrap ClassLoader(启动ClassLoader，用C++实现)，对应rt.jar 或者用启动参数-Xbootclasspath设定
  *
- * Extension ClassLoader extends ClassLoader    >> %JAVA_HOME%/lib/ext/*.jar
+ * 2.Extension ClassLoader(extends ClassLoader)，对应%JAVA_HOME%/lib/ext/*.jar
  *
- * AppCLassLoader extends ClassLoader           >> classpath
+ * 3.App ClassLoader(extends ClassLoader)，对应classpath
  *
- * 自定义类加载器 extends ClassLoader              >> 加载自定义路径
+ * 4.Custom ClassLoader(自定义ClassLoader)，对应自定义路径
  *
  * @author wenhy
  * @date 2018/10/23

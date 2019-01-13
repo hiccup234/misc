@@ -6,12 +6,12 @@ import io.netty.util.ReferenceCountUtil;
 
 public class ClientHandler extends ChannelHandlerAdapter{
 	
-	@Override
+//	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 
 	}
 
-	@Override
+//	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
 		try {
 			Response resp = (Response)msg;
@@ -21,7 +21,7 @@ public class ClientHandler extends ChannelHandlerAdapter{
 		}
 	}
 
-	@Override
+//	@Override
 	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 		
 	}

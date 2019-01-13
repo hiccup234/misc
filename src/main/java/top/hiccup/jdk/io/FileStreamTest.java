@@ -48,7 +48,7 @@ public class FileStreamTest {
     }
 
     public static void main(String[] args) throws Exception {
-        //文件输入流
+        // 文件输入流
         FileStreamTest fileStreamTest = new FileStreamTest();
         fileStreamTest.fileOutStreamTest();
 

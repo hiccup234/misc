@@ -17,13 +17,13 @@ import java.net.Socket;
  */
 public class Server {
 
-    private static final int PROT = 23401;
+    private static final int PORT = 23401;
 
     public static void main(String[] args) {
         ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(PROT);
-            System.out.println("Server started..");
+            serverSocket = new ServerSocket(PORT);
+            System.out.println("NettyServer start at port: " + PORT);
             // 阻塞等待客户端的请求到来，由本地方法accept0阻塞程序
             Socket socket = serverSocket.accept();
             // 这里存在的问题是：每来一个客户端请求就要创建一个线程，Windows目前最多能支持到1000个，Linux最多也只能到2000左右

@@ -7,7 +7,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * BIO：（伪异步）阻塞：如果网络传输速度很慢，应用程序就要一直等待，直到数据传输完毕
@@ -19,8 +21,90 @@ import java.util.Iterator;
  */
 public class Server {
 
-    public static void main(String[] args) {
-        new Thread(new ServerInner(23401)).start();
+    private static final int PORT = 23401;
+
+    public static void main(String[] args) throws IOException {
+        /**
+         * 1、打开多路复用器（管理所有的通道Channel）
+         * Linux内核IO多路复用：select（轮询监听） 和 epoll（事件通知）
+         */
+        Selector serverSelector = Selector.open();
+        Selector clientSelector = Selector.open();
+
+        // 监听子线程
+        new Thread(() -> {
+            try {
+                // 2、打开服务器通道，对应IO编程中服务端启动
+                ServerSocketChannel listenerChannel = ServerSocketChannel.open();
+                // 3、设置服务器通道为非阻塞模式
+                listenerChannel.configureBlocking(false);
+                // 4、绑定地址和端口
+                listenerChannel.socket().bind(new InetSocketAddress(PORT));
+                // 5、把服务器通道注册到多路复用器上，并且监听阻塞事件
+                listenerChannel.register(serverSelector, SelectionKey.OP_ACCEPT);
+                System.out.println("NettyServer start at port: " + PORT);
+
+                while (true) {
+                    // 监测是否有新的连接，这里的1指的是阻塞的时间为 1ms
+                    if (serverSelector.select(1) > 0) {
+                        Set<SelectionKey> set = serverSelector.selectedKeys();
+                        Iterator<SelectionKey> keyIterator = set.iterator();
+                        while (keyIterator.hasNext()) {
+                            SelectionKey key = keyIterator.next();
+                            if (key.isAcceptable()) {
+                                try {
+                                    // 每来一个新连接，不需要创建一个线程，而是直接注册到clientSelector
+                                    SocketChannel clientChannel = ((ServerSocketChannel) key.channel()).accept();
+                                    clientChannel.configureBlocking(false);
+                                    clientChannel.register(clientSelector, SelectionKey.OP_READ);
+                                } finally {
+                                    keyIterator.remove();
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        // 处理子线程
+        new Thread(() -> {
+            try {
+                while (true) {
+                    // 批量轮询是否有哪些连接有数据可读，这里的1指的是阻塞的时间为 1ms
+                    if (clientSelector.select(1) > 0) {
+                        Set<SelectionKey> set = clientSelector.selectedKeys();
+                        Iterator<SelectionKey> keyIterator = set.iterator();
+                        while (keyIterator.hasNext()) {
+                            SelectionKey key = keyIterator.next();
+                            if (key.isReadable()) {
+                                try {
+                                    SocketChannel clientChannel = (SocketChannel) key.channel();
+                                    ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+                                    // 使用ByteBuffer
+                                    clientChannel.read(byteBuffer);
+                                    byteBuffer.flip();
+//                                    System.out.println(Charset.defaultCharset().newDecoder().decode(byteBuffer)
+//                                            .toString());
+                                    System.out.println(new String(byteBuffer.array(), "UTF-8"));
+                                } finally {
+                                    keyIterator.remove();
+                                    key.interestOps(SelectionKey.OP_READ);
+                                }
+                            }
+
+                        }
+                    }
+                }
+            } catch (IOException ignored) {
+            }
+        }).start();
+
+
+
+//        new Thread(new ServerInner(23401)).start();
     }
 }
 
@@ -41,19 +125,17 @@ class ServerInner implements Runnable {
 
     public ServerInner(int port) {
         try {
-            //1 打开多路复用器
+            // 1、打开多路复用器
             this.seletor = Selector.open();
-            //2 打开服务器通道
+            // 2、打开服务器通道
             ServerSocketChannel ssc = ServerSocketChannel.open();
-            //3 设置服务器通道为非阻塞模式
+            // 3、设置服务器通道为非阻塞模式
             ssc.configureBlocking(false);
-            //4 绑定地址
+            // 4、绑定地址和端口
             ssc.bind(new InetSocketAddress(port));
-            //5 把服务器通道注册到多路复用器上，并且监听阻塞事件
+            // 5、把服务器通道注册到多路复用器上，并且监听阻塞事件
             ssc.register(this.seletor, SelectionKey.OP_ACCEPT);
-
-            System.out.println("Server start, port :" + port);
-
+            System.out.println("NettyServer start, port :" + port);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,32 +145,31 @@ class ServerInner implements Runnable {
     public void run() {
         while (true) {
             try {
-                //1 必须要让多路复用器开始监听
+                // 1、必须要让多路复用器开始监听
                 this.seletor.select();
-                //2 返回多路复用器已经选择的结果集
+                // 2、返回多路复用器已经选择的结果集
                 Iterator<SelectionKey> keys = this.seletor.selectedKeys().iterator();
-                //3 进行遍历
+                // 3、进行遍历
                 while (keys.hasNext()) {
-                    //4 获取一个选择的元素
+                    // 4、获取一个选择的元素
                     SelectionKey key = keys.next();
-                    //5 直接从容器中移除就可以了
+                    // 5、直接从容器中移除就可以了
                     keys.remove();
-                    //6 如果是有效的
+                    // 6、如果是有效的
                     if (key.isValid()) {
-                        //7 如果为阻塞状态
+                        // 7、如果为阻塞状态
                         if (key.isAcceptable()) {
                             this.accept(key);
                         }
-                        //8 如果为可读状态
+                        // 8、如果为可读状态
                         if (key.isReadable()) {
                             this.read(key);
                         }
-                        //9 写数据
+                        // 9、写数据
                         if (key.isWritable()) {
                             //this.write(key); //ssc
                         }
                     }
-
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -103,29 +184,29 @@ class ServerInner implements Runnable {
 
     private void read(SelectionKey key) {
         try {
-            //1 清空缓冲区旧的数据
+            // 1、清空缓冲区旧的数据
             this.readBuf.clear();
-            //2 获取之前注册的socket通道对象
+            // 2、获取之前注册的socket通道对象
             SocketChannel sc = (SocketChannel) key.channel();
-            //3 读取数据
+            // 3、读取数据
             int count = sc.read(this.readBuf);
-            //4 如果没有数据
+            // 4、如果没有数据
             if (count == -1) {
                 key.channel().close();
                 key.cancel();
                 return;
             }
-            //5 有数据则进行读取 读取之前需要进行复位方法(把position 和limit进行复位)
+            // 5、有数据则进行读取 读取之前需要进行复位方法(把position 和limit进行复位)
             this.readBuf.flip();
-            //6 根据缓冲区的数据长度创建相应大小的byte数组，接收缓冲区的数据
+            // 6、根据缓冲区的数据长度创建相应大小的byte数组，接收缓冲区的数据
             byte[] bytes = new byte[this.readBuf.remaining()];
-            //7 接收缓冲区数据
+            // 7、接收缓冲区数据
             this.readBuf.get(bytes);
-            //8 打印结果
+            // 8、打印结果
             String body = new String(bytes).trim();
-            System.out.println("Server : " + body);
+            System.out.println("NettyServer : " + body);
 
-            // 9..可以写回给客户端数据
+            // 9、可以写回给客户端数据
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -135,13 +216,13 @@ class ServerInner implements Runnable {
 
     private void accept(SelectionKey key) {
         try {
-            //1 获取服务通道
+            // 1、获取服务通道
             ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
-            //2 执行阻塞方法
+            // 2、执行阻塞方法
             SocketChannel sc = ssc.accept();
-            //3 设置阻塞模式
+            // 3、设置阻塞模式
             sc.configureBlocking(false);
-            //4 注册到多路复用器上，并设置读取标识
+            // 4、注册到多路复用器上，并设置读取标识
             sc.register(this.seletor, SelectionKey.OP_READ);
         } catch (IOException e) {
             e.printStackTrace();

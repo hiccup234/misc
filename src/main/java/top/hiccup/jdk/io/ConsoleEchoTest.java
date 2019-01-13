@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author wenhy
  * @date 2017/12/25
  */
-public class ConsoleEcho {
+public class ConsoleEchoTest {
 
     public static void main(String[] args) {
         BufferedReader br = null;

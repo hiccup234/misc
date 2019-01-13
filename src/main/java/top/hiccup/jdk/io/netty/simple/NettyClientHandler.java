@@ -13,7 +13,7 @@ import io.netty.util.ReferenceCountUtil;
  */
 public class NettyClientHandler extends ChannelHandlerAdapter {
 
-    @Override
+//    @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ByteBuf in = (ByteBuf) msg;
         try {

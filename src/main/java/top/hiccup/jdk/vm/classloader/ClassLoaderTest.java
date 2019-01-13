@@ -21,12 +21,6 @@ package top.hiccup.jdk.vm.classloader;
  *              b:执行static{}块
  * （对象的初始化类似，先为父类成员赋设置的值，执行父类构造函数，然后是子类的，即子类的<clinit>调用前保证父类的<clinit>被调用）
  *
- * ClassLoader分类：
- * 1.Bootrap ClassLoader(启动ClassLoader)，对应rt.jar 或者用启动参数-Xbootclasspath设定
- * 2.Extension ClassLoader(扩展ClassLoader)，对应%JAVA_HOME%/lib/ext/*.jar
- * 3.App ClassLoader(应用ClassLoader)，对应classpath下
- * 4.Custom ClassLoader(自定义ClassLoader)，对应自定义路径
- *
  * ===================================================================================
  * 【引申】
  * Q: 在加载一个类之后，如果对类的字节码进行修改，如何在不重新启动JVM的情况下加载已经修改过的类？
@@ -48,7 +42,7 @@ package top.hiccup.jdk.vm.classloader;
  * @author wenhy
  * @date 2018/8/4
  */
-public class ClassLoaderTest extends ClassLoader {
+public class ClassLoaderTest {
 
 
     /**

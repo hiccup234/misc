@@ -1,7 +1,7 @@
 package top.hiccup.jdk.lang.reflect;
 
 /**
- * 常见3种获得Class对象的方法
+ * 常见3种获得Class对象的方法（Class对象是存储在堆中的）
  *
  * 【反射常用案例】
  * 1.通过Class对象的newInstance()创建实例，要求类中由无参构造器

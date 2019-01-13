@@ -13,49 +13,45 @@ import java.nio.channels.SocketChannel;
  */
 public class Client {
 
+    private static final String HOST = "127.0.0.1";
+    private static final int PORT = 23401;
+
     public static void main(String[] args) {
-
-        //创建连接的地址
-        InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8765);
-
-        //声明连接通道
-        SocketChannel sc = null;
-
-        //建立缓冲区
+        // 1、创建连接的地址
+        InetSocketAddress address = new InetSocketAddress(HOST, PORT);
+        // 2、声明连接通道
+        SocketChannel socketChannel = null;
+        // 3、建立缓冲区
         ByteBuffer buf = ByteBuffer.allocate(1024);
-
         try {
-            //打开通道
-            sc = SocketChannel.open();
-            //进行连接
-            sc.connect(address);
-
+            // 4、打开通道
+            socketChannel = SocketChannel.open();
+            // 5、进行连接（如果此时服务器没有启动，则会报java.net.ConnectException: Connection refused: connect）
+            socketChannel.connect(address);
             while (true) {
-                //定义一个字节数组，然后使用系统录入功能：
+                // 6、定义1KB的字节数组，然后使用从标准输入读取
+                System.out.println("请输入：");
                 byte[] bytes = new byte[1024];
                 System.in.read(bytes);
-
-                //把数据放到缓冲区中
+                // 7、把数据放到缓冲区中
                 buf.put(bytes);
-                //对缓冲区进行复位
+                // 8、对缓冲区进行复位
                 buf.flip();
-                //写出数据
-                sc.write(buf);
-                //清空缓冲区数据
+                // 9、写出数据
+                socketChannel.write(buf);
+                // 10、清空缓冲区数据
                 buf.clear();
             }
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if (sc != null) {
+            if (socketChannel != null) {
                 try {
-                    sc.close();
+                    socketChannel.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
-
     }
-
 }
