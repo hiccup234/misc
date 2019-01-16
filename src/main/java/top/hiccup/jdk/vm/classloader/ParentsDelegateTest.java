@@ -3,9 +3,9 @@ package top.hiccup.jdk.vm.classloader;
 /**
  * 双亲委派模型：
  *
- * 1.Bootrap ClassLoader(启动ClassLoader，用C++实现)，对应rt.jar 或者用启动参数-Xbootclasspath设定
+ * 1.Bootrap ClassLoader(启动ClassLoader，用C++实现)，对应rt.jar（%JAVA_HOME%/lib）或者用启动参数-Xbootclasspath设定
  *
- * 2.Extension ClassLoader(extends ClassLoader)，对应%JAVA_HOME%/lib/ext/*.jar
+ * 2.Extension ClassLoader(extends ClassLoader)，对应%JAVA_HOME%/lib/ext/*.jar和系统环境变量java.ext.dirs指定目录所有类库
  *
  * 3.App ClassLoader(extends ClassLoader)，对应classpath
  *
