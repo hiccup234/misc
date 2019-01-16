@@ -1,11 +1,5 @@
 package top.hiccup.jdk;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 /**
  * 【Java平台总结】
  * "Write once, run anywhere": 一次编写到处运行，屏蔽了处理器架构、操作系统、硬件设备等的差异

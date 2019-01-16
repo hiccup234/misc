@@ -9,6 +9,7 @@ package top.hiccup.schema.singleton;
  */
 public class C_DoubleCheckSingleton {
 
+    // 这里的instance可以选择volatile做修饰来加快高并发下的速度，尽管synchronized代码块可以保证instance的可见性
     private static C_DoubleCheckSingleton instance = null;
 
     private C_DoubleCheckSingleton() { }
