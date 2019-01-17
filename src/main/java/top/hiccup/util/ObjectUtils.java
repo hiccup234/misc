@@ -12,12 +12,12 @@ import java.io.Serializable;
  * @author wenhy
  * @date 2018/3/11
  */
-public final class ObjectUtil {
+public final class ObjectUtils {
 
     /**
      * 设置为不可被实例化
      */
-    private ObjectUtil() {
+    private ObjectUtils() {
         throw new AssertionError();
     }
 
@@ -73,7 +73,7 @@ public final class ObjectUtil {
 
     public static void main(String[] args) {
         Dog d1 = new Dog();
-        Dog d2 = ObjectUtil.deepClone(d1);
+        Dog d2 = ObjectUtils.deepClone(d1);
         System.out.println(d1);
         System.out.println(d2);
 

@@ -6,7 +6,7 @@ package top.hiccup.util;
  * @author wenhy
  * @date 2018/1/17
  */
-public class ReversalStrUtil {
+public class ReversalStrUtils {
 
     /**
      * 通过中间变量来翻转

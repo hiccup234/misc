@@ -6,7 +6,7 @@ package top.hiccup.util;
  * @author unascribed
  * @date 2018/8/24
  */
-public class PriceCNUtil {
+public class PriceCNUtils {
 	
     private static final String[] CN_UPPER_NUMBER = {"零", "壹", "贰", "叁", "肆", "伍", "陆", "柒", "捌", "玖"};
     private static final String[] RADICES = {"", "拾", "佰", "仟"};
