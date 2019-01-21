@@ -3,11 +3,14 @@ package top.hiccup.jdk.lang.sync;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * F
+ * 可重入锁测试
+ *
+ * ==========================================================================
+ * 为什么lock.lock();和lock.unlock();能保证共享变量的线程可见性？
+ * ==========================================================================
  *
  * @author wenhy
  * @date 2019/1/14

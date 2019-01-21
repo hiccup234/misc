@@ -1,6 +1,6 @@
 package top.hiccup.jdk.lang;
 
-import top.hiccup.util.ObjectUtil;
+import top.hiccup.util.ObjectUtils;
 import sun.misc.Unsafe;
 
 import java.io.Serializable;
@@ -60,7 +60,7 @@ public class CreateObjectTest {
         System.out.println(foo3);
 
         // 4.通过序列化和反序列化创建：深拷贝
-        Foo foo4 = ObjectUtil.deepClone(foo);
+        Foo foo4 = ObjectUtils.deepClone(foo);
         System.out.println(foo4);
 
         // 5.通过Unsafe.allocateInstance方法创建
