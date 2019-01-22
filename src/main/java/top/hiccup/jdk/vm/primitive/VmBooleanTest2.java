@@ -19,10 +19,10 @@ public class VmBooleanTest2 {
         // 用asmtools修改为 2，3测试
         // 改为2时不会打印内容，改为3时又会打印，原因见类注释
         flag = true;
-        if(flag) {
+        if (flag) {
             System.out.println("Hello Java");
         }
-        if(true == flag) {
+        if (true == flag) {
             System.out.println("Hello JVM");
         }
     }
