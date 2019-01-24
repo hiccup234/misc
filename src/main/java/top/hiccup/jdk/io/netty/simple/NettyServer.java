@@ -2,7 +2,6 @@ package top.hiccup.jdk.io.netty.simple;
 
 import io.netty.bootstrap.ServerBootstrap;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
@@ -37,7 +36,7 @@ public class NettyServer {
                     .childHandler(new ChannelInitializer<NioSocketChannel>() {
                         @Override
                         public void initChannel(NioSocketChannel nioSocketChannel) {
-                            nioSocketChannel.pipeline().addLast(new NettyServerHandler());
+                            nioSocketChannel.pipeline().addLast(new NettyServerHandlerBak());
                         }
                     })
                     .option(ChannelOption.SO_BACKLOG, 128)

@@ -13,7 +13,7 @@ import java.io.UnsupportedEncodingException;
  * @author wenhy
  * @date 2018/2/6
  */
-public class NettyServerHandler extends ChannelHandlerAdapter {
+public class NettyServerHandlerBak extends ChannelHandlerAdapter {
 
 //    /**
 //     * 实现简单的丢弃协议：丢弃所有接受到的数据，并不做有任何的响应的协议。
