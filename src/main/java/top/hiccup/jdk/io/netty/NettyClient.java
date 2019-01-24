@@ -65,7 +65,7 @@ public class NettyClient {
             while (true) {
                 channel.writeAndFlush( "你好，服务器");
                 try {
-                    Thread.sleep(500);
+                    Thread.sleep(2000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
