@@ -2,7 +2,7 @@ package top.hiccup.jdk.vm.gc;
 
 /**
  * Object中的finalize()方法会在gc之前被调用，方法里的代码可能把对象又变为可触及的，此时gc就不会回收它
- * 不过finalize()方法每个对象只会调用一次，第二次再gc时就不会调用了
+ * 不过finalize()方法每个对象只会调用一次，第二次再gc时就不会调用了。
  *
  * @VM args: -XX:+PrintGCDetails
  *
