@@ -7,8 +7,8 @@ package top.hiccup.jdk.vm;
  * 【java】   运行Java程序
  * 【javap】  解析和反编译class文件
  *
- * 【jps】    查看正在运行的虚拟机（VM）进程ID（LVMID：Local Virtual Machine Identifier），LVMID跟操作系统的进程ID是一样的
- * 【jstat】  监视虚拟机进程的各种运行状态
+ * 【jps】    查看正在运行的虚拟机（VM）进程ID（LVMID：Local Virtual Machine Identifier），一般情况下LVMID跟操作系统的进程ID是一样的
+ * 【jstat】  监视虚拟机进程的各种运行状态（jstat -options 来查看参数列表）
  *              jstat -class 1099           查看进程号为1099的虚拟机实例加载了多少类
  *              jstat -compiler 1099        查看编译统计
  *              jstat -gc 1099              查看gc情况
@@ -46,13 +46,15 @@ package top.hiccup.jdk.vm;
  *      1、把堆dump下来再用MAT等工具进行分析，但dump堆要花较长的时间，并且文件巨大，再从服务器上拖回本地导入工具，这个过程有些折腾，不到万不得已最好别这么干。
  *      2、更轻量级的在线分析，使用“Java内存影像工具：jmap”生成堆转储快照（一般称为headdump或dump文件）。
  *
- * 【jmap】 主要用于查看内存情况和生成dump文件（内存快照）  jmap -dump:format=b,file=test.dump Vmid
+ * 【jmap】 主要用于查看内存情况和生成dump文件（内存快照）  jmap -dump:format=b,file=test.bin Vmid
  *
  * 【jstack】 主要用于查看线程运行状态（顾名思义：stack一般跟VM的线程栈有关系），分析线程阻塞、死锁等问题。  jstack 1591 > jstack.log
  *
  *      查看最耗CPU的Java进程ID： ps -eo user,pid,ppid,tid,time,%cpu,cmd | grep java | sort -k6 -nr
  *
+ * 【jhat】 内存dump文件分析工具，同mat， -J-Xmx4000M test.bin
  *
+ * 【jconsole】
  *
  * @author wenhy
  * @date 2019/1/16
