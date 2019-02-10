@@ -41,13 +41,13 @@ package top.hiccup.jdk.vm.gc;
  * 1.新生代：串行垃圾回收器（Serial），并行垃圾回收器（多线程版本）（Parallel New），Parallel Scavenge（更注重吞吐率，不能与CMS一起使用）
  *         这三个收集器都是采用的 标记- 复制 算法
  * 2.老年代：Serial Old（标记-压缩），Parallel Old（标记-压缩），CMS（标记-清除，并发回收，STW请求较少，Java 9已移除）
- * 3.G1(Garbage First)：横跨新生代和老年代的垃圾回收器，直接将堆分成许多区域，采用 标记-压缩 算法，也是并发的惊喜垃圾回收
+ * 3.G1(Garbage First)：横跨新生代和老年代的垃圾回收器，直接将堆分成许多区域，采用“标记-压缩”算法，也是并发的垃圾回收
  * 4.ZGC(Java 11)：主要参考Azul VM的Pauseless GC及Zing VM的C4
  *
  * JVM的GC参数设置（64位的JVM只有server模式）：
- *    在client模式下采用-XX:+UseSerialGC 串行回收器（默认），-XX:+PrintGCDetails 为 “DefNew” “Tenured”
+ *    在client模式下采用-XX:+UseSerialGC 串行回收器（默认），-XX:+PrintGCDetails 为 “DefNew” “Tenured” “Perm”
  *    在server模式下采用-XX:+UseParNewGC 新生代并行回收器，-XX:+PrintGCDetails 为 “ParNew” “Tenured”（老年代任为串行回收）
- *                   -XX:+UseParallelGC 并行回收期器（默认），-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”（有Full GC）
+ *                   -XX:+UseParallelGC 并行回收器（默认），-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”（有Full GC）
  *                   -XX:+UseParallelOldGC 老年代并行回收器，-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”（有Full GC）
  *                   -XX:+UseConcMarkSweepGC CMS并发回收器，-XX:+PrintGCDetails 为 “ParNew” “CMS”
  *
@@ -62,7 +62,7 @@ package top.hiccup.jdk.vm.gc;
  *    缺点是：并发阶段由于占用cpu资源，会导致系统吞吐量降低，由于在清理阶段，应用程序还在运行，因此清理不彻底，没有一个时间点是垃圾完全清理完的状态
  *    因为和用户线程一起运行，不能在空间快满时再清理
  *
- *    -XX:ParallelGCThreads=20 限制并行hui回收器线程数
+ *    -XX:ParallelGCThreads=20 限制并行回收器线程数
  *
  *    -XX:MaxGCPauseMills 设定一次gc的最大停顿时间，jvm会尽力保证每次gc在该时间范围内(会自动调整堆大小等参数)，
  *    如果设置过小，会导致gc次数增加，谨慎使用。GC停顿时间缩短是以牺牲吞吐量和新生代空间来换取的。
@@ -70,7 +70,6 @@ package top.hiccup.jdk.vm.gc;
  *    -XX:GCTimeRatio 设定应用程序线程占用的cpu时间比例(会自动调整各以达到该设定参数)，
  *    gc占用cpu默认为1，如果设置为9，表示90%时间用于应用程序线程，10%时间用于gc线程。默认99，
  *    即默认99%的时间用于应用程序线程，1%时间用于gc线程。应用程序线程的占用cpu时间比例决定了系统的吞吐量，因此值越大，吞吐量越高。
- *
  *
  * @author wenhy
  * @date 2018/9/2
