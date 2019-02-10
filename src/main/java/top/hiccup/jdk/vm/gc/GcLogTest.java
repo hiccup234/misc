@@ -16,11 +16,19 @@ package top.hiccup.jdk.vm.gc;
 public class GcLogTest {
 
     /**
-     * @VM args: -XX:+PrintGCDetails -XX:+PrintGCApplicationStoppedTime -XX:+PrintSafepointStatistics -XX:+UseCountedLoopSafepoints
+     * @VM args: -Xms20M -Xmx20M -Xmn10M -XX:SurvivorRatio=8 -XX:+PrintGCDetails
      */
+    private static final int _1MB = 1024*1024;
+
     public static void main(String[] args) {
         // 会触发Full GC，并且在这之前还有一次Minor GC
-        System.gc();
-        System.out.println("hello");
+//        System.gc();
+
+        byte[] b1,b2,b3,b4;
+        b1 = new byte[2*_1MB];
+        b2 = new byte[2*_1MB];
+        b3 = new byte[2*_1MB];
+        // 这里会引起一次Minor GCe
+        b4 = new byte[4*_1MB];
     }
 }
