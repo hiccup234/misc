@@ -56,6 +56,8 @@ package top.hiccup.jdk.vm;
  *
  * 【jconsole】
  *
+ * 【jinfo】 查看VM进程的配置信息
+ *
  * @author wenhy
  * @date 2019/1/16
  */
