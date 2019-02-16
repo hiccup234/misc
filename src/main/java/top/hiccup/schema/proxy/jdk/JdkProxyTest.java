@@ -4,24 +4,16 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import top.hiccup.schema.proxy.BusiServiceImpl;
+import top.hiccup.schema.proxy.IBusiService;
+
 /**
- * JDK 的动态代理测试
+ * JDK动态代理测试类：普通类final方法不能被动态代理
  *
  * @author wenhy
  * @date 2018/1/14
  */
 public class JdkProxyTest {
-
-    private interface IBusiService {
-        String getStr();
-    }
-
-    private class BusiServiceImpl implements IBusiService {
-        @Override
-        public String getStr() {
-            return new String("abc");
-        }
-    }
 
     public void test() {
         // 需要代理增强的对象（要求被代理的对象必须实现接口）

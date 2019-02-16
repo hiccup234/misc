@@ -1,4 +1,4 @@
-package top.hiccup.schema.proxy.cglib;
+package top.hiccup.schema.proxy;
 
 /**
  * 定义BusiService接口

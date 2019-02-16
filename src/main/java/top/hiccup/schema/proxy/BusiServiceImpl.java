@@ -1,4 +1,6 @@
-package top.hiccup.schema.proxy.cglib;
+package top.hiccup.schema.proxy;
+
+import top.hiccup.schema.proxy.IBusiService;
 
 /**
  * 实现了接口的Service类

@@ -6,6 +6,9 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
 
+import top.hiccup.schema.proxy.BusiServiceImpl;
+import top.hiccup.schema.proxy.IBusiService;
+
 /**
  * Cglib 的动态代理测试(通过继承实现，不要求被代理对象实现接口)
  *
