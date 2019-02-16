@@ -112,7 +112,7 @@ public class TopKTest {
         int tmp = topk[i];
         topk[i] = topk[minIndex];
         topk[minIndex] = tmp;
-        // TODO 由于替换后左右子树的最小堆特性可能会收到影响，所以要对子树再进行heapify，一定要记得
+        // TODO 由于替换后左右子树的最小堆特性可能会受到影响，所以要对子树再进行heapify，一定要记得
         // TODO 可以考虑把递归优化为循环遍历
         adjustHeap(topk, minIndex);
 

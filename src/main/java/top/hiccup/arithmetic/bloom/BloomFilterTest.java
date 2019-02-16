@@ -6,7 +6,7 @@ import org.junit.Test;
 import com.google.common.hash.Funnels;
 
 /**
- * 布隆过滤器单元测试
+ * 布隆过滤器单元测试类
  *
  * @VM args: -Xms64m -Xmx64m -XX:+PrintGCDetails -XX:+PrintHeapAtGC
  *
