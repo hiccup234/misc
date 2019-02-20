@@ -33,5 +33,10 @@ public class PlusAndConcatTest {
         s4 = s4.concat(null);
         System.out.println(s4);
 
+        int x = 1;
+        int y = 5;
+        int z = 7;
+        System.out.println("String" + x + y + z);
+        System.out.println(x + y + z + "String");
     }
 }
