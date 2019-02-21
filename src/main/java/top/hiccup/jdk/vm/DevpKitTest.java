@@ -68,4 +68,12 @@ public class DevpKitTest {
      *  jps, jstack, jmap, jstat, jconsole, jinfo, jhat, javap, btrace, TProfiler, Arthas, MAT
      */
 
+    /**
+     * 获取threaddump线程栈快照文件： jstack LVMID  或者在Linux环境下用kill -3 pid(同LVMID)吓唬JVM生成dump文件
+     */
+
+    /**
+     * Linux环境下如何查找哪个线程使用CPU最长？
+     * top -H -p pid
+     */
 }

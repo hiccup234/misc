@@ -7,6 +7,7 @@ package top.hiccup.jdk.concurrent.thread;
  * 1、yield, sleep 都能暂停当前线程，sleep 可以指定具体休眠的时间，而 yield 则依赖 CPU 的时间片划分。
  * 2、yield, sleep 两个在暂停过程中，如已经持有锁，都不会释放锁。（wait方法是会放弃当前锁的）
  * 3、yield 不能被中断，而 sleep 则可以接受中断。
+ * 4、sleep(0)有类似yield的功能。
  *
  * @author wenhy
  * @date 2019/1/12

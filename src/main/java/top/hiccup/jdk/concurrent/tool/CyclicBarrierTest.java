@@ -1,4 +1,4 @@
-package top.hiccup.jdk.concurrent;
+package top.hiccup.jdk.concurrent.tool;
 
 import java.io.IOException;
 import java.util.Random;
