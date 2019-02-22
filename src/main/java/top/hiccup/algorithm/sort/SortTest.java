@@ -22,6 +22,14 @@ package top.hiccup.algorithm.sort;
  * 计数排序(Counting Sort)
  * 桶排序(Bucket Sort)
  *
+ * Algorithm	Average Time	Worst Time	    Space
+ * 冒泡排序	        n^2	            n^2	        1
+ * 选择排序	        n^2	            n^2	        1
+ * Insertion sort	n^2	            n^2
+ * Counting Sort    n+k	            n+k	        n+k
+ * Quick sort	    n log(n)	    n^2
+ * Merge sort	    n log(n)	    n log(n)	depends
+ *
  * @author wenhy
  * @date 2018/9/26
  */
