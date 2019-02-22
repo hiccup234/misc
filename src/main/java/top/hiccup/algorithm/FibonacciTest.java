@@ -1,4 +1,4 @@
-package top.hiccup.arithmetic;
+package top.hiccup.algorithm;
 
 /**
  * 斐波拉契数列常见优化策略和思路

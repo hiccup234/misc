@@ -1,4 +1,4 @@
-package top.hiccup.arithmetic.bloom;
+package top.hiccup.algorithm.bloom;
 
 import org.junit.Assert;
 import org.junit.Test;

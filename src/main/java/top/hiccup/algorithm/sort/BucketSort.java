@@ -1,4 +1,4 @@
-package top.hiccup.arithmetic.sort;
+package top.hiccup.algorithm.sort;
 
 /**
  * 桶排序(Bucket Sort)，总结：

@@ -1,4 +1,4 @@
-package top.hiccup.arithmetic;
+package top.hiccup.algorithm;
 
 /**
  * 求一个正整数的二进制表示包含多少个1

@@ -1,4 +1,4 @@
-package top.hiccup.arithmetic;
+package top.hiccup.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;

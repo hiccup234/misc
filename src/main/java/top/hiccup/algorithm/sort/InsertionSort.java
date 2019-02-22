@@ -1,4 +1,4 @@
-package top.hiccup.arithmetic.sort;
+package top.hiccup.algorithm.sort;
 
 /**
  * 简单插入排序：

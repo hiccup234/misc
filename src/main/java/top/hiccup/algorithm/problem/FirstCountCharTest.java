@@ -1,4 +1,4 @@
-package top.hiccup.arithmetic.problem;
+package top.hiccup.algorithm.problem;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
