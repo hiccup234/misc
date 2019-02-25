@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 /**
  * 5种初始化List的方式
  *
- * ## 论茴香豆的6种写法 ^_^
+ * ##论茴香豆的6种写法，哈哈哈
  *
  * @author wenhy
  * @date 2018/12/6
