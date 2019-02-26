@@ -28,6 +28,7 @@ package java.util;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
+
 import sun.misc.SharedSecrets;
 
 /**
@@ -102,9 +103,14 @@ import sun.misc.SharedSecrets;
  * @see     LinkedList
  * @see     Vector
  * @since   1.2
- *
- * TODO 参考JDK1.8
- * 相对1.7主要修改了容器初始化容量，做了懒加载
+ */
+
+/**
+ * 1、底层采用数组实现，默认初始化容量为10，1.8初始化为空，添加第一个元素后膨胀为10
+ * 2、扩容方法底层采用Arrays.copyOf（System.arraycopy）来实现数组的复制
+ *   每次扩容增大1.5倍，如果容量int整数溢出了，则每次add容量只加1，addAll方法容量加原容器的size
+ * 3、允许null元素，且允许多个null
+ * 4、ArrayList的clone其实是浅拷贝
  */
 
 public class ArrayList<E> extends AbstractList<E>
@@ -119,6 +125,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Shared empty array instance used for empty instances.
+     * TODO 相对1.7新增了共享的空数组，采用饿汉模式加载，会不会存在线程安全问题？ 带参数的构造器使用
      */
     private static final Object[] EMPTY_ELEMENTDATA = {};
 
@@ -126,6 +133,7 @@ public class ArrayList<E> extends AbstractList<E>
      * Shared empty array instance used for default sized empty instances. We
      * distinguish this from EMPTY_ELEMENTDATA to know how much to inflate when
      * first element is added.
+     * TODO 无参构造器使用，无参构造器默认容量是10，带参则要用参数作为初始容量，所以分开
      */
     private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
 
@@ -134,9 +142,7 @@ public class ArrayList<E> extends AbstractList<E>
      * The capacity of the ArrayList is the length of this array buffer. Any
      * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
      * will be expanded to DEFAULT_CAPACITY when the first element is added.
-     *
-	 * TODO 相对于1.7这里去掉了private，方便子类访问
-     * 注意transient修饰符，重写了序列化的writeObject和readObject方法
+     * TODO 这里不是泛型E的数组
      */
     transient Object[] elementData; // non-private to simplify nested class access
 
@@ -161,14 +167,12 @@ public class ArrayList<E> extends AbstractList<E>
             this.elementData = EMPTY_ELEMENTDATA;
         } else {
             throw new IllegalArgumentException("Illegal Capacity: "+
-                    initialCapacity);
+                                               initialCapacity);
         }
     }
 
     /**
      * Constructs an empty list with an initial capacity of ten.
-     *
-	 * TODO 默认构造器不会再直接初始化10个元素的数组
      */
     public ArrayList() {
         this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
@@ -198,13 +202,14 @@ public class ArrayList<E> extends AbstractList<E>
      * Trims the capacity of this <tt>ArrayList</tt> instance to be the
      * list's current size.  An application can use this operation to minimize
      * the storage of an <tt>ArrayList</tt> instance.
+     * TODO 修剪容器大小，多次扩容后删除等操作后可以调用此方法
      */
     public void trimToSize() {
         modCount++;
         if (size < elementData.length) {
             elementData = (size == 0)
-                    ? EMPTY_ELEMENTDATA
-                    : Arrays.copyOf(elementData, size);
+              ? EMPTY_ELEMENTDATA
+              : Arrays.copyOf(elementData, size);
         }
     }
 
@@ -217,11 +222,11 @@ public class ArrayList<E> extends AbstractList<E>
      */
     public void ensureCapacity(int minCapacity) {
         int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
-                // any size if not default element table
-                ? 0
-                // larger than default for default empty table. It's already
-                // supposed to be at default size.
-                : DEFAULT_CAPACITY;
+            // any size if not default element table
+            ? 0
+            // larger than default for default empty table. It's already
+            // supposed to be at default size.
+            : DEFAULT_CAPACITY;
 
         if (minCapacity > minExpand) {
             ensureExplicitCapacity(minCapacity);
@@ -252,6 +257,7 @@ public class ArrayList<E> extends AbstractList<E>
      * Some VMs reserve some header words in an array.
      * Attempts to allocate larger arrays may result in
      * OutOfMemoryError: Requested array size exceeds VM limit
+     * TODO Object[]数组限制的大小
      */
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
@@ -276,9 +282,10 @@ public class ArrayList<E> extends AbstractList<E>
     private static int hugeCapacity(int minCapacity) {
         if (minCapacity < 0) // overflow
             throw new OutOfMemoryError();
+        // TODO 这里没明白：Integer.MAX_VALUE不是已经超过数组大小的限制了吗？怎么还返回呢？
         return (minCapacity > MAX_ARRAY_SIZE) ?
-                Integer.MAX_VALUE :
-                MAX_ARRAY_SIZE;
+            Integer.MAX_VALUE :
+            MAX_ARRAY_SIZE;
     }
 
     /**
@@ -355,6 +362,7 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * Returns a shallow copy of this <tt>ArrayList</tt> instance.  (The
      * elements themselves are not copied.)
+     * TODO 浅拷贝
      *
      * @return a clone of this <tt>ArrayList</tt> instance
      */
@@ -380,6 +388,7 @@ public class ArrayList<E> extends AbstractList<E>
      *
      * <p>This method acts as bridge between array-based and collection-based
      * APIs.
+     * TODO 这里返回的是一个拷贝数组，所以修改返回的数组不会影响原有的List
      *
      * @return an array containing all of the elements in this list in
      *         proper sequence
@@ -439,7 +448,7 @@ public class ArrayList<E> extends AbstractList<E>
      */
     public E get(int index) {
         rangeCheck(index);
-
+        // TODO 这里多了一次方法调用，不是对性能有损耗嚒？还是说编译时会内联过来？方便子类重写？
         return elementData(index);
     }
 
@@ -486,7 +495,7 @@ public class ArrayList<E> extends AbstractList<E>
 
         ensureCapacityInternal(size + 1);  // Increments modCount!!
         System.arraycopy(elementData, index, elementData, index + 1,
-                size - index);
+                         size - index);
         elementData[index] = element;
         size++;
     }
@@ -509,7 +518,7 @@ public class ArrayList<E> extends AbstractList<E>
         int numMoved = size - index - 1;
         if (numMoved > 0)
             System.arraycopy(elementData, index+1, elementData, index,
-                    numMoved);
+                             numMoved);
         elementData[--size] = null; // clear to let GC do its work
 
         return oldValue;
@@ -554,7 +563,7 @@ public class ArrayList<E> extends AbstractList<E>
         int numMoved = size - index - 1;
         if (numMoved > 0)
             System.arraycopy(elementData, index+1, elementData, index,
-                    numMoved);
+                             numMoved);
         elementData[--size] = null; // clear to let GC do its work
     }
 
@@ -619,7 +628,7 @@ public class ArrayList<E> extends AbstractList<E>
         int numMoved = size - index;
         if (numMoved > 0)
             System.arraycopy(elementData, index, elementData, index + numNew,
-                    numMoved);
+                             numMoved);
 
         System.arraycopy(a, 0, elementData, index, numNew);
         size += numNew;
@@ -644,7 +653,7 @@ public class ArrayList<E> extends AbstractList<E>
         modCount++;
         int numMoved = size - toIndex;
         System.arraycopy(elementData, toIndex, elementData, fromIndex,
-                numMoved);
+                         numMoved);
 
         // clear to let GC do its work
         int newSize = size - (toIndex-fromIndex);
@@ -720,6 +729,7 @@ public class ArrayList<E> extends AbstractList<E>
      */
     public boolean retainAll(Collection<?> c) {
         Objects.requireNonNull(c);
+        // TODO removeAll是去掉相交的部分，retainAll则是保留相交部分，去掉elementData的剩余部分，跟removeAll相反
         return batchRemove(c, true);
     }
 
@@ -728,6 +738,7 @@ public class ArrayList<E> extends AbstractList<E>
         int r = 0, w = 0;
         boolean modified = false;
         try {
+            // TODO 时间复杂度是O(n2)
             for (; r < size; r++)
                 if (c.contains(elementData[r]) == complement)
                     elementData[w++] = elementData[r];
@@ -736,8 +747,8 @@ public class ArrayList<E> extends AbstractList<E>
             // even if c.contains() throws.
             if (r != size) {
                 System.arraycopy(elementData, r,
-                        elementData, w,
-                        size - r);
+                                 elementData, w,
+                                 size - r);
                 w += size - r;
             }
             if (w != size) {
@@ -761,7 +772,7 @@ public class ArrayList<E> extends AbstractList<E>
      *             (each an <tt>Object</tt>) in the proper order.
      */
     private void writeObject(java.io.ObjectOutputStream s)
-            throws java.io.IOException{
+        throws java.io.IOException{
         // Write out element count, and any hidden stuff
         int expectedModCount = modCount;
         s.defaultWriteObject();
@@ -784,7 +795,7 @@ public class ArrayList<E> extends AbstractList<E>
      * deserialize it).
      */
     private void readObject(java.io.ObjectInputStream s)
-            throws java.io.IOException, ClassNotFoundException {
+        throws java.io.IOException, ClassNotFoundException {
         elementData = EMPTY_ELEMENTDATA;
 
         // Read in size, and any hidden stuff
@@ -850,7 +861,6 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * An optimized version of AbstractList.Itr
-	 * 内部迭代器的实现
      */
     private class Itr implements Iterator<E> {
         int cursor;       // index of next element to return
@@ -1021,7 +1031,7 @@ public class ArrayList<E> extends AbstractList<E>
             throw new IndexOutOfBoundsException("toIndex = " + toIndex);
         if (fromIndex > toIndex)
             throw new IllegalArgumentException("fromIndex(" + fromIndex +
-                    ") > toIndex(" + toIndex + ")");
+                                               ") > toIndex(" + toIndex + ")");
     }
 
     private class SubList extends AbstractList<E> implements RandomAccess {
@@ -1078,7 +1088,7 @@ public class ArrayList<E> extends AbstractList<E>
         protected void removeRange(int fromIndex, int toIndex) {
             checkForComodification();
             parent.removeRange(parentOffset + fromIndex,
-                    parentOffset + toIndex);
+                               parentOffset + toIndex);
             this.modCount = parent.modCount;
             this.size -= toIndex - fromIndex;
         }
@@ -1251,7 +1261,7 @@ public class ArrayList<E> extends AbstractList<E>
         public Spliterator<E> spliterator() {
             checkForComodification();
             return new ArrayListSpliterator<E>(ArrayList.this, offset,
-                    offset + this.size, this.modCount);
+                                               offset + this.size, this.modCount);
         }
     }
 
@@ -1354,8 +1364,8 @@ public class ArrayList<E> extends AbstractList<E>
         public ArrayListSpliterator<E> trySplit() {
             int hi = getFence(), lo = index, mid = (lo + hi) >>> 1;
             return (lo >= mid) ? null : // divide range in half unless too small
-                    new ArrayListSpliterator<E>(list, lo, index = mid,
-                            expectedModCount);
+                new ArrayListSpliterator<E>(list, lo, index = mid,
+                                            expectedModCount);
         }
 
         public boolean tryAdvance(Consumer<? super E> action) {

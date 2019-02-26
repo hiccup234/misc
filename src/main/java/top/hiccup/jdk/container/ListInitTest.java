@@ -50,5 +50,6 @@ public class ListInitTest {
         // 6、JDK1.9 List.of Set.of等（接口默认实现：default方法）
 //        List list6 = List.of("aa", "bb", "cc");
 //        System.out.println(list6);
+
     }
 }
