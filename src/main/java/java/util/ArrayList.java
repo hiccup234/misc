@@ -112,10 +112,10 @@ import sun.misc.SharedSecrets;
  * 3、允许null元素，且允许多个null
  * 4、ArrayList的clone其实是浅拷贝
  */
-
 public class ArrayList<E> extends AbstractList<E>
         implements List<E>, RandomAccess, Cloneable, java.io.Serializable
 {
+    // TODO 序列化版本号
     private static final long serialVersionUID = 8683452581122892189L;
 
     /**

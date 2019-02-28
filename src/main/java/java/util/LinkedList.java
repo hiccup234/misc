@@ -80,10 +80,14 @@ import java.util.function.Consumer;
  * @param <E> the type of elements held in this collection
  */
 
+/**
+ * 1、与ArrayList继承AbstractList不同，LinkedList继承自AbstractSequentialList，是一个双向链表，可以用作堆栈、队列或双端队列
+ */
 public class LinkedList<E>
     extends AbstractSequentialList<E>
     implements List<E>, Deque<E>, Cloneable, java.io.Serializable
 {
+    // TODO 注意：这3个成员变量都是transient的
     transient int size = 0;
 
     /**
@@ -126,6 +130,7 @@ public class LinkedList<E>
         final Node<E> f = first;
         final Node<E> newNode = new Node<>(null, e, f);
         first = newNode;
+        // TODO 如果是第一次添加则需要指明last节点
         if (f == null)
             last = newNode;
         else
@@ -169,7 +174,7 @@ public class LinkedList<E>
      * Unlinks non-null first node f.
      */
     private E unlinkFirst(Node<E> f) {
-        // assert f == first && f != null;
+//         assert f == first && f != null;
         final E element = f.item;
         final Node<E> next = f.next;
         f.item = null;
