@@ -45,6 +45,12 @@ package java.util;
  * @author  Jonathan Payne
  * @since   JDK1.0
  */
+
+
+/**
+ * 1、继承自Vector，所以是线程安全的
+ * 2、其实更应该继承或直接使用LinkedList来实现
+ */
 public
 class Stack<E> extends Vector<E> {
     /**
@@ -78,6 +84,7 @@ class Stack<E> extends Vector<E> {
      * @throws  EmptyStackException  if this stack is empty.
      */
     public synchronized E pop() {
+        // TODO 为什么不直接用remove(len-1)呢？ 而且调用peek()又会再调一次size()，很奇怪
         E       obj;
         int     len = size();
 

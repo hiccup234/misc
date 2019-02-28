@@ -11,26 +11,29 @@
 
 
 # 集合类源码学习
-
 [OK]ArrayList 
    1、底层采用数组实现，默认初始化容量为10，1.8初始化为空，添加第一个元素后膨胀为10
    2、扩容方法底层采用Arrays.copyOf（System.arraycopy）来实现数组的复制
      每次扩容增大1.5倍，如果容量int整数溢出了，则每次add容量只加1，addAll方法容量加原容器的size
    3、允许null元素，且允许多个null
    4、ArrayList的clone其实是浅拷贝
-   
 [OK]LinkedList
    1、与ArrayList继承AbstractList不同，LinkedList继承自AbstractSequentialList，是一个双向链表，可以用作堆栈、队列或双端队列
-
 [OK]Vector
    1、底层数据结构也是基于数组，历次JDK升级对Vector改动几乎没有，处于被废弃状态
    2、通过synchronized关键字来保证线程安全
+[OK]Stack
+   1、继承自Vector，所以是线程安全的
+   2、其实更应该继承或直接使用LinkedList来实现
+
+HashMap
+
+HashTable
+
+ConcurrentHashMap
 
 
-HashMap、HashTable、ConcurrentHashMap 区别
-
-
-Set 和 List 区别？Set 如何保证元素不重复？
+Set 如何保证元素不重复？
 
 Java 8 中 stream 相关用法、apache 集合处理工具类的使用、不同版本的 JDK 中 HashMap 的实现的区别以及原因
 
@@ -42,5 +45,6 @@ Enumeration 和 Iterator 区别
 
 fail-fast 和 fail-safe
 
-CopyOnWriteArrayList、ConcurrentSkipListMap
+CopyOnWriteArrayList
+ConcurrentSkipListMap
 

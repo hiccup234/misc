@@ -12,14 +12,12 @@ import java.util.Hashtable;
  *
  * 4、TreeMap：基于红黑树的有序Map(由key的自然序或者指定的Comparator决定)
  *
- *
  * =============================================================================================================
  * Q: 解决hash冲突的常用方法：
  * 1、开放定址法：当key的哈希码hash = H(key)出现冲突时，再以hash为基础产生另外一个哈希码hash2 = H(hash)，以此类推直到不再重复
  * 2、再哈希法: 同时提供多个不同的哈希函数H1，H2，H3...如果发生冲突，则hash=H2(key),hash=H3(key)...
  * 3、链地址法：思想同HashMap
  * 4、公共溢出区法：将哈希表分为基本表和溢出表，只要发生哈希冲突就直接填入溢出区
- *
  * =============================================================================================================
  *
  * @author wenhy
@@ -27,11 +25,24 @@ import java.util.Hashtable;
  */
 public class MapTest {
 
+    static final int tableSizeFor(int cap) {
+        int n = cap - 1;
+        n |= n >>> 1;
+        n |= n >>> 2;
+        n |= n >>> 4;
+        n |= n >>> 8;
+        n |= n >>> 16;
+        return (n < 0) ? 1 :  n + 1;
+    }
+
     public static void main(String[] args) {
-        Hashtable<String, Object> hashtable = new Hashtable<>();
-        hashtable.put(null, null);
+        System.out.println(tableSizeFor(1));
+        System.out.println(tableSizeFor(2));
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put(null, null);
+
+        Hashtable<String, Object> hashtable = new Hashtable<>();
+        hashtable.put(null, null);
     }
 }

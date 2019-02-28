@@ -105,6 +105,7 @@ import sun.misc.SharedSecrets;
  * @since   1.2
  */
 
+
 /**
  * 1、底层采用数组实现，默认初始化容量为10，1.8初始化为空，添加第一个元素后膨胀为10
  * 2、扩容方法底层采用Arrays.copyOf（System.arraycopy）来实现数组的复制
