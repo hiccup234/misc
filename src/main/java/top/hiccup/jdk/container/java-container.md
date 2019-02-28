@@ -22,10 +22,10 @@
 [OK]LinkedList
    1、与ArrayList继承AbstractList不同，LinkedList继承自AbstractSequentialList，是一个双向链表，可以用作堆栈、队列或双端队列
 
-Vector
+[OK]Vector
+   1、底层数据结构也是基于数组，历次JDK升级对Vector改动几乎没有，处于被废弃状态
+   2、通过synchronized关键字来保证线程安全
 
-
-SynchronizedList 和 Vector 的区别
 
 HashMap、HashTable、ConcurrentHashMap 区别
 

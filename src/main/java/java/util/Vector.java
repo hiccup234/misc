@@ -82,7 +82,8 @@ import java.util.function.UnaryOperator;
  */
 
 /**
- * 1、底层数据结构也是基于数组
+ * 1、底层数据结构也是基于数组，历次JDK升级对Vector改动几乎没有，处于被废弃状态
+ * 2、通过synchronized关键字来保证线程安全
  */
 public class Vector<E>
     extends AbstractList<E>
@@ -103,7 +104,7 @@ public class Vector<E>
      * The number of valid components in this {@code Vector} object.
      * Components {@code elementData[0]} through
      * {@code elementData[elementCount-1]} are the actual items.
-     *
+     * TODO 为什么不用size呢?
      * @serial
      */
     protected int elementCount;
@@ -343,6 +344,7 @@ public class Vector<E>
         return new Enumeration<E>() {
             int count = 0;
 
+            // TODO 为什么这里没有同步呢？
             public boolean hasMoreElements() {
                 return count < elementCount;
             }
