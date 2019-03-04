@@ -138,6 +138,7 @@ public class Hashtable<K,V>
 
     /**
      * The hash table data.
+     * TODO 1.8中HashMap已经修改为Node，这里任然是Entry
      */
     private transient Entry<?,?>[] table;
 

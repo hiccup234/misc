@@ -28,7 +28,8 @@
 
 HashMap
 
-HashTable
+[OK]HashTable
+   1、HashMap的同步版本，初始化容量为11，扩容时*2倍+1
 
 ConcurrentHashMap
 
