@@ -2,6 +2,8 @@ package top.hiccup.jdk.container;
 
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 /**
  * 1、Hashtable：早期(1.0)Java类库的哈希表实现，本身是同步的（线程安全），不支持null键和null值
@@ -36,13 +38,16 @@ public class MapTest {
     }
 
     public static void main(String[] args) {
-        System.out.println(tableSizeFor(1));
-        System.out.println(tableSizeFor(2));
+//        System.out.println(tableSizeFor(1));
+//        System.out.println(tableSizeFor(2));
+//
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put(null, null);
+//
+//        Hashtable<String, Object> hashtable = new Hashtable<>();
+//        hashtable.put(null, null);
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put(null, null);
 
-        Hashtable<String, Object> hashtable = new Hashtable<>();
-        hashtable.put(null, null);
+        Map<String, String> m = new WeakHashMap<>(3);
     }
 }

@@ -132,6 +132,13 @@ import java.util.function.Consumer;
  * @see         HashMap
  * @see         WeakReference
  */
+
+
+/**
+ * 1、key采用弱引用，可以用来做内存缓存，当发生GC时就会被回收掉（这里怎么没提供一个SoftHashMap呢？）
+ * 2、不是线程安全的，可以用Collections.synchronizedMap来构造同步的Map
+ * 3、要求数组长度为2的n次方
+ */
 public class WeakHashMap<K,V>
     extends AbstractMap<K,V>
     implements Map<K,V> {
@@ -175,6 +182,7 @@ public class WeakHashMap<K,V>
 
     /**
      * Reference queue for cleared WeakEntries
+     * TODO 用来接收和存放被GC的对象引用
      */
     private final ReferenceQueue<Object> queue = new ReferenceQueue<>();
 
@@ -214,6 +222,7 @@ public class WeakHashMap<K,V>
             throw new IllegalArgumentException("Illegal Load factor: "+
                                                loadFactor);
         int capacity = 1;
+        // TODO 保证数组长度为2的n次方
         while (capacity < initialCapacity)
             capacity <<= 1;
         table = newTable(capacity);
@@ -315,9 +324,11 @@ public class WeakHashMap<K,V>
      */
     private void expungeStaleEntries() {
         for (Object x; (x = queue.poll()) != null; ) {
+            // TODO JDK1.6没有使用同步关键字
             synchronized (queue) {
                 @SuppressWarnings("unchecked")
                     Entry<K,V> e = (Entry<K,V>) x;
+                // TODO 这里的e还是可以直接访问的，被回收的是key（当key的对象不再有引用指向时，在发生GC时key会被回收）
                 int i = indexFor(e.hash, table.length);
 
                 Entry<K,V> prev = table[i];
