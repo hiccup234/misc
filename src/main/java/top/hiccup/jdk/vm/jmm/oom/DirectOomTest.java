@@ -15,10 +15,16 @@ import java.util.List;
  */
 public class DirectOomTest {
 
-    public static void test() throws NoSuchFieldException, IllegalAccessException {
-        Field field = Unsafe.class.getDeclaredField("theUnsafe");
-        field.setAccessible(true);
-        Unsafe unsafe = (Unsafe) field.get(null);
+    public static void test() throws IllegalAccessException {
+        Unsafe unsafe;
+        try {
+            // 反射获取Unsafe实例对象
+            Field field = Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            unsafe = (Unsafe) field.get(null);
+        } catch (NoSuchFieldException e) {
+            throw new RuntimeException(e);
+        }
         while (true) {
             unsafe.allocateMemory(1024 * 1024);
         }

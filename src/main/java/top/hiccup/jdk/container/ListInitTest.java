@@ -28,7 +28,7 @@ public class ListInitTest {
         list2 = new ArrayList(list2);
         System.out.println(list2);
 
-        // 3、Collections的nCopies方法返回的也是不可操作List，将第二个参数负责n遍
+        // 3、Collections的nCopies方法返回的也是不可操作List，将第二个参数复制n遍
         List list3 = Collections.nCopies(3, "test");
         System.out.println(list3);
 
