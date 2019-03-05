@@ -145,8 +145,7 @@ import sun.misc.SharedSecrets;
  * 5、默认初始化容量（数组长度）为16，加载因子为0.75
  * 6、如果加载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间）
  *    如果考虑直接用数组存储的话，则没法处理hash冲突的问题
- *
- * 7、HashMap将“key为null”的元素都放在table的位置0处，即table[0]中；“key不为null”的放在table的其余位置
+ * 7、HashMap将“key为null”的元素放在table的位置0处，即table[0]中；“key不为null”的放在table的其余位置
  */
 public class HashMap<K,V> extends AbstractMap<K,V>
     implements Map<K,V>, Cloneable, Serializable {

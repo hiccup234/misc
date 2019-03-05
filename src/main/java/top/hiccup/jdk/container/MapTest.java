@@ -3,6 +3,7 @@ package top.hiccup.jdk.container;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.WeakHashMap;
 
 /**
@@ -34,7 +35,7 @@ public class MapTest {
         n |= n >>> 4;
         n |= n >>> 8;
         n |= n >>> 16;
-        return (n < 0) ? 1 :  n + 1;
+        return (n < 0) ? 1 : n + 1;
     }
 
     public static void main(String[] args) {
@@ -49,5 +50,10 @@ public class MapTest {
 
 
         Map<String, String> m = new WeakHashMap<>(3);
+
+        Map treeMap = new TreeMap();
+        treeMap.put("sdf", 123);
+        String s;
+        Integer i;
     }
 }

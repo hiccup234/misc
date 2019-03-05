@@ -94,6 +94,7 @@ public class HashSet<E>
 {
     static final long serialVersionUID = -5024744406713321676L;
 
+    // TODO 内部持有一个HashMap
     private transient HashMap<E,Object> map;
 
     // Dummy value to associate with an Object in the backing Map

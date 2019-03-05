@@ -108,6 +108,11 @@ import java.util.function.Consumer;
  * @since 1.2
  */
 
+
+/**
+ * 1、TreeMap基于红黑树（Red-Black tree）实现，基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n)
+ * 2、TreeMap也是非同步，线程不安全的
+ */
 public class TreeMap<K,V>
     extends AbstractMap<K,V>
     implements NavigableMap<K,V>, Cloneable, Serializable
@@ -143,6 +148,7 @@ public class TreeMap<K,V>
      * put a string key into a map whose keys are integers), the
      * {@code put(Object key, Object value)} call will throw a
      * {@code ClassCastException}.
+     * TODO 默认构造函数，对元素按自然序排列
      */
     public TreeMap() {
         comparator = null;
@@ -197,6 +203,7 @@ public class TreeMap<K,V>
     public TreeMap(SortedMap<K, ? extends V> m) {
         comparator = m.comparator();
         try {
+            // TODO SortedMap已经是有序的了，不用再挨个挨个put
             buildFromSorted(m.size(), m.entrySet().iterator(), null, null);
         } catch (java.io.IOException cannotHappen) {
         } catch (ClassNotFoundException cannotHappen) {
@@ -246,6 +253,8 @@ public class TreeMap<K,V>
      * @since 1.2
      */
     public boolean containsValue(Object value) {
+        // TODO getFirstEntry()获取红黑树的第一个节点
+        // TODO successor()获取e的后继节点
         for (Entry<K,V> e = getFirstEntry(); e != null; e = successor(e))
             if (valEquals(value, e.value))
                 return true;
@@ -385,6 +394,7 @@ public class TreeMap<K,V>
         return null;
     }
 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Gets the entry corresponding to the specified key; if no such entry
      * exists, returns the entry for the least key greater than the specified
@@ -2051,6 +2061,7 @@ public class TreeMap<K,V>
      */
 
     static final class Entry<K,V> implements Map.Entry<K,V> {
+        // TODO 这里的key不是final的，HashMap中Node的key是final的
         K key;
         V value;
         Entry<K,V> left;
