@@ -8,8 +8,8 @@
    2、List除了1.8添加的默认方法有所不同外，其他方法基本一致，而Set则与Collection完全一致
    3、List中可以有重复元素可以用null，而Set中不能存在重复元素
    
-有序集合： List的所有实现类ArrayList、LinkedList、Vector 以及 LinkedHashMap 和 LinkedHashSet
-无序集合： HashMap、TreeMap（排序有序）、TableMap 以及 HashSet、TreeSet
+有序集合：List的所有实现类ArrayList、LinkedList、Vector 以及 LinkedHashMap 和 LinkedHashSet
+无序集合：HashMap、TreeMap（排序有序）、TableMap 以及 HashSet、TreeSet
 
 #Set如何保证元素不重复？
    一般是持有一个HashMap，然后通过HashMap的key的唯一性来实现元素不重复
@@ -42,9 +42,12 @@
    1、key采用弱引用，可以用来做内存缓存，当发生GC时就会被回收掉（这里怎么没提供一个SoftHashMap呢？）
    2、不是线程安全的，可以用Collections.synchronizedMap来构造同步的Map
    3、要求数组长度为2的n次方
-[]LinkedHashMap
+[OK]LinkedHashMap
+   1、LinkedHashMap直接继承自HashMap，然后添加双向链表数据结构，以支持按插入顺序遍历
 []TreeMap
-
+   1、TreeMap基于红黑树（Red-Black tree）实现，基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n)
+   2、TreeMap也是非同步，线程不安全的
+   
 [OK]HashSet
    1、内部持有一个HashMap
 [OK]TreeSet
@@ -53,7 +56,12 @@
 [OK]HashTable
    1、HashMap的同步版本，初始化容量为11，扩容时*2倍+1
 []ConcurrentHashMap
-[]CopyOnWriteArrayList
+   1、
+[OK]CopyOnWriteArrayList
+   1、没有初始容量，最适合于List大小通常保持很小，只读操作远多于写操作，需要在遍历期间防止线程间的冲突
+   2、因为通常需要复制整个基础数组，所以可变操作（add()、set() 和 remove() 等等）的开销很大
+   3、迭代器支持hasNext(), next()等不可变操作，但不支持可变 remove()等操作
+   4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突。在构造迭代器时，迭代器依赖于不变的数组快照
 []ConcurrentSkipListMap
 
 
@@ -62,8 +70,6 @@
 Collection 和 Collections    接口和工具集
 
 Arrays.asList 获得的 List     使用时需要注意什么（不可修改）
-
-Enumeration 和 Iterator      区别
 
 fail-fast 和 fail-safe       非线程安全容器的检查（fail-fast）
 
