@@ -1,7 +1,5 @@
 package top.hiccup.schema.proxy;
 
-import top.hiccup.schema.proxy.IBusiService;
-
 /**
  * 实现了接口的Service类
  *
@@ -15,8 +13,16 @@ public class BusiServiceImpl implements IBusiService {
     }
 
     @Override
-    public String getStr() {
+    public String getName() {
+        System.out.println("目标方法：getName");
+        this.innerInvoke();
         return new String("abc");
+    }
+
+    @Override
+    public String innerInvoke() {
+        System.out.println("目标方法：innerInvoke");
+        return null;
     }
 
 }

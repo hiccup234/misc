@@ -8,7 +8,7 @@ package top.hiccup.schema.proxy.cglib;
  */
 public class BusiSeviceWithNoIntf {
 
-    public String getStr() {
+    public String getName() {
         return new String("efg");
     }
 }

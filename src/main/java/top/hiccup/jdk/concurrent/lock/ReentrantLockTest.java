@@ -9,10 +9,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author wenhy
  * @date 2018/1/8
  */
-public class UseReentrantLock {
+public class ReentrantLockTest {
 
     private Lock lock = new ReentrantLock();
-//    private Lock lock = new ReentrantLock(true);    //公平锁，先请求锁的线程先获得锁
+    // 公平锁，先请求锁的线程先获得锁
+//    private Lock lock = new ReentrantLock(true);
     public void method1(){
         try {
             lock.lock();
@@ -23,7 +24,7 @@ public class UseReentrantLock {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-
+            // 一定要记得在finally块释放锁
             lock.unlock();
         }
     }
@@ -38,7 +39,6 @@ public class UseReentrantLock {
         } catch (InterruptedException e) {
             e.printStackTrace();
         } finally {
-
             lock.unlock();
         }
     }
@@ -67,12 +67,12 @@ public class UseReentrantLock {
     }
 
     public static void main(String[] args) {
-        final UseReentrantLock ur = new UseReentrantLock();
+        final ReentrantLockTest lock = new ReentrantLockTest();
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                ur.method1();
-                ur.method2();
+                lock.method1();
+                lock.method2();
             }
         }, "t1");
 
@@ -82,10 +82,9 @@ public class UseReentrantLock {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        //System.out.println(ur.lock.getQueueLength());
-
-        //重入次数测试
-        ur.m1();
+//        System.out.println(lock.lock.getQueueLength());
+        // 重入次数测试
+        lock.m1();
 
     }
 

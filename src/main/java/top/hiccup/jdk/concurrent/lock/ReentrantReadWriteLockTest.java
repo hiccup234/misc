@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author wenhy
  * @date 2018/1/8
  */
-public class UseReentrantReadWriteLock {
+public class ReentrantReadWriteLockTest {
 
     private ReentrantReadWriteLock rwLock = new ReentrantReadWriteLock();
     private ReentrantReadWriteLock.ReadLock readLock = rwLock.readLock();
@@ -42,30 +42,30 @@ public class UseReentrantReadWriteLock {
 
     public static void main(String[] args) {
 
-        final UseReentrantReadWriteLock urrw = new UseReentrantReadWriteLock();
+        final ReentrantReadWriteLockTest rrwl = new ReentrantReadWriteLockTest();
 
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                urrw.read();
+                rrwl.read();
             }
         }, "t1");
         Thread t2 = new Thread(new Runnable() {
             @Override
             public void run() {
-                urrw.read();
+                rrwl.read();
             }
         }, "t2");
         Thread t3 = new Thread(new Runnable() {
             @Override
             public void run() {
-                urrw.write();
+                rrwl.write();
             }
         }, "t3");
         Thread t4 = new Thread(new Runnable() {
             @Override
             public void run() {
-                urrw.write();
+                rrwl.write();
             }
         }, "t4");
 

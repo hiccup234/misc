@@ -69,11 +69,11 @@ public class CglibProxyTest {
 
         MyCglibFactory myCgLibFactory = new MyCglibFactory();
         IBusiService busiServiceProxy = myCgLibFactory.produce(busiService);
-        System.out.println(busiServiceProxy.getStr());
+        System.out.println(busiServiceProxy.getName());
 
         MyCglibFactory2 myCgLibFactory2 = new MyCglibFactory2();
         BusiSeviceWithNoIntf busiSeviceWithNoIntfProxy = myCgLibFactory2.produce(busiSeviceWithNoIntf);
-        System.out.println(busiSeviceWithNoIntfProxy.getStr());
+        System.out.println(busiSeviceWithNoIntfProxy.getName());
     }
 
     public static void main(String[] args) {

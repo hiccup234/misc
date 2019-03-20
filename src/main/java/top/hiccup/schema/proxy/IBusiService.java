@@ -8,5 +8,12 @@ package top.hiccup.schema.proxy;
  */
 public interface IBusiService {
 
-    String getStr();
+    String getName();
+
+    String innerInvoke();
+
+    default String defaultMethod() {
+        System.out.println("interface defaultMethod");
+        return getName();
+    }
 }
