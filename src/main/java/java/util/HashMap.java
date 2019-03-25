@@ -141,11 +141,11 @@ import sun.misc.SharedSecrets;
 /**
  * 1、HashMap中可以允许key和value同时为空（只能有一个为null的key，放在第一个桶中）
  * 3、动态扩容是把hash表的数组长度扩为原来的2倍（长度必须是2的x次方，方便hash定位）
- * 4、JDK1.8对hash表的链表长度默认超过8时做了优化，改成红黑树来实现
+ * 4、JDK1.8对hash表的链表长度默认超过8时（插入第9个元素）做了优化，改成红黑树来实现
  * 5、默认初始化容量（数组长度）为16，加载因子为0.75
  * 6、如果加载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间）
- *    如果考虑直接用数组存储的话，则没法处理hash冲突的问题
- * 7、HashMap将“key为null”的元素放在table的位置0处，即table[0]中；“key不为null”的放在table的其余位置
+ *    如果考虑直接用数组存储的话，则没法处理hash冲突的问题（HashMap是近似随机访问的O(1)）
+ * 7、HashMap将“key为null”的元素放在table的位置0处，即table[0]中
  */
 public class HashMap<K,V> extends AbstractMap<K,V>
     implements Map<K,V>, Cloneable, Serializable {
@@ -245,6 +245,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     /**
      * The default initial capacity - MUST be a power of two.
      */
+    // TODO aka: also known as
     static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
 
     /**
@@ -266,7 +267,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * than 2 and should be at least 8 to mesh with assumptions in
      * tree removal about conversion back to plain bins upon
      * shrinkage.
-     * TODO 当拉链长度超过8时转换为红黑树
+     * TODO 当链表长度超过8（插入第9个Node）时转换为红黑树
      */
     static final int TREEIFY_THRESHOLD = 8;
 
@@ -274,7 +275,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * The bin count threshold for untreeifying a (split) bin during a
      * resize operation. Should be less than TREEIFY_THRESHOLD, and at
      * most 6 to mesh with shrinkage detection under removal.
-     * TODO 拉链转换为红黑树后，树节点小于6时再转换为普通链表
+     * TODO 链表转换为红黑树后，树节点小于6（<=6）时再转换为普通链表（不是8而是6是为了防止频繁在链表和树之间切换）
      */
     static final int UNTREEIFY_THRESHOLD = 6;
 
@@ -283,7 +284,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * (Otherwise the table is resized if too many nodes in a bin.)
      * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
      * between resizing and treeification thresholds.
-     * TODO 数组table的长度不小于64时才开启转换红黑树功能
+     * TODO 数组table的长度不小于64时才开启转换红黑树功能（即至少扩容过一次）
      */
     static final int MIN_TREEIFY_CAPACITY = 64;
 
@@ -309,7 +310,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         public final K getKey()        { return key; }
         public final V getValue()      { return value; }
         public final String toString() { return key + "=" + value; }
-        // TODO Objects是1.7新增的对象工具类
+        // TODO Objects是JDK1.7新增的对象工具类
         public final int hashCode() {
             return Objects.hashCode(key) ^ Objects.hashCode(value);
         }
@@ -397,9 +398,9 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * TODO 取给定值的最近的2次方数（大于等于给定的数）
      */
     static final int tableSizeFor(int cap) {
-        // TODO 减1是为了防止cap已经是2的n次方时，计算的结果时cap*2
+        // TODO 减1是为了防止cap已经是2的n次方时，计算的结果是cap*2
         int n = cap - 1;
-        // TODO 无符号右移一位则最高为的1被右移了以为，再和n或则保留住了刚才被右移的1，现在从n的最高为1开始有两个确定的1
+        // TODO 无符号右移一位则最高位的1被右移了一位，再和n“或”则保留住了刚才被右移的1，现在从n的最高为1开始有两个确定的1
         // TODO 接下来的算法依此右移2，4，8，16共31次右移，则可以保证整个cap从最高位的1开始都被填充位1，再加1后就是直接进位，所以是2的次方
         // TODO 但是如果cap为1的话返回的结果也是1
         n |= n >>> 1;
@@ -417,7 +418,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * necessary. When allocated, length is always a power of two.
      * (We also tolerate length zero in some operations to allow
      * bootstrapping mechanics that are currently not needed.)
-     * TODO 1.7是Entry数组
+     * TODO JDK1.7是Entry数组
      */
     transient Node<K,V>[] table;
 
@@ -457,6 +458,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      *
      * @serial
      */
+    // TODO 注意这里是final修饰的
     final float loadFactor;
 
     /* ---------------- Public operations -------------- */
@@ -595,11 +597,13 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     final Node<K,V> getNode(int hash, Object key) {
         Node<K,V>[] tab; Node<K,V> first, e; int n; K k;
         if ((tab = table) != null && (n = tab.length) > 0 &&
+            // TODO (n - 1) & hash 可以快速定位该hash所在桶位置
             (first = tab[(n - 1) & hash]) != null) {
             if (first.hash == hash && // always check first node
                 ((k = first.key) == key || (key != null && key.equals(k))))
                 return first;
             if ((e = first.next) != null) {
+                // TODO 树节点和普通节点分开处理
                 if (first instanceof TreeNode)
                     return ((TreeNode<K,V>)first).getTreeNode(hash, key);
                 do {
@@ -653,11 +657,14 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     final V putVal(int hash, K key, V value, boolean onlyIfAbsent,
                    boolean evict) {
         Node<K,V>[] tab; Node<K,V> p; int n, i;
+        // TODO 如果是第一次put，需要对table做初始化
         if ((tab = table) == null || (n = tab.length) == 0)
             n = (tab = resize()).length;
+        // TODO 找到对应的数组下标，如果为空则表明该位置没有冲突并直接new一个新节点放入
         if ((p = tab[i = (n - 1) & hash]) == null)
             tab[i] = newNode(hash, key, value, null);
         else {
+            // TODO 有冲突，判断当前要put的key是不是就是数组的元素（链表头节点）
             Node<K,V> e; K k;
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
@@ -665,6 +672,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             else if (p instanceof TreeNode)
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
             else {
+                // TODO 依此判断当前要put的key是不是在链表上，如果都不在则追加在末尾，并判断是否需要树化（链表上已经有8个，插入第9个的时候）
                 for (int binCount = 0; ; ++binCount) {
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
@@ -678,6 +686,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                     p = e;
                 }
             }
+            // TODO 如果e不为空，则表示Map中已经存在该key，后续不需要扩容，所以直接return
             if (e != null) { // existing mapping for key
                 V oldValue = e.value;
                 if (!onlyIfAbsent || oldValue == null)
@@ -687,6 +696,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             }
         }
         ++modCount;
+        // TODO JDK1.7是先扩容再插值，这里先插值再扩容
         if (++size > threshold)
             resize();
         afterNodeInsertion(evict);
@@ -712,8 +722,10 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                 threshold = Integer.MAX_VALUE;
                 return oldTab;
             }
+            // TODO 新数组长度扩容为原来的2倍
             else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
                      oldCap >= DEFAULT_INITIAL_CAPACITY)
+                // TODO 新的阈值也扩大2倍
                 newThr = oldThr << 1; // double threshold
         }
         else if (oldThr > 0) // initial capacity was placed in threshold
@@ -732,11 +744,14 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
         table = newTab;
         if (oldTab != null) {
+            // TODO 遍历原数组进行数据迁移
             for (int j = 0; j < oldCap; ++j) {
                 Node<K,V> e;
                 if ((e = oldTab[j]) != null) {
+                    // TODO 置空原数组元素，帮助GC
                     oldTab[j] = null;
                     if (e.next == null)
+                        // TODO 如果e没有next，则表明链表只有一个元素，直接进行迁移即可
                         newTab[e.hash & (newCap - 1)] = e;
                     else if (e instanceof TreeNode)
                         ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
@@ -746,6 +761,9 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                         Node<K,V> next;
                         do {
                             next = e.next;
+                            // TODO 如果(e.hash & oldCap) 只有两种结果，要么为0，要么为oldCap
+                            // TODO 为0则说明重新哈希e.hash & (newCap - 1)后的下标跟现在的数组下标是一样的，
+                            // TODO    所以单独列成一个链表，直接放到新数组下，这样还可以保证链表的插入顺序，防止1.7那样扩容出现死链
                             if ((e.hash & oldCap) == 0) {
                                 if (loTail == null)
                                     loHead = e;
@@ -753,6 +771,8 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                                     loTail.next = e;
                                 loTail = e;
                             }
+                            // TODO 否则另外列一个链表，表示需要重新哈希的元素，注意：重新哈希后，同一链表上的元素的新下标是有固定规律的
+                            // TODO 要么留在原下标，要么增加固定oldCap的步长
                             else {
                                 if (hiTail == null)
                                     hiHead = e;
@@ -767,6 +787,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                         }
                         if (hiTail != null) {
                             hiTail.next = null;
+                            // TODO 新扩容的数组，不用判断原来是否有元素
                             newTab[j + oldCap] = hiHead;
                         }
                     }
@@ -844,6 +865,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         if ((tab = table) != null && (n = tab.length) > 0 &&
             (p = tab[index = (n - 1) & hash]) != null) {
             Node<K,V> node = null, e; K k; V v;
+            // TODO 判断链表首节点是否就是要删除的元素
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
                 node = p;
@@ -862,13 +884,16 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                     } while ((e = e.next) != null);
                 }
             }
+            // TODO node不为空则表明找到了要删除的节点
             if (node != null && (!matchValue || (v = node.value) == value ||
                                  (value != null && value.equals(v)))) {
                 if (node instanceof TreeNode)
                     ((TreeNode<K,V>)node).removeTreeNode(this, tab, movable);
                 else if (node == p)
+                    // TODO 如果是链表首节点，就直接设置数组下标（这里node.next为什么不设置为null呢?）
                     tab[index] = node.next;
                 else
+                    // TODO p指向要删除元素的前一个节点
                     p.next = node.next;
                 ++modCount;
                 --size;
