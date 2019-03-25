@@ -30,14 +30,14 @@
    1、继承自Vector，所以是线程安全的
    2、其实更应该继承或直接使用LinkedList来实现
 
-[]HashMap
+[OK]HashMap
    1、HashMap中可以允许key和value同时为空（只能有一个为null的key，放在第一个桶中）
    3、动态扩容是把hash表的数组长度扩为原来的2倍（长度必须是2的x次方，方便hash定位）
    4、JDK1.8对hash表的链表长度默认超过8时做了优化，改成红黑树来实现
    5、默认初始化容量（数组长度）为16，加载因子为0.75
    6、如果加载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间）
       如果考虑直接用数组存储的话，则没法处理hash冲突的问题
-   7、HashMap将“key为null”的元素放在table的位置0处，即table[0]中；“key不为null”的放在table的其余位置
+   7、HashMap将“key为null”的元素放在table的位置0处，即table[0]中
 [OK]WeakHashMap
    1、key采用弱引用，可以用来做内存缓存，当发生GC时就会被回收掉（这里怎么没提供一个SoftHashMap呢？）
    2、不是线程安全的，可以用Collections.synchronizedMap来构造同步的Map
@@ -56,14 +56,18 @@
 [OK]HashTable
    1、HashMap的同步版本，初始化容量为11，扩容时*2倍+1
 []ConcurrentHashMap
-   1、
+   1、JDK1.7采用锁分段的思想，一个Segment就是一个ReenTrantLock
+   2、Segment数组不能扩容，扩容是针对Segment元素（一个小型HashMap）进行的
+   3、get方法没有加锁，因为HashEntry的value字段是volatile修饰的，可以保证线程间的可见性
+        QA：get没加锁会导致并发Map出现数据一致性问题（弱一致性），前后get看到的数据不一致，Map本身没有提供这种同步get方法的途径
+            1.5和1.6Segment的get方法会造成更严重的一致性问题（判断count，无法及时看到更新）
 [OK]CopyOnWriteArrayList
    1、没有初始容量，最适合于List大小通常保持很小，只读操作远多于写操作，需要在遍历期间防止线程间的冲突
    2、因为通常需要复制整个基础数组，所以可变操作（add()、set() 和 remove() 等等）的开销很大
    3、迭代器支持hasNext(), next()等不可变操作，但不支持可变 remove()等操作
    4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突。在构造迭代器时，迭代器依赖于不变的数组快照
 []ConcurrentSkipListMap
-
+   1、采用跳跃表实现
 
 ##################################################################
 
