@@ -47,6 +47,11 @@ package java.util.concurrent.atomic;
  * @author Doug Lea
  * @param <V> The type of object referred to by this reference
  */
+
+
+/**
+ * 1、带版本戳的原子引用操作，可以解决CAS的ABA问题
+ */
 public class AtomicStampedReference<V> {
 
     private static class Pair<T> {
