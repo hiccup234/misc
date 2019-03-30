@@ -6,31 +6,39 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Java锁分类和优化策略：
- * <p>
- * JVM的synchronized关键字锁的实现，借助于对象头的Monitor
- * 【轻量级锁】
- * <p>
+ * 
+ * JVM的synchronized关键字锁的实现，借助于对象头的Monitor（JDK1.6以后，Oracle的锁优化，低竞争条件下synchronized更有优势）
  * 【偏向锁】
- * <p>
- * 【自旋锁】
- * <p>
+ * 当锁没有出现竞争时，默认使用偏向锁，JVM利用CAS设置对象头上的MarkWork为线程ID（首次访问的线程），以表示锁偏向当前线程，所以并不设计真正的互斥锁
+ * 大部分对象生命周期中最多会被一个线程锁定，因此使用偏向锁可以降低无竞争条件下的开销。偏向锁也可以被撤销，详见《Java并发编程的艺术》
+ *
+ * 【轻量级锁】
+ * 
+ *
+ * 【重量级锁】
+ * 
  * ==================================================================================
  * 【优化策略】
  * 1、减小锁粒度：如JDK1.7中ConcurrentHashmap的Segment锁分段细化技术，JDK1.8版本的锁粒度更小
- * <p>
+ * 
  * 2、锁分离（读写分离）：ReentrantReadWriteLock
- * <p>
+ * 
  * 3、锁消除：对象逃逸分析等
- * <p>
+ * 
  * 4、无锁：也就是乐观锁，如cas操作，java.util.concurrent.atomic包使用无锁实现，无锁队列AQS
- * <p>
+ * 
  * ===================================================================================
- * <p>
+ * 
  * 【独占锁】
  * ReentrantLock，ReentrantReadWriteLock.WriteLock
- * <p>
+ * 
  * 【共享锁】
  * JUC包中的ReentrantReadWriteLock.ReadLock，CyclicBarrier，CountDownLatch和Semaphore等
+ *
+ * 【保证线程安全的办法？】
+ * 1、封装：将对象内部状态隐藏和保护起来
+ * 2、不可变：final不可被修改，只读就能保证线程安全性
+ * 3、同步：使得对某个共享变量的修改符合：原子性、可见性、有序性
  *
  * @author wenhy
  * @date 2018/9/7
@@ -155,7 +163,7 @@ class MCSLock {
 /**
  * 1、CLH锁也是一种基于链表的可扩展、高性能、公平的自旋锁，申请线程只在本地变量上自旋，它不断轮询前驱的状态，如果发现前驱释放了锁就结束自旋。
  * 2、AQS就是基于CLH锁的
- * <p>
+ * 
  * MCS来自于其发明人名字的首字母：John Mellor-Crummey和Michael Scott
  * 而CLH的发明人是：Craig，Landin and Hagersten
  *

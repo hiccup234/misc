@@ -4,7 +4,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * ReentrantLock可重入锁使用示例
+ * 1、ReentrantLock可重入锁使用示例
+ *
+ * 2、synchronized锁是“非公平”的可重入锁
  *
  * @author wenhy
  * @date 2018/1/8
