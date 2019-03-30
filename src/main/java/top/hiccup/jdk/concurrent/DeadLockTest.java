@@ -1,12 +1,17 @@
 package top.hiccup.jdk.concurrent;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadInfo;
+import java.lang.management.ThreadMXBean;
+import java.util.concurrent.TimeUnit;
+
 /**
  * 一个简单的死锁案例（100%会发生死锁，再也不怕面试官让手写死锁了）
  *
  * 如何避免死锁：
  * 1、按顺序加锁：如果线程对资源按1，2，3的顺序加锁就不会出现死锁的情况
  * 2、设置阻塞时长：lock.tryLock(300, TimeUnit.SECONDS); 如果超时未获取到锁则放弃本次操作
- * 3、死锁检测：
+ * 3、死锁检测：mxBean.findDeadlockedThreads()可以检测死锁的存在
  *
  * @author wenhy
  * @date 2019/1/9
@@ -20,6 +25,8 @@ public class DeadLockTest {
     private static volatile boolean flag2 = false;
 
     public static void main(String[] args) {
+        checkDeadLock();
+
         new Thread(() -> {
             synchronized (lock1) {
                 flag1 = true;
@@ -59,5 +66,22 @@ public class DeadLockTest {
         }).start();
 
         System.out.println("main thread end");
+    }
+
+
+    public static void checkDeadLock() {
+        ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();
+        java.util.concurrent.ScheduledExecutorService scheduled = java.util.concurrent.Executors.newScheduledThreadPool(1);
+        // 初始等待5秒，每隔10秒检测一次
+        scheduled.scheduleAtFixedRate(()->{
+            long[] threadIds = mxBean.findDeadlockedThreads();
+            if (threadIds != null) {
+                System.out.println("检测到死锁线程：");
+                ThreadInfo[] threadInfos = mxBean.getThreadInfo(threadIds);
+                for (ThreadInfo info : threadInfos) {
+                    System.out.println(info.getThreadId() + "：" + info.getThreadName());
+                }
+            }
+        }, 5L, 10L, TimeUnit.SECONDS);
     }
 }
