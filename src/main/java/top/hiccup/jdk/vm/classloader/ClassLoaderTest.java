@@ -3,17 +3,18 @@ package top.hiccup.jdk.vm.classloader;
 /**
  * JVM装载class文件：加载>>链接（验证，准备，解析）>>初始化
  *
- * 【加载】
+ * 【加载】 ClassFormatError（如果输入的数据不是ClassFile的结构）
  * 把*.class文件的二进制流加载到元数据区，并在堆上创建对应类型的Class对象
  * 用参数-verbose:class 或者 -XX:+TraceClassLoading 可以看到类加载过程
  * 启动类加载器：BootstrapClassLoader由C++实现，没有对应的Java对象
  * 双亲委派模型：避免重复加载Java类
  *
  * 【链接】
- * 验证：验证class文件是否符合JVM规范（类似Spring加载完Resouce配置文件后，对xml的DTD和Schema验证）
- * 准备：为类和接口的静态字段分配内存[初始值]（初始化在稍后的初始化阶段），如int、long设置为0，boolean设置为false，Object设置为null
+ * 验证：验证class文件是否符合JVM规范，验证阶段可能触发更多class的加载（类似Spring加载完Resouce配置文件后，对xml的DTD和Schema验证）
+ *      如果不符合JVM规范则会抛出 VerifyError
+ * 准备：为类和接口的静态字段分配内存并指定初始值（显式初始化在稍后的初始化阶段），如int、long设置为0，boolean设置为false，Object设置为null
  *      创建方法表（静态绑定、动态绑定）
- * 解析：将常量池中的符号引用替换为直接引用（偏移地址）
+ * 解析：将常量池中的符号引用替换为直接引用（偏移地址），参考《深入理解JVM》字节码格式的介绍
  *
  * 【初始化】
  * <clinit>方法：初始化类的静态字段并执行static代码块
@@ -24,7 +25,7 @@ package top.hiccup.jdk.vm.classloader;
  * ===================================================================================
  * 【引申】
  * Q: 在加载一个类之后，如果对类的字节码进行修改，如何在不重新启动JVM的情况下加载已经修改过的类？
- * A: 新创建一个ClassLoader并loadClass，原来加载的ClassLoader不能重新加载（无法直接卸载已装载的类）
+ * A: 新创建一个ClassLoader并loadClass，原来加载的ClassLoader不能重新加载
  * ===================================================================================
  *
  * 破坏双亲委派模型：
