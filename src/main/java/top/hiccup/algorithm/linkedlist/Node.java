@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.linklist;
+package top.hiccup.algorithm.linkedlist;
 
 import lombok.Data;
 
@@ -12,6 +12,20 @@ import lombok.Data;
 public class Node {
     private Object val;
     private Node next;
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (other == this) {
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public String toString() {
@@ -42,7 +56,7 @@ public class Node {
         StringBuilder sb = new StringBuilder();
         int count = 0;
         for (Node p = head; p != null; p = p.getNext()) {
-            sb.append(++count + ":" + p);
+            sb.append(++count + "(" + p + ")");
             if (p.getNext() != null) {
                 sb.append(" -> ");
             }

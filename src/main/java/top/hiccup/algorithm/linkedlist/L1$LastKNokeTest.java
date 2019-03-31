@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.linklist;
+package top.hiccup.algorithm.linkedlist;
 
 import java.util.Random;
 
@@ -19,7 +19,7 @@ public class L1$LastKNokeTest {
      * @param k
      * @return
      */
-    public static Node nodeK1(Node head, int k) {
+    public static Node lastK1(Node head, int k) {
         if (head == null || k <= 0) {
             return null;
         }
@@ -47,12 +47,12 @@ public class L1$LastKNokeTest {
      * @return
      */
     private static int num = 0;
-    public static Node nodeK2(Node head, int k) {
+    public static Node lastK2(Node head, int k) {
         num = k;
         if (head == null || k <= 0) {
             return null;
         }
-        Node node = nodeK2(head.getNext(), k);
+        Node node = lastK2(head.getNext(), k);
         // 如果不为空则证明找到了倒数k的节点，并直接一路返回
         if (node != null) {
             return node;
@@ -73,7 +73,7 @@ public class L1$LastKNokeTest {
      * @param k
      * @return
      */
-    public static Node nodeK3(Node head, int k) {
+    public static Node lastK3(Node head, int k) {
         if (head == null || k <= 0) {
             return null;
         }
@@ -82,7 +82,9 @@ public class L1$LastKNokeTest {
         for (Node n1 = head;n1 != null; n1 = n1.getNext()) {
             count++;
             if (count == k) {
-                n2 = n1;
+                n2 = head;
+            } else if (count > k) {
+                n2 = n2.getNext();
             }
         }
         return n2;
@@ -95,7 +97,7 @@ public class L1$LastKNokeTest {
 //            Node head = buildLinkList(random.nextInt(500));
             Node head = Node.buildLinkedList(100);
             Node.printLinkedList(head);
-            System.out.println(nodeK1(head, 1));
+            System.out.println(lastK1(head, 1));
         }
     }
 
@@ -103,13 +105,13 @@ public class L1$LastKNokeTest {
     public void test2() {
         Node head = Node.buildLinkedList(100);
         Node.printLinkedList(head);
-        System.out.println(nodeK2(head, 100));
+        System.out.println(lastK2(head, 100));
     }
 
     @Test
     public void test3() {
         Node head = Node.buildLinkedList(100);
         Node.printLinkedList(head);
-        System.out.println(nodeK2(head, 101));
+        System.out.println(lastK3(head, 1));
     }
 }
