@@ -95,7 +95,7 @@ public class L1$LastKNokeTest {
         Random random = new Random(47);
         for (int i = 0; i < 100; i++) {
 //            Node head = buildLinkList(random.nextInt(500));
-            Node head = Node.buildLinkedList(100);
+            Node head = Node.buildLinkedList(100, (k) -> k+1);
             Node.printLinkedList(head);
             System.out.println(lastK1(head, 1));
         }
@@ -103,14 +103,14 @@ public class L1$LastKNokeTest {
 
     @Test
     public void test2() {
-        Node head = Node.buildLinkedList(100);
+        Node head = Node.buildLinkedList(100, (k) -> k+1);
         Node.printLinkedList(head);
         System.out.println(lastK2(head, 100));
     }
 
     @Test
     public void test3() {
-        Node head = Node.buildLinkedList(100);
+        Node head = Node.buildLinkedList(100, (k) -> k+1);
         Node.printLinkedList(head);
         System.out.println(lastK3(head, 1));
     }

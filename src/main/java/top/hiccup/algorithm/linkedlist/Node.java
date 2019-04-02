@@ -10,7 +10,7 @@ import lombok.Data;
  */
 @Data
 public class Node {
-    private Object val;
+    private int val;
     private Node next;
 
     @Override
@@ -29,15 +29,15 @@ public class Node {
 
     @Override
     public String toString() {
-        return "node:" + String.valueOf(val);
+        return String.valueOf(val);
     }
 
-    public static Node buildLinkedList(int n) {
+    public static Node buildLinkedList(int n, Command command) {
         Node head = null;
         Node tail = null;
         for (int i = 0; i < n; i++) {
             Node node = new Node();
-            node.setVal(i + 1);
+            node.setVal(command.getVal(i));
             if (i == 0) {
                 head = node;
                 tail = node;
@@ -56,11 +56,15 @@ public class Node {
         StringBuilder sb = new StringBuilder();
         int count = 0;
         for (Node p = head; p != null; p = p.getNext()) {
-            sb.append(++count + "(" + p + ")");
+            sb.append(++count + ":" + p);
             if (p.getNext() != null) {
                 sb.append(" -> ");
             }
         }
         System.out.println(sb.toString());
     }
+}
+
+interface Command {
+    int getVal(int i);
 }
