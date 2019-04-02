@@ -27,40 +27,40 @@ public class L3$AddBigNumTest {
         while (n1 != null || n2 != null) {
             int s1 = 0;
             if (n1 != null) {
-                s1 = ((Integer) n1.getVal()).intValue();
+                s1 = ((Integer) n1.val).intValue();
             }
             int s2 = 0;
             if (n2 != null) {
-                s2 = ((Integer) n2.getVal()).intValue();
+                s2 = ((Integer) n2.val).intValue();
             }
             int sum = s1 + s2 + up;
             Node node = new Node();
             if (sum > 10) {
-                node.setVal(sum - 10);
+                node.val = sum - 10;
                 up = sum/10;
             } else {
-                node.setVal(sum);
+                node.val = sum;
                 up = 0;
             }
             if (n1 != null) {
-                n1 = n1.getNext();
+                n1 = n1.next;
             }
             if (n2 != null) {
-                n2 = n2.getNext();
+                n2 = n2.next;
             }
             if (retHead == null) {
                 retHead = node;
                 retTail = node;
             } else {
-                retTail.setNext(node);
+                retTail.next = node;
                 retTail = node;
             }
 
         }
         if (up > 0) {
             Node node = new Node();
-            node.setVal(up);
-            retTail.setNext(node);
+            node.val = up;
+            retTail.next = node;
         }
         return retHead;
     }

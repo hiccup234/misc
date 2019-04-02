@@ -25,16 +25,16 @@ public class L1$LastKNokeTest {
         }
         // 1、先计算出链表长度
         int count = 0;
-        for (Node tmp = head; tmp != null; tmp = tmp.getNext()) {
+        for (Node tmp = head; tmp != null; tmp = tmp.next) {
             count++;
         }
         if (count < k) {
             return null;
         }
         Node tmp = head;
-        // 这儿不能 i < count - k + 1，因为后面还要赋值tmp = tmp.getNext();类似+1的动作
+        // 这儿不能 i < count - k + 1，因为后面还要赋值tmp = tmp.next;类似+1的动作
         for (int i = 0; i < count - k; i++) {
-            tmp = tmp.getNext();
+            tmp = tmp.next;
         }
         return tmp;
     }
@@ -52,7 +52,7 @@ public class L1$LastKNokeTest {
         if (head == null || k <= 0) {
             return null;
         }
-        Node node = lastK2(head.getNext(), k);
+        Node node = lastK2(head.next, k);
         // 如果不为空则证明找到了倒数k的节点，并直接一路返回
         if (node != null) {
             return node;
@@ -79,12 +79,12 @@ public class L1$LastKNokeTest {
         }
         Node n2 = null;
         int count = 0;
-        for (Node n1 = head;n1 != null; n1 = n1.getNext()) {
+        for (Node n1 = head;n1 != null; n1 = n1.next) {
             count++;
             if (count == k) {
                 n2 = head;
             } else if (count > k) {
-                n2 = n2.getNext();
+                n2 = n2.next;
             }
         }
         return n2;

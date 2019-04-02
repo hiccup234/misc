@@ -22,34 +22,33 @@ public class L4$MergeOrderdListTest {
         if (head2 == null) return head1;
         Node retHead = null, retTail = null;
         // 先确定合并后的链表头
-        if (head1.getVal() < head2.getVal()) {
+        if (head1.val < head2.val) {
             retHead = head1;
-            head1 = head1.getNext();
+            head1 = head1.next;
         } else {
             retHead = head2;
-            head2 = head2.getNext();
+            head2 = head2.next;
         }
         retTail = retHead;
         while (head1 != null && head2 != null) {
-            if (head1.getVal() < head2.getVal()) {
-                retTail.setNext(head1);
-                head1 = head1.getNext();
+            if (head1.val < head2.val) {
+                retTail.next = head1;
+                head1 = head1.next;
             } else {
-                retTail.setNext(head2);
-                head2 = head2.getNext();
+                retTail.next = head2;
+                head2 = head2.next;
             }
-            retTail = retTail.getNext();
+            retTail = retTail.next;
         }
-        if (head1 != null) retTail.setNext(head1);
-        else if (head2 != null) retTail.setNext(head2);
+        if (head1 != null) retTail.next = head1;
+        else if (head2 != null) retTail.next = head2;
         return retHead;
     }
 
     @Test
     public void test() {
-        Random random = new Random(47);
-        Node head1 = Node.buildLinkedList(10, (k) -> random.nextInt(20));
-        Node head2 = Node.buildLinkedList(20, (k) -> random.nextInt(50));
+        Node head1 = Node.buildLinkedList(10, (k) -> (int)(k * 1.5) + 2);
+        Node head2 = Node.buildLinkedList(20, (k) -> k * 2);
         Node.printLinkedList(head1);
         Node.printLinkedList(head2);
         Node.printLinkedList(mergeList(head1, head2));

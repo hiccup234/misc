@@ -8,10 +8,9 @@ import lombok.Data;
  * @author wenhy
  * @date 2019/3/31
  */
-@Data
 public class Node {
-    private int val;
-    private Node next;
+    int val;
+    Node next;
 
     @Override
     public int hashCode() {
@@ -37,13 +36,13 @@ public class Node {
         Node tail = null;
         for (int i = 0; i < n; i++) {
             Node node = new Node();
-            node.setVal(command.getVal(i));
+            node.val = command.getVal(i);
             if (i == 0) {
                 head = node;
                 tail = node;
                 continue;
             }
-            tail.setNext(node);
+            tail.next = node;
             tail = node;
         }
         return head;
@@ -55,9 +54,9 @@ public class Node {
         }
         StringBuilder sb = new StringBuilder();
         int count = 0;
-        for (Node p = head; p != null; p = p.getNext()) {
+        for (Node p = head; p != null; p = p.next) {
             sb.append(++count + ":" + p);
-            if (p.getNext() != null) {
+            if (p.next != null) {
                 sb.append(" -> ");
             }
         }

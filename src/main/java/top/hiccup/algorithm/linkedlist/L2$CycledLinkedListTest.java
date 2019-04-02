@@ -25,7 +25,7 @@ public class L2$CycledLinkedListTest {
             return false;
         }
         Set<Node> set = new HashSet<>();
-        for (Node p = head; p != null; p = p.getNext()) {
+        for (Node p = head; p != null; p = p.next) {
             if (set.contains(p)) {
                 // 因为是从头遍历，所以p节点就是环入口，剩下的节点数就是环长度
                 System.out.println("cycled node:" + p);
@@ -46,9 +46,9 @@ public class L2$CycledLinkedListTest {
             return false;
         }
         Node n1 = head, n2 = head;
-        while (n1 != null && n2 != null && n2.getNext() != null) {
-            n1 = n1.getNext();
-            n2 = n2.getNext().getNext();
+        while (n1 != null && n2 != null && n2.next != null) {
+            n1 = n1.next;
+            n2 = n2.next.next;
             if (n1 == n2) {
                 return true;
             }
@@ -66,9 +66,9 @@ public class L2$CycledLinkedListTest {
         }
         Node n1 = head, n2 = head;
         Node meetingNode = null;
-        while (n1 != null && n2 != null && n2.getNext() != null) {
-            n1 = n1.getNext();
-            n2 = n2.getNext().getNext();
+        while (n1 != null && n2 != null && n2.next != null) {
+            n1 = n1.next;
+            n2 = n2.next.next;
             if (n1 == n2) {
                 meetingNode = n1;
             }
@@ -76,8 +76,8 @@ public class L2$CycledLinkedListTest {
         Node p1 = head;
         Node p2 = meetingNode;
         while (p1 != p2) {
-            p1 = p1.getNext();
-            p2 = p2.getNext();
+            p1 = p1.next;
+            p2 = p2.next;
         }
         return p1;
     }
@@ -92,18 +92,18 @@ public class L2$CycledLinkedListTest {
             return -1;
         }
         Node n1 = head, n2 = head;
-        while (n1 != null && n2 != null && n2.getNext() != null) {
-            n1 = n1.getNext();
-            n2 = n2.getNext().getNext();
+        while (n1 != null && n2 != null && n2.next != null) {
+            n1 = n1.next;
+            n2 = n2.next.next;
             if (n1 == n2) {
                 break;
             }
         }
         long length = 0;
         while (n1 != n2) {
-            n1 = n1.getNext();
+            n1 = n1.next;
             // 这里已经可以确认存在环，不用判断空指针，
-            n2 = n2.getNext().getNext();
+            n2 = n2.next.next;
             length ++;
         }
         return length;
@@ -112,13 +112,13 @@ public class L2$CycledLinkedListTest {
     private static void buildCycledLinkedList(Node head) {
         int count = 1;
         Node tail = head;
-        while (tail.getNext() != null) {
+        while (tail.next != null) {
             count ++;
-            tail = tail.getNext();
+            tail = tail.next;
         }
         count++;
         Node nodeK = L1$LastKNokeTest.lastK3(head, 3);
-        tail.setNext(nodeK);
+        tail.next = nodeK;
     }
 
     @Test
