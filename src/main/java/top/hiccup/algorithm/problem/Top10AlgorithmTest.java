@@ -60,23 +60,23 @@ class Stack {
     }
 }
 
-class Queue {
-    private Node head, tail;
-
-    public void enqueue(Node node) {
-        if (tail != null) {
-            tail.setNext(node);
-        } else {
-            tail = head = node;
-        }
-    }
-
-    public Node dequeue() {
-        if (head != null) {
-            Node node = head;
-            head = head.getNext();
-            return node;
-        }
-        return head;
-    }
-}
+//class Queue {
+//    private Node head, tail;
+//
+//    public void enqueue(Node node) {
+//        if (tail != null) {
+//            tail.setNext(node);
+//        } else {
+//            tail = head = node;
+//        }
+//    }
+//
+//    public Node dequeue() {
+//        if (head != null) {
+//            Node node = head;
+//            head = head.getNext();
+//            return node;
+//        }
+//        return head;
+//    }
+//}
