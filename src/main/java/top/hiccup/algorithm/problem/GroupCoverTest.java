@@ -1,4 +1,4 @@
-package top.hiccup.algorithm;
+package top.hiccup.algorithm.problem;
 
 import java.util.HashSet;
 import java.util.Set;

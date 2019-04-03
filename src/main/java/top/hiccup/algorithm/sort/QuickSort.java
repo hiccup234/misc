@@ -37,7 +37,7 @@ public class QuickSort {
     /**
      * 基础快排实现
      */
-    private static int partition(int[] arr, int left, int right) {
+    public static int partition(int[] arr, int left, int right) {
         int i = left, j = right;
         // 默认取最左边的元素为分割的基准元素（也可以取最右边的）
         int partition = arr[left];
@@ -59,7 +59,7 @@ public class QuickSort {
     }
 
     public static void quickSort(int[] arr, int left, int right) {
-        // 递归的出口
+        // 递归的出口，需要判断>=不能只判=
         if (left >= right) {
             return;
         }
@@ -71,7 +71,7 @@ public class QuickSort {
     /**
      * 快排实现优化一：随机化快排
      */
-    private static int randPartition(int[] arr, int left, int right) {
+    public static int randPartition(int[] arr, int left, int right) {
         int i = left, j = right;
         Random random = new Random();
         int pivot = random.nextInt(right) % (right - left) + left;

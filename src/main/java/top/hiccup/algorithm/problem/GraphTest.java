@@ -1,4 +1,4 @@
-package top.hiccup.algorithm;
+package top.hiccup.algorithm.problem;
 
 /**
  * 图相关的问题主要集中在深度优先搜索（depth head search）和广度优先搜索（breath head search）

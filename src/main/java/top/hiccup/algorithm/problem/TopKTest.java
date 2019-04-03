@@ -1,4 +1,4 @@
-package top.hiccup.algorithm;
+package top.hiccup.algorithm.problem;
 
 import java.util.ArrayList;
 import java.util.Arrays;

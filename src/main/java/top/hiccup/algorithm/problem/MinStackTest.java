@@ -1,4 +1,4 @@
-package top.hiccup.algorithm;
+package top.hiccup.algorithm.problem;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package top.hiccup.algorithm;
+package top.hiccup.algorithm.problem;
 
 /**
  * 求一个正整数的二进制表示包含多少个1（可以参考Long的countBit方法）

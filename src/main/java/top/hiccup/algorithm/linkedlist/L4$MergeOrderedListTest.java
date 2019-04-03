@@ -12,7 +12,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/4/1
  */
-public class L4$MergeOrderdListTest {
+public class L4$MergeOrderedListTest {
 
     public static Node mergeList(Node head1, Node head2) {
         if(head1 == null && head2 == null) {
