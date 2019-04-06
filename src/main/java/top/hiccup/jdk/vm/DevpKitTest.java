@@ -76,4 +76,12 @@ public class DevpKitTest {
      * Linux环境下如何查找哪个线程使用CPU最长？
      * top -H -p pid
      */
+
+    /**
+     * 通过 java -XX:+PrintCommandLineFlags -version 来得到JDK建议的启动参数
+     * 本机测试：
+     * -XX:InitialHeapSize=266502400 -XX:MaxHeapSize=4264038400 -XX:+PrintCommandLineFlags
+     * -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC
+     * java version "1.8.0_162
+     */
 }

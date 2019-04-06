@@ -1,4 +1,4 @@
-package top.hiccup.misc;
+package top.hiccup.jdk.io;
 
 import java.io.File;
 import java.io.FileInputStream;

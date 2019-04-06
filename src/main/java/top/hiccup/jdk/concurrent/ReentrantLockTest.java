@@ -1,4 +1,4 @@
-package top.hiccup.jdk.lang.sync;
+package top.hiccup.jdk.concurrent;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;

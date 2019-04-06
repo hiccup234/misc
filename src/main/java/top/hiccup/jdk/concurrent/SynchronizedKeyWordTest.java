@@ -1,4 +1,4 @@
-package top.hiccup.jdk.lang.sync;
+package top.hiccup.jdk.concurrent;
 
 /**
  * synchronized 底层原理：

@@ -42,7 +42,6 @@ public class ThreadTest {
 //    private static List list = new ArrayList();
 
     public static void main(String[] args) {
-        final ThreadTest list1 = new ThreadTest();
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {

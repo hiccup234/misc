@@ -1,4 +1,4 @@
-package top.hiccup.misc;
+package top.hiccup.jdk.vm.jmm;
 
 import java.util.ArrayList;
 import java.util.List;

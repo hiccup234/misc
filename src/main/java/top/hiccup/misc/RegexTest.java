@@ -1,4 +1,4 @@
-package top.hiccup.misc.regex;
+package top.hiccup.misc;
 
 /**
  * 正则表达式不当使用导致CPU利用率将近100%

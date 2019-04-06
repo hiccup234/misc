@@ -1,4 +1,4 @@
-package top.hiccup.misc.jdbc;
+package top.hiccup.db.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

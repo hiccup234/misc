@@ -1,4 +1,4 @@
-package top.hiccup.jdk.lang.sync;
+package top.hiccup.jdk.concurrent;
 
 import java.util.ArrayList;
 import java.util.List;
