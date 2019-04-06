@@ -1,5 +1,6 @@
 package top.hiccup.schema.singleton;
 
+import java.util.HashSet;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -14,30 +15,28 @@ public class C_DoubleCheckSingleton {
 
     // 这里的instance可以选择volatile做修饰来加快高并发下的速度，尽管synchronized代码块可以保证instance的可见性
 
-    // 这里必须要用volatile来修饰，以此防止获取到未初始化完全的对象
-    // private static C_DoubleCheckSingleton instance = null;
-    private static volatile C_DoubleCheckSingleton instance = null;
+    //
+    private static C_DoubleCheckSingleton instance = null;
+//    private static volatile C_DoubleCheckSingleton instance = null;
 
-    private int t = 111;
+    private int t = 0;
 
-    {
-        try {
-            Thread.sleep(2000);
-            t = 222;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+    private C_DoubleCheckSingleton() {
+        long count = 0;
+        for (long i=0; i<5_000_000_000L; i++) {
+            count ++;
+        }
+        t = (int) count;
+        if (0 == 0) {
+            t = 1;
         }
     }
-
-    private C_DoubleCheckSingleton() { }
 
     public static C_DoubleCheckSingleton getInstance() {
         if (null == instance) {
             synchronized (C_DoubleCheckSingleton.class) {
                 if (null == instance) {
                     // new C_DoubleCheckSingleton() 不是原子操作
-                    // a） 在内存中分配空间，并将instance引用指向该内存空间。
-                    // b） 执行对象的初始化的逻辑，完成对象的构建。
 
                     // memory = allocate();    // 1:分配对象的内存空间
                     // ctorInstance(memory);   // 2:初始化对象
@@ -48,19 +47,14 @@ public class C_DoubleCheckSingleton {
                 }
             }
         }
-        //如果t1线程在赋值instance后CPU时间片用完，t2线程这时进来获取到的instance就是为完全初始化的。
         return instance;
     }
 
 
     public static void main(String[] args) {
-//        C_DoubleCheckSingleton CDoubleCheckSingleton1 = C_DoubleCheckSingleton.getInstance();
-//        C_DoubleCheckSingleton CDoubleCheckSingleton2 = C_DoubleCheckSingleton.getInstance();
-//        System.out.println(CDoubleCheckSingleton1.hashCode());
-//        System.out.println(CDoubleCheckSingleton2.hashCode());
-
         // 验证未初始化完全的问题
         CyclicBarrier cyclicBarrier = new CyclicBarrier(500);
+        // 开500个线程，先阻塞，待所有线程创建完毕并就绪后同时执行
         for (int i = 0; i < 500; i++) {
             new Thread(() -> {
                 try {
@@ -72,8 +66,7 @@ public class C_DoubleCheckSingleton {
                 }
 
                 C_DoubleCheckSingleton singleton = C_DoubleCheckSingleton.getInstance();
-                System.out.println(singleton.t);
-                if (singleton.t != 222) {
+                if (singleton.t != 1) {
                     throw new RuntimeException("检测到未初始化完全的单例对象");
                 }
             }).start();

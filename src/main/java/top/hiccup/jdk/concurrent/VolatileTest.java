@@ -13,6 +13,26 @@ import lombok.Data;
  * 2、修饰对象或数组，如果数组元素被修改，可以间接保证对象成员或数组元素的线程可见性（原因见test3分析）
  * 3、修饰List等，添加元素以及更新元素的字段都能保证线程可见性
  *
+ * 参考这段代码：
+ * Map configOptions;
+ * char[] configText;
+ * volatile boolean initialized = false;
+ *
+ * // Thread A
+ * configOptions = new HashMap();
+ * configText = readConfigFile(fileName);
+ * processConfigOptions(configText, configOptions);
+ * initialized = true;
+ *
+ * // Thread B
+ * while (!initialized)
+ *   sleep();
+ * // use configOptions
+ *
+ * 线程A堆volatile变量的赋值会导致JVM强制将该变量和当时的其他变量状态都刷出CPU缓存（多级）
+ * 而JMM的happen-before规则，对volatile的写指令不会被重排序到其他操作之前
+ * JSR-133规范 重新定义了JMM模型，能够保证线程B获取的configOptions是更新后的值，即volatile语义得到增强，可以守护上下文
+ *
  * @author wenhy
  * @date 2019/1/10
  */

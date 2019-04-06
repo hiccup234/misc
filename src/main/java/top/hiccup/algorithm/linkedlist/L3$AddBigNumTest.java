@@ -6,8 +6,6 @@ import org.junit.Test;
 
 /**
  * 用链表实现大数相加：
- * @see https://leetcode.com/problems/add-two-numbers
- *
  * 两个用链表代表的整数，其中每个节点包含一个数字（个位数字）。数字存储按形式如下，相加的结果也用链表形式存储。
  *
  * Input: (2 -> 4 -> 3) + (5 -> 6 -> 4)
@@ -16,6 +14,7 @@ import org.junit.Test;
  *
  * @author wenhy
  * @date 2019/4/1
+ * @see https://leetcode.com/problems/add-two-numbers
  */
 public class L3$AddBigNumTest {
 

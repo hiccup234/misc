@@ -1,7 +1,5 @@
 package top.hiccup.algorithm.linkedlist;
 
-import java.util.Random;
-
 import org.junit.Test;
 
 /**

@@ -1,9 +1,9 @@
 package top.hiccup.jdk.vm;
 
 /**
- * JDK常用工具（bin目录下）
+ * JDK常用工具（bin目录下，这些工具其实都是对jmx的一层薄薄的封装）
  *
- * 【javac】  编译源代码为class文件
+ * 【javac】  编译源代码为class文件（javac -encoding utf-8 Test.java）
  * 【java】   运行Java程序
  * 【javap】  解析和反编译class文件
  *

@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/3/31
  */
-public class L2$CycledLinkedListTest {
+public class L2$CycledListTest {
 
     /**
      * 1、穷举比较法：遍历的时候记录已经访问的节点，并与之前访问的做比较，时间复杂度O(n^2)

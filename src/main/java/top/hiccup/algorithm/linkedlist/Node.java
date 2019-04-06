@@ -21,6 +21,11 @@ public class Node {
         this.next = next;
     }
 
+    public Node(Node node) {
+        this.val = node.val;
+        this.next = node.next;
+    }
+
     @Override
     public int hashCode() {
         return super.hashCode();
