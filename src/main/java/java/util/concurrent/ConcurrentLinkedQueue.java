@@ -102,6 +102,12 @@ import java.util.function.Consumer;
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
  */
+
+
+/**
+ * 1、无锁无界队列，采用UNSAFE.compareAndSwapObject实现线程安全
+ * 2、其实ArrayBlockingQueue、LinkedBlockingDeque等也都是采用ReentrantLock，底层也是无锁的CAS
+ */
 public class ConcurrentLinkedQueue<E> extends AbstractQueue<E>
         implements Queue<E>, java.io.Serializable {
     private static final long serialVersionUID = 196745693267521676L;
@@ -326,7 +332,7 @@ public class ConcurrentLinkedQueue<E> extends AbstractQueue<E>
     public boolean offer(E e) {
         checkNotNull(e);
         final Node<E> newNode = new Node<E>(e);
-
+        // TODO 如果cas失败，则重新取tail再执行casTail，一直自旋直到成功
         for (Node<E> t = tail, p = t;;) {
             Node<E> q = p.next;
             if (q == null) {

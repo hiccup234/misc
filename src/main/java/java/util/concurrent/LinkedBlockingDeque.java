@@ -155,6 +155,7 @@ public class LinkedBlockingDeque<E>
     private final int capacity;
 
     /** Main lock guarding all access */
+    // TODO 这里也只有一个互斥锁，跟LinkedBlockingQueue不一样
     final ReentrantLock lock = new ReentrantLock();
 
     /** Condition for waiting takes */

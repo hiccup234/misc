@@ -77,6 +77,11 @@ import java.util.function.Consumer;
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
  */
+
+
+/**
+ * 1、单向链表实现的阻塞队列，名义上的无界队列，默认最大size为Integer.MAX_VALUE
+ */
 public class LinkedBlockingQueue<E> extends AbstractQueue<E>
         implements BlockingQueue<E>, java.io.Serializable {
     private static final long serialVersionUID = -6903933977591709194L;
@@ -158,6 +163,7 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
     private final Condition notEmpty = takeLock.newCondition();
 
     /** Lock held by put, offer, etc */
+    // TODO 这里为什么分为两把锁呢？ 而ArrayBlockingQueue只有一把，是为了细化锁的粒度嚒？读写分离嚒？
     private final ReentrantLock putLock = new ReentrantLock();
 
     /** Wait queue for waiting puts */

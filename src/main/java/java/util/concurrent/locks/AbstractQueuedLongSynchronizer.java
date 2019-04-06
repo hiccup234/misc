@@ -59,6 +59,12 @@ import sun.misc.Unsafe;
  * @since 1.6
  * @author Doug Lea
  */
+
+
+/**
+ * 1、AbstractQueuedSynchronizer的64位版本，private volatile long state;而不是private volatile int state;
+ * 2、除了state是long以外，其他完全一样
+ */
 public abstract class AbstractQueuedLongSynchronizer
     extends AbstractOwnableSynchronizer
     implements java.io.Serializable {

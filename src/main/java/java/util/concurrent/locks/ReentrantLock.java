@@ -104,6 +104,12 @@ import java.util.concurrent.TimeUnit;
  * @since 1.5
  * @author Doug Lea
  */
+
+
+/**
+ * 1、可重入互斥锁（独占锁），通过构造器可以确认是否为公平锁，默认是非公平锁
+ * 2、主要包装了底层AQS的功能
+ */
 public class ReentrantLock implements Lock, java.io.Serializable {
     private static final long serialVersionUID = 7373984872572414699L;
     /** Synchronizer providing all implementation mechanics */
@@ -130,6 +136,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
         final boolean nonfairTryAcquire(int acquires) {
             final Thread current = Thread.currentThread();
             int c = getState();
+            // state为0则说明当前锁没有被线程占用
             if (c == 0) {
                 if (compareAndSetState(0, acquires)) {
                     setExclusiveOwnerThread(current);
@@ -202,6 +209,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
         /**
          * Performs lock.  Try immediate barge, backing up to normal
          * acquire on failure.
+         * TODO 首先试着直接获取锁，如果失败再acquire
          */
         final void lock() {
             if (compareAndSetState(0, 1))
@@ -220,7 +228,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
      */
     static final class FairSync extends Sync {
         private static final long serialVersionUID = -3000897897090466540L;
-
+        // TODO 这里跟NonfairSync调用的是同一个方法，只是少了试探获取锁
         final void lock() {
             acquire(1);
         }
@@ -228,11 +236,13 @@ public class ReentrantLock implements Lock, java.io.Serializable {
         /**
          * Fair version of tryAcquire.  Don't grant access unless
          * recursive call or no waiters or is first.
+         * TODO 跟NonfairSync的tryAcquire不同，这里要判断阻塞队列是否为空
          */
         protected final boolean tryAcquire(int acquires) {
             final Thread current = Thread.currentThread();
             int c = getState();
             if (c == 0) {
+                // TODO 公平锁判断当前线程是不是队列的头节点，是的话才获取锁
                 if (!hasQueuedPredecessors() &&
                     compareAndSetState(0, acquires)) {
                     setExclusiveOwnerThread(current);

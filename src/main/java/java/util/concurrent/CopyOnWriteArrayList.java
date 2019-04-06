@@ -91,6 +91,14 @@ import sun.misc.SharedSecrets;
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
  */
+
+
+/**
+ * 1、没有初始容量，最适合于List大小通常保持很小，只读操作远多于写操作，需要在遍历期间防止线程间的冲突
+ * 2、因为通常需要复制整个基础数组，所以可变操作（add()、set() 和 remove() 等等）的开销很大
+ * 3、迭代器支持hasNext(), next()等不可变操作，但不支持可变 remove()等操作
+ * 4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突。在构造迭代器时，迭代器依赖于不变的数组快照
+ */
 public class CopyOnWriteArrayList<E>
     implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
     private static final long serialVersionUID = 8673264195747942595L;
@@ -159,6 +167,7 @@ public class CopyOnWriteArrayList<E>
      * Returns the number of elements in this list.
      *
      * @return the number of elements in this list
+     * TODO 这里没做同步
      */
     public int size() {
         return getArray().length;
@@ -394,6 +403,7 @@ public class CopyOnWriteArrayList<E>
      * {@inheritDoc}
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
+     * TODO get操作同样也没有做同步，因为写操作都是在快照数组做，所以不会影响对原来数组的读
      */
     public E get(int index) {
         return get(getArray(), index);
@@ -404,6 +414,7 @@ public class CopyOnWriteArrayList<E>
      * specified element.
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
+     * TODO 这里的写操作就需要同步了
      */
     public E set(int index, E element) {
         final ReentrantLock lock = this.lock;
@@ -419,6 +430,7 @@ public class CopyOnWriteArrayList<E>
                 setArray(newElements);
             } else {
                 // Not quite a no-op; ensures volatile write semantics
+                // TODO array是由volatile修饰的，写操作可以确保线程间的可见性
                 setArray(elements);
             }
             return oldValue;
@@ -612,6 +624,7 @@ public class CopyOnWriteArrayList<E>
      * @return {@code true} if the element was added
      */
     public boolean addIfAbsent(E e) {
+        // TODO 使用快照引用而不是直接用原volatile引用是为了防止数据一致性问题（所有的操作都应该基于事务开始时刻的数据快照）
         Object[] snapshot = getArray();
         return indexOf(e, snapshot, 0, snapshot.length) >= 0 ? false :
             addIfAbsent(e, snapshot);

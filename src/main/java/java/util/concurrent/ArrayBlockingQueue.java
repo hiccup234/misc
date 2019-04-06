@@ -80,6 +80,11 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
  */
+
+
+/**
+ * 1、有界阻塞队列，通过ReentrantLock来实现同步，所以是线程安全的
+ */
 public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         implements BlockingQueue<E>, java.io.Serializable {
 
@@ -160,9 +165,11 @@ public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         // assert items[putIndex] == null;
         final Object[] items = this.items;
         items[putIndex] = x;
+        // TODO 这里相当于把数组当成循环数组使用，首尾连起来形成一个环
         if (++putIndex == items.length)
             putIndex = 0;
         count++;
+        // TODO 插入了一个元素，通知因队列为空而阻塞的线程
         notEmpty.signal();
     }
 
@@ -390,6 +397,7 @@ public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
+            // TODO poll和take差别有哪些呐？为什么这里不await
             return (count == 0) ? null : dequeue();
         } finally {
             lock.unlock();
@@ -416,6 +424,7 @@ public class ArrayBlockingQueue<E> extends AbstractQueue<E>
             while (count == 0) {
                 if (nanos <= 0)
                     return null;
+                // TODO poll()为什么没有await呐?
                 nanos = notEmpty.awaitNanos(nanos);
             }
             return dequeue();

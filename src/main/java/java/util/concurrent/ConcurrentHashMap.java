@@ -261,6 +261,13 @@ import java.util.stream.Stream;
  * @param <K> the type of keys maintained by this map
  * @param <V> the type of mapped values
  */
+
+
+/**
+ * 1、JDK1.7采用Segment锁分段的思想（继承ReentrantLock），JDK1.8是在每条链表头加锁，锁粒度更加的细化
+ * 2、get方法并没有加锁，因为只需要通过volatile提供的线程可见性即可
+ * 3、扩容？
+ */
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     implements ConcurrentMap<K,V>, Serializable {
     private static final long serialVersionUID = 7249069246763182397L;

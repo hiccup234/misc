@@ -154,6 +154,12 @@ import java.util.concurrent.locks.Lock;
  * @since 1.5
  * @author Doug Lea
  */
+
+
+/**
+ * 1、Semaphore本质也是一个共享锁
+ * 2、
+ */
 public class Semaphore implements java.io.Serializable {
     private static final long serialVersionUID = -3222578661600680210L;
     /** All mechanics via AbstractQueuedSynchronizer subclass */

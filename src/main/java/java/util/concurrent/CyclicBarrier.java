@@ -198,6 +198,7 @@ public class CyclicBarrier {
     private int dowait(boolean timed, long nanos)
         throws InterruptedException, BrokenBarrierException,
                TimeoutException {
+        // TODO 这里用到了独占锁
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {

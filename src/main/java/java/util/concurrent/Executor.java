@@ -125,6 +125,11 @@ package java.util.concurrent;
  * @since 1.5
  * @author Doug Lea
  */
+
+
+/**
+ * 执行器：线程池框架的父接口（为什么没有提供接收Callable的重载方法呢？ 答：子接口ExecutorService提供了submit方法的重载版本）
+ */
 public interface Executor {
 
     /**
