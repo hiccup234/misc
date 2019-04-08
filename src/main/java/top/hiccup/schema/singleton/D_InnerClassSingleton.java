@@ -1,8 +1,8 @@
-package top.hiccup.schema.singleton;
+ package top.hiccup.schema.singleton;
 
 /**
  * 单例模式：静态内部类实现方式
- * （推荐使用：由JVM保证线程安全）--多个ClassLoader加载的时候会不会有问题呢？
+ * （推荐使用：由JVM保证线程安全） -- 多个ClassLoader加载的时候会不会有问题呢？
  *
  * @author wenhy
  * @date 2018/1/2

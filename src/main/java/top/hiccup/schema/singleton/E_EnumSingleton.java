@@ -1,7 +1,7 @@
 package top.hiccup.schema.singleton;
 
 /**
- * 单例模式：枚举方式
+ * 单例模式：枚举方式，跟静态内部类的原理是一样的
  * （JVM会保证enum不能被反射并且构造器方法只执行一次，因此该单例是线程安全的）
  *
  * @author wenhy
@@ -13,10 +13,14 @@ public class E_EnumSingleton {
 
     private enum InnerEnum {
         /**
-         * 站位枚举值
+         * 占位枚举值
          */
         enumFactory;
         private E_EnumSingleton instance;
+
+        /**
+         * TODO 注意这里是枚举类的构造器
+         */
         private InnerEnum() {
             instance = new E_EnumSingleton();
         }

@@ -519,7 +519,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * The default initial table capacity.  Must be a power of 2
      * (i.e., at least 1) and at most MAXIMUM_CAPACITY.
      */
-    // TODO 默认大小为16，数组长度必须是2的n次方，这样做是为了快速hash,方便定位到数组下标
+    // TODO 默认大小为16，数组长度必须是2的n次方，这样做是为了快速hash,方便定位到数组下标（经典的：(n - 1) & hash，避免了耗时的取模运算）
     private static final int DEFAULT_CAPACITY = 16;
 
     /**
