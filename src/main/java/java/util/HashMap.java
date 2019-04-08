@@ -253,11 +253,13 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * by either of the constructors with arguments.
      * MUST be a power of two <= 1<<30.
      */
+    // TODO 数组最大长度，必须是2的n次方
     static final int MAXIMUM_CAPACITY = 1 << 30;
 
     /**
      * The load factor used when none specified in constructor.
      */
+    // TODO 默认加载因子，小于1则表示采用空间换时间的思想来尽可能避免hash碰撞
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     /**
@@ -267,16 +269,16 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * than 2 and should be at least 8 to mesh with assumptions in
      * tree removal about conversion back to plain bins upon
      * shrinkage.
-     * TODO 当链表长度超过8（插入第9个Node）时转换为红黑树
      */
+    // TODO 当链表长度超过8（插入第9个Node）时转换为红黑树
     static final int TREEIFY_THRESHOLD = 8;
 
     /**
      * The bin count threshold for untreeifying a (split) bin during a
      * resize operation. Should be less than TREEIFY_THRESHOLD, and at
      * most 6 to mesh with shrinkage detection under removal.
-     * TODO 链表转换为红黑树后，树节点小于6（<=6）时再转换为普通链表（不是8而是6是为了防止频繁在链表和树之间切换）
      */
+    // TODO 链表转换为红黑树后，树节点小于6（<=6）时再转换为普通链表（不是8而是6是为了防止频繁在链表和树之间切换）
     static final int UNTREEIFY_THRESHOLD = 6;
 
     /**
@@ -284,15 +286,15 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * (Otherwise the table is resized if too many nodes in a bin.)
      * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
      * between resizing and treeification thresholds.
-     * TODO 数组table的长度不小于64时才开启转换红黑树功能（即至少扩容过一次）
      */
+    // TODO 数组table的长度不小于64时才开启转换红黑树功能（即至少扩容过一次）
     static final int MIN_TREEIFY_CAPACITY = 64;
 
     /**
      * Basic hash bin node, used for most entries.  (See below for
      * TreeNode subclass, and in LinkedHashMap for its Entry subclass.)
-     * TODO JDK1.8将原来的Map.Entry转为Node节点
      */
+    // TODO JDK1.8将原来的Map.Entry转为Node节点
     static class Node<K,V> implements Entry<K,V> {
         // TODO 这里的hash和key都是final的，一旦计算出来就不能再改变，而value是包访问修饰符
         final int hash;
@@ -351,10 +353,10 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * cheapest possible way to reduce systematic lossage, as well as
      * to incorporate impact of the highest bits that would otherwise
      * never be used in index calculations because of table bounds.
-     * TODO 记住，如果key是null，则hash值是0，所以key为null的Entry是存在table[0]的
-     * TODO h>>> 16，表示无符号右移16位，高位补0， 异或：相同为0相异为1
-     * TODO 结果就是高16位与低16位异或，而h的高16位保持不变，这样做的目的就是解决table长度很小时hash碰撞太高的问题（高16位也参与到运算中来）
      */
+    // TODO 记住，如果key是null，则hash值是0，所以key为null的Entry是存在table[0]的
+    // TODO h>>> 16，表示无符号右移16位，高位补0， 异或：相同为0相异为1
+    // TODO 结果就是高16位与低16位异或，而h的高16位保持不变，这样做的目的就是解决table长度很小时hash碰撞太高的问题（高16位也参与到运算中来）
     static final int hash(Object key) {
         int h;
         return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
@@ -395,8 +397,8 @@ public class HashMap<K,V> extends AbstractMap<K,V>
 
     /**
      * Returns a power of two size for the given target capacity.
-     * TODO 取给定值的最近的2次方数（大于等于给定的数）
      */
+    // TODO 取给定值的最近的2次方数（大于等于给定的数）
     static final int tableSizeFor(int cap) {
         // TODO 减1是为了防止cap已经是2的n次方时，计算的结果是cap*2
         int n = cap - 1;
@@ -418,8 +420,8 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * necessary. When allocated, length is always a power of two.
      * (We also tolerate length zero in some operations to allow
      * bootstrapping mechanics that are currently not needed.)
-     * TODO JDK1.7是Entry数组
      */
+    // TODO JDK1.7是Entry数组
     transient Node<K,V>[] table;
 
     /**

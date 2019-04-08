@@ -512,24 +512,28 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * because the top two bits of 32bit hash fields are used for
      * control purposes.
      */
+    // TODO 数组最大长度，与HashMap一样：2^30=1073741824（10亿多点）
     private static final int MAXIMUM_CAPACITY = 1 << 30;
 
     /**
      * The default initial table capacity.  Must be a power of 2
      * (i.e., at least 1) and at most MAXIMUM_CAPACITY.
      */
+    // TODO 默认大小为16，数组长度必须是2的n次方，这样做是为了快速hash,方便定位到数组下标
     private static final int DEFAULT_CAPACITY = 16;
 
     /**
      * The largest possible (non-power of two) array size.
      * Needed by toArray and related methods.
      */
+    // TODO 配合toArray方法使用的，HashMap没有toArray方法，这是不是意味着ConcurrentHashMap总节点数不能超过MAX_ARRAY_SIZE？
     static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     /**
      * The default concurrency level for this table. Unused but
      * defined for compatibility with previous versions of this class.
      */
+    // TODO JDK7的ConcurrentHashMap以前有并发级别的概念（Segment数组长度，必须为2的n次方），目前已不再使用
     private static final int DEFAULT_CONCURRENCY_LEVEL = 16;
 
     /**
@@ -549,6 +553,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * tree removal about conversion back to plain bins upon
      * shrinkage.
      */
+    // TODO 当链表长度超过8（插入第9个Node）时转换为红黑树（树相关的这3个变量都无法通过构造入参指定，是写死的）
     static final int TREEIFY_THRESHOLD = 8;
 
     /**
@@ -556,6 +561,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * resize operation. Should be less than TREEIFY_THRESHOLD, and at
      * most 6 to mesh with shrinkage detection under removal.
      */
+    // TODO 链表转换为红黑树后，树节点小于6（<=6）时再转换为普通链表（不是8而是6是为了防止频繁在链表和树之间切换）
     static final int UNTREEIFY_THRESHOLD = 6;
 
     /**
@@ -564,6 +570,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * The value should be at least 4 * TREEIFY_THRESHOLD to avoid
      * conflicts between resizing and treeification thresholds.
      */
+    // TODO 数组table的长度不小于64时才开启转换红黑树功能（即至少扩容过一次）
     static final int MIN_TREEIFY_CAPACITY = 64;
 
     /**
@@ -623,6 +630,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     static class Node<K,V> implements Entry<K,V> {
         final int hash;
         final K key;
+        // TODO 这里的val和next都是volatile修饰的，而HashMap没有
         volatile V val;
         volatile Node<K,V> next;
 
@@ -635,8 +643,10 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
         public final K getKey()       { return key; }
         public final V getValue()     { return val; }
+        // TODO 这里为什么没跟HashMap保持同步用Objects.hashCode(key)呢?
         public final int hashCode()   { return key.hashCode() ^ val.hashCode(); }
         public final String toString(){ return key + "=" + val; }
+        // TODO 这里让子类继承，为什么不声明成Abstract呢？
         public final V setValue(V value) {
             throw new UnsupportedOperationException();
         }
@@ -693,6 +703,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * Returns a power of two table size for the given desired capacity.
      * See Hackers Delight, sec 3.2
      */
+    // TODO 这里跟HashMap保持完全一致，参考HashMap注释
     private static final int tableSizeFor(int c) {
         int n = c - 1;
         n |= n >>> 1;
@@ -774,11 +785,13 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * The array of bins. Lazily initialized upon first insertion.
      * Size is always a power of two. Accessed directly by iterators.
      */
+    // TODO 注意：数组table是被volatile修饰的，改变数组元素也能得到线程可见性的保障（通过数组引用访问）
     transient volatile Node<K,V>[] table;
 
     /**
      * The next table to use; non-null only while resizing.
      */
+    // TODO 扩容时使用
     private transient volatile Node<K,V>[] nextTable;
 
     /**
@@ -796,6 +809,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * creation, or 0 for default. After initialization, holds the
      * next element count value upon which to resize the table.
      */
+    // TODO 数组长度
     private transient volatile int sizeCtl;
 
     /**
@@ -840,8 +854,10 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     public ConcurrentHashMap(int initialCapacity) {
         if (initialCapacity < 0)
             throw new IllegalArgumentException();
+        // 大于等于最大容量的一半（无符号右移）
         int cap = ((initialCapacity >= (MAXIMUM_CAPACITY >>> 1)) ?
                    MAXIMUM_CAPACITY :
+                // TODO HashMap是直接调用tableSizeFor(initialCapacity);
                    tableSizeFor(initialCapacity + (initialCapacity >>> 1) + 1));
         this.sizeCtl = cap;
     }
@@ -899,6 +915,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
             throw new IllegalArgumentException();
         if (initialCapacity < concurrencyLevel)   // Use at least as many bins
             initialCapacity = concurrencyLevel;   // as estimated threads
+        // TODO 这里为什么还要再用initialCapacity / loadFactor呢？
         long size = (long)(1.0 + (long)initialCapacity / loadFactor);
         int cap = (size >= (long)MAXIMUM_CAPACITY) ?
             MAXIMUM_CAPACITY : tableSizeFor((int)size);
@@ -910,6 +927,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     /**
      * {@inheritDoc}
      */
+    // TODO size方法没有加锁，所以结果可能并不准确，具有弱一致性
     public int size() {
         long n = sumCount();
         return ((n < 0L) ? 0 :
@@ -1098,6 +1116,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * @throws NullPointerException if the specified key is null
      */
     public V remove(Object key) {
+        // TODO 直接替换节点value
         return replaceNode(key, null, null);
     }
 
@@ -1230,6 +1249,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      *
      * @return the set view
      */
+    // TODO 这里为什么是直接返回KeySetView，而Set<Entry<K,V>> entrySet()是Set呢?
     public KeySetView<K,V> keySet() {
         KeySetView<K,V> ks;
         return (ks = keySet) != null ? ks : (keySet = new KeySetView<K,V>(this, null));
@@ -1287,6 +1307,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      *
      * @return the hash code value for this map
      */
+    // TODO 整个Map的hashCode？这里是不是也是弱一致性的？
     public int hashCode() {
         int h = 0;
         Node<K,V>[] t;
