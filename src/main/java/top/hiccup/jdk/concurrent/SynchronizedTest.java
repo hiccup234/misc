@@ -7,23 +7,24 @@ import sun.misc.Unsafe;
 /**
  * synchronized 底层原理：
  * 
- * synchronized通过对象内部的监视器锁（monitor）来实现的，传统的锁（重量级锁）依赖于系统的同步函数，
- * 在linux上是使用mutex互斥锁，最底层实现依赖于futex，这些同步函数都涉及到用户态和内核态的切换、进程的上下文切换，开销成本较高。
- * 对于加了synchronized关键字但运行时并没有或较少线程竞争，或两个线程接近于交替执行的情况，使用传统锁机制无疑效率是会比较低的。
- * 
- * 在JDK 1.6之前，synchronized只有传统的锁机制，因此给开发者留下了synchronized关键字相比于其他同步机制性能不好的印象。
- * 在JDK 1.6引入了两种新型锁机制：偏向锁和轻量级锁，它们的引入是为了解决在没有多线程竞争或基本没有竞争的场景下因使用传统锁机制带来的性能开销问题。
- * 优化的总思路就是尽量不要让JVM跟操作系统底层进行交互，因为JVM线程是直接映射的操作系统的线程，所以如果竞争锁失败而导致线程阻塞挂起的成本很高。
- * 
- * =====================================================================================================================
  * 锁的状态总共有四种：无锁状态、偏向锁、轻量级锁和重量级锁。
  * 锁升级顺序：偏向锁 --> 轻量级锁 --> 重量级锁 （分别对应了锁只被一个线程持有、不同线程交替持有锁、多线程竞争锁三种情况）
  * 【偏向锁】
- * 引入偏向锁是为了在无锁竞争的情况下尽量减少不必要的轻量级锁的执行路径，可以用-XX:-UseBiasedLocking禁用偏向锁（JDK8默认禁用的）
+ * 引入偏向锁是为了在无锁竞争的情况下尽量减少不必要的轻量级锁的执行路径，可以用-XX:-UseBiasedLocking禁用偏向锁
+ * 注意：一个锁对象仅能被某个一个线程偏向一次，且同步块代码结束后不会自动撤销偏向锁，如果有其他线程请求锁，则会触发锁升级
  *
  * 【轻量级锁】
+ * 适用于多个线程轮流获取锁，不会出现锁被占用的情况下，有其他线程来竞争锁，这样就也不会造成线程阻塞
  *
  * 【重量级锁】
+ * 传统的锁（重量级锁）依赖于系统的同步函数，
+ * 在linux上是使用mutex互斥锁，最底层实现依赖于futex，这些同步函数都涉及到用户态和内核态的切换、进程的上下文切换，开销成本较高。
+ * 对于加了synchronized关键字但运行时并没有或较少线程竞争，或两个线程接近于交替执行的情况，使用传统锁机制无疑效率是会比较低的。
+ *
+ * 在JDK 1.6之前，synchronized只有传统的锁机制，因此给开发者留下了synchronized关键字相比于其他同步机制性能不好的印象。
+ * 在JDK 1.6引入了两种新型锁机制：偏向锁和轻量级锁，它们的引入是为了解决在没有多线程竞争或基本没有竞争的场景下因使用传统锁机制带来的性能开销问题。
+ * 优化的总思路就是尽量不要让JVM跟操作系统底层进行交互，因为JVM线程是直接映射的操作系统的线程，所以如果竞争锁失败而导致线程阻塞挂起的成本很高。
+ *
  * =====================================================================================================================
  * 轻量级加锁过程：
  *    （1）在代码进入同步块的时候，如果同步对象锁状态为无锁状态（锁标志位为“01”状态，是否为偏向锁为“0”），
@@ -104,59 +105,69 @@ public class SynchronizedTest {
         }
         return sb.reverse().toString();
     }
-
+    private static void printf(String str) {
+        System.out.printf("%100s%n", str);
+    }
     /**
-     *  测试对象头，（JDK8默认是关闭偏向锁的）
-     *  @VM args 开启偏向锁：-XX:+UseBiasedLocking -XX:BiasedLockingStartupDelay=0
+     *  TODO JDK8偏向锁的特性默认是打开的，但是出于性能（启动时间）考虑，在JVM启动后的的头4秒钟这个feature是被禁止的。
+     *  TODO 这也意味着在此期间，prototype MarkWord会将它们的bias位设置为0，以禁止实例化的对象被偏向。
+     *  TODO 4秒钟之后，所有的prototype MarkWord的bias位会被重设为1，如此新的对象就可以被偏向锁定了。
+     *
+     *  @VM args 开启偏向锁：-XX:+UseBiasedLocking -XX:BiasedLockingStartupDelay=0 （直接开启，JVM不等待）
      *  @VM args 关闭偏向锁：-XX:-UseBiasedLocking
      */
     public static void main(String[] args) throws Exception {
+        Thread.sleep(5000);
         Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
         theUnsafe.setAccessible(true);
         final Unsafe unsafe = (Unsafe) theUnsafe.get(null);
         final Object lock = new Object();
         // TODO 64位JDK对象头为 64bit = 8Byte
         // 如果不执行hashCode方法，则对象头的中的hashCode默认为0
-        // 但是如果执行了hashCode，会导致偏向锁的标识位变为0（如果开启了），且后续的加锁不会走偏向锁而是直接到轻量级锁
-        System.out.println("无锁状态：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
+        // 但是如果执行了hashCode（identity hashcode，重载过的不受影响），会导致偏向锁的标识位变为0（不可偏向状态），
+        // 且后续的加锁不会走偏向锁而是直接到轻量级锁（被hash的对象不可被用作偏向锁）
+        printf("无锁状态：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
 //        lock.hashCode();
         // 获取对象中offset偏移地址对应的long型field的值
-        System.out.println("无锁状态：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
+        printf("无锁状态：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
 
         // 无锁 --> 偏向锁
         new Thread(() -> {
             synchronized (lock) {
-                System.out.println("偏向锁：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
-                System.out.println("线程ID：" +getLongBinaryString(Thread.currentThread().getId()));
+                printf("偏向锁：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
+                printf("线程ID：" +getLongBinaryString(Thread.currentThread().getId()));
             }
             // 再次进入同步快，lock锁还是偏向当前线程
             synchronized (lock) {
-                System.out.println("偏向锁：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
-                System.out.println("线程ID：" +getLongBinaryString(Thread.currentThread().getId()));
+                printf("偏向锁：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
+                printf("线程ID：" +getLongBinaryString(Thread.currentThread().getId()));
             }
         }).start();
         Thread.sleep(1000);
 
+        printf("偏向线程结束：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
+
         // 偏向锁 --> 轻量级锁
         synchronized (lock) {
             // 对象头为：指向线程栈中的锁记录指针
-            System.out.println("轻量级锁1：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
+            printf("轻量级锁1：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
         }
         new Thread(() -> {
             synchronized (lock) {
-                System.out.println("轻量级锁2：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
+                printf("轻量级锁2：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
             }
         }).start();
         Thread.sleep(1000);
 
         // 轻量级锁 --> 重量级锁
         synchronized (lock) {
+            int i = 123;
             // 注意：轻量级锁1 和 轻量级锁3 的对象头是一样的，证明线程释放锁后，栈帧中的锁记录并未清除
-            System.out.println("轻量级锁3：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
+            printf("轻量级锁3：" + getLongBinaryString(unsafe.getLong(lock, 0L)));
             // 锁膨胀
             new Thread(() -> {
                 synchronized (lock) {
-                    System.out.println("重量级锁：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
+                    printf("重量级锁：" +getLongBinaryString(unsafe.getLong(lock, 0L)));
                 }
             }).start();
             // 同步快中睡眠1秒，不会释放锁，等待子线程请求锁失败导致锁膨胀（见轻量级加锁过程）
@@ -164,5 +175,4 @@ public class SynchronizedTest {
         }
         Thread.sleep(500);
     }
-
 }
