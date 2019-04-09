@@ -58,7 +58,7 @@ package top.hiccup.jdk.vm.gc;
  *  主机（Docker）：共享CPU，8G内存
  *  JVM：配置：堆4G，老年代3G，新生代（Eden+Survivor）1G，非堆内存250M，线程池数量250
  *      参数：-XX:NewRatio=3 -XX:SurvivorRatio=8
- *      调优：平均每24小时2次Full GC，耗时2秒左右（因为老年代用得比较满2.5G，所以耗时严重）
+ *      调优：平均每24小时2次Full GC，耗时1.5秒左右（因为老年代用得比较满2.5G，所以耗时严重）
  *           平均每分钟一次Minor GC，耗时90ms
  * 调优思路：
  * 1、内存占用：采用ParallelGC，调小NewRatio，提高对象晋升年龄，尽可能在新生代回收掉
