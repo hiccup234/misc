@@ -5,7 +5,7 @@ import java.lang.reflect.Field;
 import sun.misc.Unsafe;
 
 /**
- * synchronized 底层原理：
+ * synchronized底层原理：
  * 
  * 锁的状态总共有四种：无锁状态、偏向锁、轻量级锁和重量级锁。
  * 锁升级顺序：偏向锁 --> 轻量级锁 --> 重量级锁 （分别对应了锁只被一个线程持有、不同线程交替持有锁、多线程竞争锁三种情况）
