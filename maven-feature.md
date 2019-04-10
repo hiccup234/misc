@@ -7,7 +7,7 @@ A进行依赖的时候选择Snapshot版本，那么每次B发布的话，会在�
 形成带有时间戳的Snapshot版本，而A构建的时候会自动下载B最新时间戳的Snapshot版本！
 
 #依赖传递性：
-如果A依赖B，B依赖C，那么引入A则意味着B和C都回被引入
+如果A依赖B，B依赖C，那么引入A则意味着B和C都会被引入
 
 #最近依赖策略：
 如果一个项目依赖相同的groupId、artifactId的多个版本，那么在依赖树（mvn dependency:tree）中离项目最近的那个版本将会被使用。

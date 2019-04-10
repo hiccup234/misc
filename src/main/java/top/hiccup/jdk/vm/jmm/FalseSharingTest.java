@@ -16,6 +16,12 @@ package top.hiccup.jdk.vm.jmm;
  * S(Shared)：   这行数据有效，数据和内存中的数据一致，数据存在于很多 Cache 中；
  * I(Invalid)：  这行数据无效。
  *
+ * 【如何防止伪共享？】
+ * 1. 在jdk1.7之前会 将需要独占缓存行的变量前后添加一组long类型的变量，依靠这些无意义的数组的填充做到一个变量自己独占一个缓存行；
+ * 2. 在jdk1.7因为jvm会将这些没有用到的变量优化掉，所以采用继承一个声明了好多long变量的类的方式来实现；
+ * 3. 在jdk1.8中通过添加sun.misc.Contended注解来解决这个问题，若要使该注解有效必须在jvm中添加以下参数：-XX:-RestrictContended
+ * sun.misc.Contended注解会在变量前面添加128字节的padding将当前变量与其他变量进行隔离；
+ *
  * @author wenhy
  * @date 2019/1/17
  */
