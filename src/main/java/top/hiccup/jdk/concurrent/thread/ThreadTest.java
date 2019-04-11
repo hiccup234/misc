@@ -28,6 +28,11 @@ import java.util.List;
  * 2、同步阻塞 -- 线程获取synchronized同步锁失败时会进入同步阻塞状态（锁阻塞池）。
  * 3、其他阻塞 -- 调用线程的sleep()或join()或发出了I/O请求时，线程会进入到阻塞状态。
  *
+ * 【线程状态切换】
+ * Thread类中定义了NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED六种线程状态
+ * 注意：从JavaAPI的较都出发线程并没有RUNNING状态，所以jstack打印出来的线程栈也没有RUNNING状态的线程（见thread-status.jpg）
+ *
+ *
  * @author wenhy
  * @date 2017/12/23
  */

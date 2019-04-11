@@ -27,6 +27,20 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * 2、不可变：final不可被修改，只读就能保证线程安全性
  * 3、同步：使得对某个共享变量的修改符合：原子性、可见性、有序性
  *
+ * =====================================================================================================================
+ * 为什么条件锁会产生虚假唤醒现象（spurious wakeup）？ @see https://www.zhihu.com/question/271521213
+ *
+ * // 推荐
+ * while ( isCondition()) {
+ * waitForAConfition(...);
+ * }
+ *
+ * // 不推荐，可能引入 bug
+ * if ( isCondition()) {
+ * waitForAConfition(...);
+ * }
+ * =====================================================================================================================
+ *
  * @author wenhy
  * @date 2018/9/7
  */

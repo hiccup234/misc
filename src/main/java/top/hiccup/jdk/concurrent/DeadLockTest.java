@@ -13,6 +13,8 @@ import java.util.concurrent.TimeUnit;
  * 2、设置阻塞时长：lock.tryLock(300, TimeUnit.SECONDS); 如果超时未获取到锁则放弃本次操作
  * 3、死锁检测：mxBean.findDeadlockedThreads()可以检测死锁的存在
  *
+ * ## 可以通过jstack来查看线程栈找出死锁（工具会自动帮忙分析）
+ *
  * @author wenhy
  * @date 2019/1/9
  */
