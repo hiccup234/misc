@@ -43,7 +43,7 @@ sdf
 [foo]:http://example.com/ "Optional Title Here"
 参数式连接：[foo]
 ***
-![图片](https://www.cnblogs.com/images/logo_small.gif)
+行内式图片：![图片](https://www.cnblogs.com/images/logo_small.gif)
 ***
 ![pic]:https://www.cnblogs.com/images/logo_small.gif
 参数式图片：![pic]

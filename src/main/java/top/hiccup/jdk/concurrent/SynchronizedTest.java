@@ -111,7 +111,7 @@ public class SynchronizedTest {
         System.out.printf("%100s%n", str);
     }
     /**
-     *  TODO JDK8偏向锁的特性默认是打开的，但是出于性能（启动时间）考虑，在JVM启动后的的头4秒钟这个feature是被禁止的。
+     *  TODO JDK8偏向锁的特性默认是打开的，但是出于性能（启动时间）考虑，在JVM启动后的的头4秒这个feature是被禁止的。
      *  TODO 这也意味着在此期间，prototype MarkWord会将它们的bias位设置为0，以禁止实例化的对象被偏向。
      *  TODO 4秒钟之后，所有的prototype MarkWord的bias位会被重设为1，如此新的对象就可以被偏向锁定了。
      *
