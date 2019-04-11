@@ -6,18 +6,7 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * Java锁分类和优化策略：
- * 
- * JVM的synchronized关键字锁的实现，借助于对象头的Monitor（JDK1.6以后，Oracle的锁优化，低竞争条件下synchronized更有优势）
- * 【偏向锁】
- * 当锁没有出现竞争时，默认使用偏向锁，JVM利用CAS设置对象头上的MarkWork为线程ID（首次访问的线程），以表示锁偏向当前线程，所以并不设计真正的互斥锁
- * 大部分对象生命周期中最多会被一个线程锁定，因此使用偏向锁可以降低无竞争条件下的开销。偏向锁也可以被撤销，详见《Java并发编程的艺术》
  *
- * 【轻量级锁】
- * 
- *
- * 【重量级锁】
- * 
- * ==================================================================================
  * 【优化策略】
  * 1、减小锁粒度：如JDK1.7中ConcurrentHashmap的Segment锁分段细化技术，JDK1.8版本的锁粒度更小
  * 
@@ -26,8 +15,6 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * 3、锁消除：对象逃逸分析等
  * 
  * 4、无锁：也就是乐观锁，如cas操作，java.util.concurrent.atomic包使用无锁实现，无锁队列AQS
- * 
- * ===================================================================================
  * 
  * 【独占锁】
  * ReentrantLock，ReentrantReadWriteLock.WriteLock

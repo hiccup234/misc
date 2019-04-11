@@ -130,7 +130,6 @@ public class ConditionMultiTest {
             e.printStackTrace();
         }
         t5.start();	// c2
-
     }
 }
 

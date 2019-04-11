@@ -6,7 +6,7 @@ import sun.misc.Unsafe;
 
 /**
  * synchronized底层原理：
- * 
+ * =====================================================================================================================
  * 锁的状态总共有四种：无锁状态、偏向锁、轻量级锁和重量级锁。
  * 锁升级顺序：偏向锁 --> 轻量级锁 --> 重量级锁 （分别对应了锁只被一个线程持有、不同线程交替持有锁、多线程竞争锁三种情况）
  * 【偏向锁】
@@ -68,6 +68,7 @@ import sun.misc.Unsafe;
  * ##JVM中的锁也是能降级的，只不过条件很苛刻（见极客时间杨晓峰老师文章）
  * @see https://time.geekbang.org/column/article/9042
  *
+ *
  * @author wenhy
  * @date 2019/1/2
  */
@@ -94,7 +95,7 @@ public class SynchronizedTest {
         }
     }
 
-    //==================================================================================================================
+
     private static String getLongBinaryString(long num) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < 64; i++) {
