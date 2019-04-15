@@ -46,7 +46,7 @@ package top.hiccup.jdk.vm;
  *      1、把堆dump下来再用MAT等工具进行分析，但dump堆要花较长的时间，并且文件巨大，再从服务器上拖回本地导入工具，这个过程有些折腾，不到万不得已最好别这么干。
  *      2、更轻量级的在线分析，使用“Java内存影像工具：jmap”生成堆转储快照（一般称为headdump或dump文件）。
  *
- * 【jmap】 主要用于查看内存情况和生成dump文件（内存快照）  jmap -dump:format=b,file=test.bin Vmid
+ * 【jmap】 主要用于查看内存情况和生成dump文件（内存快照），一般要加上live参数  jmap -dump:live,format=b,file=test.bin Vmid
  *
  * 【jstack】 主要用于查看线程运行状态（顾名思义：stack一般跟VM的线程栈有关系），分析线程阻塞、死锁等问题。  jstack 1591 > jstack.log
  *
