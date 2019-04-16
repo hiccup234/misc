@@ -82,3 +82,7 @@ Arrays.asList 获得的 List     使用时需要注意什么（不可修改）
 
 fail-fast 和 fail-safe       非线程安全容器的检查（fail-fast）
 
+## 有界队列和无界队列
+1.有界队列：ArrayBlockingQueue、LinkedBlockingQueue(如果没指定容量，则最大容量为Integer.MAX_VALUE)
+          SynchronousQueue(容量为0)
+2.无界队列：PriorityBlockingQueue、DelayedQueue、LinkedTransferQueue

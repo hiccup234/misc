@@ -164,6 +164,7 @@ public class LinkedBlockingQueue<E> extends AbstractQueue<E>
 
     /** Lock held by put, offer, etc */
     // TODO 这里为什么分为两把锁呢？ 而ArrayBlockingQueue只有一把，是为了细化锁的粒度嚒？读写分离嚒？
+    // TODO 确实是细化了锁的粒度，头尾操作不同的锁，通用场景下吞吐量更好一些
     private final ReentrantLock putLock = new ReentrantLock();
 
     /** Wait queue for waiting puts */
