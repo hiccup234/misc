@@ -3,6 +3,8 @@ package top.hiccup.jdk.concurrent.lock;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,8 +42,6 @@ public class DeadLockTest {
     private static volatile boolean flag2 = false;
 
     public static void main(String[] args) {
-        checkDeadLock();
-
         new Thread(() -> {
             synchronized (lock1) {
                 flag1 = true;
@@ -59,7 +59,7 @@ public class DeadLockTest {
                     System.out.println("thread1 acquired lock2");
                 }
             }
-        }).start();
+        }, "t1").start();
 
         new Thread(() -> {
             synchronized (lock2) {
@@ -78,15 +78,17 @@ public class DeadLockTest {
                     System.out.println("thread2 acquired lock1");
                 }
             }
-        }).start();
+        }, "t2").start();
 
+        // 检测死锁
+        checkDeadLock();
         System.out.println("main thread end");
     }
 
 
     public static void checkDeadLock() {
         ThreadMXBean mxBean = ManagementFactory.getThreadMXBean();
-        java.util.concurrent.ScheduledExecutorService scheduled = java.util.concurrent.Executors.newScheduledThreadPool(1);
+        ScheduledExecutorService scheduled = Executors.newScheduledThreadPool(1);
         // 初始等待5秒，每隔10秒检测一次
         scheduled.scheduleAtFixedRate(()->{
             long[] threadIds = mxBean.findDeadlockedThreads();

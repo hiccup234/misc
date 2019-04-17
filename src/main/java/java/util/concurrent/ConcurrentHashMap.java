@@ -647,6 +647,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
         public final int hashCode()   { return key.hashCode() ^ val.hashCode(); }
         public final String toString(){ return key + "=" + val; }
         // TODO 这里让子类继承，为什么不声明成Abstract呢？
+        // TODO 注意这里是final修饰的，也就是说ConcurrentHashMap的Node节点是不支持serValue方法的，那么用volatile修饰的用意又是什么呢？
         public final V setValue(V value) {
             throw new UnsupportedOperationException();
         }
@@ -2534,6 +2535,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     }
 
     final long sumCount() {
+        //  TODO cell模式，参考LongAdder
         CounterCell[] as = counterCells; CounterCell a;
         long sum = baseCount;
         if (as != null) {
