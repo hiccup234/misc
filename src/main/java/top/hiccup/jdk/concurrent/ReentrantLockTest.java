@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * =====================================================================================================================
  * synchronized 与 ReentrantLock区别？
  * 1、synchronized 是Java语言原生的关键字，依赖VM指令monitorenter和monitorexit，底层基于操作系统的互斥量mutex。
- *   ReentrantLock 是JDK的API，基于AQS，底层原理是cas，依赖于CPU的硬件支持（汇编指令：cmpxchg），不会导致线程的阻塞和挂起
+ *   ReentrantLock 是JDK的API，基于AQS，底层原理是cas，依赖于CPU的硬件支持（IA64、x86架构中汇编指令为：cmpxchg），不会导致线程的阻塞和挂起
  *                 锁竞争激烈的情况下，性能表现更好
  *
  * 2、ReentrantLock还有这些优点：
