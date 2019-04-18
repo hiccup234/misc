@@ -1036,19 +1036,27 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
         int binCount = 0;
         for (Node<K,V>[] tab = table;;) {
             Node<K,V> f; int n, i, fh;
+            // TODO 1、如果table数组还是空的，则表明Map还没初始化，需要先初始化，然后再继续for循环
             if (tab == null || (n = tab.length) == 0)
                 tab = initTable();
+            // TODO 2、定位该key在table中的位置tab[i]，如果为空则证明tab[i]还没发生过hash冲突，直接CAS替换为新节点，成功则退出，否则继续for循环
+            // TODO    tab[i]即为链表或者红黑树的首节点
             else if ((f = tabAt(tab, i = (n - 1) & hash)) == null) {
                 if (casTabAt(tab, i, null,
                              new Node<K,V>(hash, key, value, null)))
                     break;                   // no lock when adding to empty bin
             }
+            // TODO 3、如果tab[i]不为空并且hash值为MOVED，说明该链表正在进行transfer操作，返回扩容完成后的table（新的table）
             else if ((fh = f.hash) == MOVED)
                 tab = helpTransfer(tab, f);
+            // TODO 4、对链表或者红黑树执行插入操作
             else {
                 V oldVal = null;
+                // TODO 对链表或红黑树的首节点加锁，相比Segment，锁的粒度进一步细化，注意这里用的是synchronized而不是ReentrantLock
                 synchronized (f) {
+                    // TODO 加锁成功还要再判断f是不是tabAt[i]的首节点，如果不是需要重新循环
                     if (tabAt(tab, i) == f) {
+                        // TODO 首节点的hash值大于0就一定是链表吗？？
                         if (fh >= 0) {
                             binCount = 1;
                             for (Node<K,V> e = f;; ++binCount) {
@@ -1069,6 +1077,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
                                 }
                             }
                         }
+                        // TODO 如果是红黑树节点则调用不同的方法
                         else if (f instanceof TreeBin) {
                             Node<K,V> p;
                             binCount = 2;
@@ -1082,6 +1091,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
                     }
                 }
                 if (binCount != 0) {
+                    // TODO 插入动作之后，如果链表长度超过8则进行树化
                     if (binCount >= TREEIFY_THRESHOLD)
                         treeifyBin(tab, i);
                     if (oldVal != null)
@@ -1090,6 +1100,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
                 }
             }
         }
+        // 这里的count cell的设计思路跟LongAdder是一样的，为了提供尽量精确的一致性（size方法是弱一致性的）
         addCount(1L, binCount);
         return null;
     }

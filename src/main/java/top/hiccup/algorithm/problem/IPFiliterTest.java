@@ -118,6 +118,5 @@ public class IPFiliterTest {
         System.out.println(isWhiteIpAddress(ip4));
 
         System.out.println(isWhiteIpAddress("0.0.0.1"));
-
     }
 }
