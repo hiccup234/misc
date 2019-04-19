@@ -346,7 +346,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         boolean rehash = oldAltHashing ^ useAltHashing;
         transfer(newTable, rehash);
         table = newTable;
-        //TODO 这里为什么要加 1 呢？
+        //TODO 这里为什么要加 1 呢？ A：1.7是先扩容再插入
         threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
     }
 
@@ -354,12 +354,15 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         int newCapacity = newTable.length;
         for (Entry<K,V> e : table) {
             while(null != e) {
+                // TODO 如果线程1运行到这里后被调度挂起，此时另外一个线程2运行也引发了扩容，并且已经把链表做了反转，
+                // TODO 那么线程1再切回来运行时，它所持有的e和next的实际顺序已经反了（next.next == e），此时线程1再做反转扩容就会出现环形链表
                 Entry<K,V> next = e.next;
                 if (rehash) {
                     e.hash = null == e.key ? 0 : hash(e.key);
                 }
                 int i = indexFor(e.hash, newCapacity);
-                // 直接在hash链表的头节点插入当前Entry
+                // TODO 直接在新位置的链表的头节点插入当前Entry，如果新位置为空则next为空
+                // TODO 注意：这里是相当于把链表反转了一次，多线程访问时扩容就容易因此造成环形链表
                 e.next = newTable[i];
                 newTable[i] = e;
                 e = next;

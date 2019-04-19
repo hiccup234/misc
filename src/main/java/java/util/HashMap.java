@@ -698,7 +698,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             }
         }
         ++modCount;
-        // TODO JDK1.7是先扩容再插值，这里先插值再扩容
+        // TODO JDK1.7是先扩容再插值，1.8是先插值再扩容
         if (++size > threshold)
             resize();
         afterNodeInsertion(evict);
@@ -763,9 +763,9 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                         Node<K,V> next;
                         do {
                             next = e.next;
-                            // TODO 如果(e.hash & oldCap) 只有两种结果，要么为0，要么为oldCap
+                            // TODO e.hash & oldCap只有两种结果，要么为0，要么为oldCap（注意：这里是oldCap，而不是oldCap-1）
                             // TODO 为0则说明重新哈希e.hash & (newCap - 1)后的下标跟现在的数组下标是一样的，
-                            // TODO    所以单独列成一个链表，直接放到新数组下，这样还可以保证链表的插入顺序，防止1.7那样扩容出现死链
+                            // TODO 所以单独列成一个链表，直接放到新数组下，这样还可以保证链表的插入顺序，防止1.7那样扩容出现死链
                             if ((e.hash & oldCap) == 0) {
                                 if (loTail == null)
                                     loHead = e;
@@ -773,8 +773,9 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                                     loTail.next = e;
                                 loTail = e;
                             }
-                            // TODO 否则另外列一个链表，表示需要重新哈希的元素，注意：重新哈希后，同一链表上的元素的新下标是有固定规律的
-                            // TODO 要么留在原下标，要么增加固定oldCap的步长
+                            // TODO 否则另外列一个链表，表示需要重新哈希的元素（需要移动到新位置的节点）
+                            // TODO 注意：重新哈希后，同一链表上的元素的新下标是有固定规律的，要么留在原下标，要么增加固定oldCap的步长
+                            // TODO      按我的理解，这里采用了类似一致性哈希的思想，防止扩容时大规模元素的重hash和移动插入
                             else {
                                 if (hiTail == null)
                                     hiHead = e;
