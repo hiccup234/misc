@@ -390,7 +390,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      */
     // TODO 实例化后，默认线程池状态位运行状态
     private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
-    // TODO 高3位拿出来给表示线程池状态，可以表示8个状态，目前已用5个（线程也有5种状态）
+    // TODO 高3位拿出来给表示线程池状态，可以表示8个状态，目前已用5个（线程也有5种状态），
+    // TODO 这样可以省去单独拿一个变量来做线程池的状态表示，省去了多个变量间的同步开销
     private static final int COUNT_BITS = Integer.SIZE - 3;
     // TODO 最大容量2的29次方-1 = 536 870 912
     private static final int CAPACITY   = (1 << COUNT_BITS) - 1;
@@ -1406,7 +1407,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 return;
             c = ctl.get();
         }
-        // TODO 2、核心池满之后，则尝试直接加入阻塞队列，
+        // TODO 2、核心池满之后，则尝试直接加入阻塞队列
+        // TODO 注意：这里调用的是队列的offer方法而不是put方法，如果队列已满无法插入则立即返回false，不会阻塞当前线程
         if (isRunning(c) && workQueue.offer(command)) {
             // TODO 再次确认“线程池状态”，若线程池异常终止了，则删除任务；然后通过reject()执行相应的拒绝策略
             int recheck = ctl.get();
