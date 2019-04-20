@@ -1,14 +1,15 @@
 package top.hiccup.jdk.vm;
 
 /**
- * JDK常用工具（bin目录下，这些工具其实都是对jmx的一层薄薄的封装）
+ * JDK常用工具（bin目录下，这些工具其实都是对jmx(jdk/lib/tools.jar)的一层薄薄的封装）
  *
- * 【javac】  编译源代码为class文件（javac -encoding utf-8 Test.java）
- * 【java】   运行Java程序
- * 【javap】  解析和反编译class文件
+ * 【javac】 编译源代码为class文件，一般情况下指定字符集：javac -encoding utf-8 Test.java
+ * 【java】  启动JVM进程，运行Java程序，如果main方法入口类带有package的包名记得cd到对应包的上一级目录，不然会报错：找不到或无法加载主类 Test
+ * 【javap】 解析和反编译class文件，可以查看.java源文件编译后的.class中的常量池、字节码等
  *
- * 【jps】    查看正在运行的虚拟机（VM）进程ID（LVMID：Local Virtual Machine Identifier），一般情况下LVMID跟操作系统的进程ID是一样的
- * 【jstat】  监视虚拟机进程的各种运行状态（jstat -options 来查看参数列表）
+ * 【jps】   查看正在运行的虚拟机（VM）进程ID（LVMID：Local Virtual Machine Identifier），一般情况下LVMID跟操作系统的进程ID是一样的
+ * 【jinfo】 查看VM版本，VM进程配置信息（Java System Properties），启动参数（VM Flags）
+ * 【jstat】 监视虚拟机进程的各种运行状态（jstat -options 来查看参数列表）
  *              jstat -class 1099           查看进程号为1099的虚拟机实例加载了多少类
  *              jstat -compiler 1099        查看编译统计
  *              jstat -gc 1099              查看gc情况
@@ -42,10 +43,6 @@ package top.hiccup.jdk.vm;
  *                      FGCT：老年代垃圾回收消耗时间
  *                      GCT：垃圾回收消耗总时间
  *
- * ##为了找出导致频繁Full GC的原因，一般有两种方法
- *      1、把堆dump下来再用MAT等工具进行分析，但dump堆要花较长的时间，并且文件巨大，再从服务器上拖回本地导入工具，这个过程有些折腾，不到万不得已最好别这么干。
- *      2、更轻量级的在线分析，使用“Java内存影像工具：jmap”生成堆转储快照（一般称为headdump或dump文件）。
- *
  * 【jmap】 主要用于查看内存情况和生成dump文件（内存快照），一般要加上live参数  jmap -dump:live,format=b,file=test.bin Vmid
  *
  * 【jstack】 主要用于查看线程运行状态（顾名思义：stack一般跟VM的线程栈有关系），分析线程阻塞、死锁等问题。  jstack 1591 > jstack.log
@@ -56,12 +53,11 @@ package top.hiccup.jdk.vm;
  *
  * 【jconsole】
  *
- * 【jinfo】 查看VM进程的配置信息
  *
  * @author wenhy
  * @date 2019/1/16
  */
-public class DevpKitTest {
+public class JDKTools {
 
     /**
      * 虚拟机性能监控与故障处理工具

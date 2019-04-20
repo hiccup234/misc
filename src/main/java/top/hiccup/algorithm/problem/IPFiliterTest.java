@@ -6,20 +6,24 @@ import org.junit.Test;
 import org.springframework.util.StringUtils;
 
 /**
- * 实现一个IP白名单过滤算法，要求：
- * 1、占用空间尽量少
- * 2、运算效率尽量高
- * 3、在内存中完成查询及判断
- * 4、接口可能被并发询问
- * 5、尽量能存储整个IP地址空间
- * 6、代码可运行，且包含单测
+ * 请实现一个IP白名单过滤算法，实现以下接口
+ *     boolean addWhiteIpAddress(String ip);
+ *     boolean isWhiteIpAddress(String ip);
+ * 要求如下：
+ *     占用空间尽量少
+ *     运算效率尽量高
+ *     在内存中完成查询及判断
+ *     接口可能被并发询问
+ *     尽量能存储整个IP地址空间
+ *     代码可运行，且包含单测
  *
  * 思路：
- * 针对IPV4，转换为int类型，两个BitSet即可存储全部IPV4的地址，占用512M多的内存，支持随机访问
+ * 针对IPV4，一个IP地址为32个bit位，可以转换为int类型，用两个BitSet即可存储全部IPV4的地址，占用512M多的内存，支持随机访问
  *
  * 缺点：
- * 1、volatile修饰，性能会降低
+ * 1、volatile修饰，性能会降低（volatile修饰数组可以保证数组元素的线程可见性）
  * 2、目前没考虑IPV6
+ * 3、还没做性能测试
  *
  * @author wenhy
  * @date 2019/4/18
@@ -118,5 +122,8 @@ public class IPFiliterTest {
         System.out.println(isWhiteIpAddress(ip4));
 
         System.out.println(isWhiteIpAddress("0.0.0.1"));
+        while(true) {
+
+        }
     }
 }

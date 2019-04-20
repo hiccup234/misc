@@ -1,9 +1,7 @@
 package top.hiccup.jdk.vm.classloader;
 
-import java.io.IOException;
-
 /**
- * 双亲委派模型（旨在解决类的重复加载问题，以及安全性问题）：
+ * 双亲委派模型（旨在解决类的重复加载问题，以及安全性问题）·：
  *
  * 1.Bootrap ClassLoader(启动ClassLoader，用C++实现)，对应%JAVA_HOME%/lib下的jar文件包含rt.jar，
  *      或者用启动参数-Xbootclasspath设定或追加启动目录

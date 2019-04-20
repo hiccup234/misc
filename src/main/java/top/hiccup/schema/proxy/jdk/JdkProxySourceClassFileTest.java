@@ -17,11 +17,12 @@ class Cat {
 public class JdkProxySourceClassFileTest {
 
     public static void main(String[] args) {
-        String path = "C:\\Ocean\\Work";
+        String path = ".\\misc\\src\\main\\java\\top\\hiccup\\schema\\proxy\\jdk\\Proxy.class";
         writeClassToDisk(path, Cat.class.getName(), new Class[]{Cat.class});
     }
 
     public static void writeClassToDisk(String path, String className, Class[] clazzs){
+        // Proxy.newProxyInstance最后也是调用到这个方法来生成class文件（btye数组），然后再加载
         byte[] classFile = ProxyGenerator.generateProxyClass(className, clazzs);
         FileOutputStream fos = null;
         try {
@@ -42,5 +43,4 @@ public class JdkProxySourceClassFileTest {
             }
         }
     }
-
 }

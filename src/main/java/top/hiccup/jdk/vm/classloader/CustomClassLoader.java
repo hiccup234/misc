@@ -10,7 +10,14 @@ import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * 自定义类加载器
+ * 用户自定义类加载器，直接基础自抽象类ClassLoader
+ *
+ * =====================================================================================================================
+ * findClass与loadClass的区别？
+ *
+ * findClass（）用于写类加载逻辑、loadClass（）方法的逻辑里如果父类加载器加载失败则会调用自己的findClass（）方法完成加载，保证了双亲委派规则。
+ * 1、如果不想打破双亲委派模型，那么只需要重写findClass方法即可
+ * 2、如果想打破双亲委派模型，那么就重写整个loadClass方法
  *
  * @author wenhy
  * @date 2019/1/13
@@ -18,11 +25,11 @@ import java.lang.reflect.InvocationTargetException;
 public class CustomClassLoader extends ClassLoader {
 
     /**
-     * 加载器名称
+     * 类加载器名称
      */
     private String name;
     /**
-     * 加载类的路径
+     * 要加载的类的路径
      */
     private String path;
 
@@ -38,6 +45,10 @@ public class CustomClassLoader extends ClassLoader {
         this.path = path;
     }
 
+    @Override
+    public Class<?> loadClass(String name) throws ClassNotFoundException {
+        return findClass(name);
+    }
 
     @Override
     protected Class<?> findClass(String name) throws ClassNotFoundException {
@@ -48,8 +59,8 @@ public class CustomClassLoader extends ClassLoader {
     private byte[] findClassByte(String name) {
         InputStream is = null;
         String className = name;
-        className.replaceAll("\\.", "\\");
-        String filePath = this.path + className + ".class";
+        className = className.replaceAll("\\.", "\\\\");
+        String filePath = this.path + "\\" + className + ".class";
         File file = new File(filePath);
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         try {
@@ -76,10 +87,35 @@ public class CustomClassLoader extends ClassLoader {
     }
 
     public static void main(String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        String path = "C:\\Ocean\\Work\\MyWork\\IntelliJ Workspace\\Hiccup2\\misc\\src\\main\\java\\top\\hiccup\\jdk\\vm\\classloader>\n";
+        String path = "C:\\Ocean\\Work\\MyWork\\IntelliJ Workspace\\Hiccup2\\misc\\src\\main\\java";
         CustomClassLoader customClassLoader = new CustomClassLoader("customClassLoader", path);
         Class<?> clazz = customClassLoader.loadClass("top.hiccup.jdk.vm.classloader.Dog");
         Object obj = clazz.newInstance();
         System.out.println(clazz.getMethod("getName").invoke(obj));
+
+        System.out.println(obj instanceof top.hiccup.jdk.vm.classloader.Dog);
+    }
+}
+
+
+class Dog {
+
+    private String name = "doge";
+    private int age = 3;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
     }
 }
