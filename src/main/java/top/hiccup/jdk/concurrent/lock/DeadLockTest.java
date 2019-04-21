@@ -27,6 +27,7 @@ import java.util.concurrent.TimeUnit;
  * 1、按顺序加锁：如果线程对资源按1，2，3的顺序加锁就不会出现死锁的情况
  * 2、设置阻塞时长：lock.tryLock(300, TimeUnit.SECONDS); 如果超时未获取到锁则放弃本次操作
  * 3、死锁检测：mxBean.findDeadlockedThreads()可以检测死锁的存在
+ * 4、避免一个线程获取多个锁
  *
  * ## 可以通过jstack来查看线程栈找出死锁（工具会自动帮忙分析）
  *
