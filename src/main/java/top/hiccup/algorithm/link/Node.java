@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.linkedlist;
+package top.hiccup.algorithm.link;
 
 /**
  * 链表节点

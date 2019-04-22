@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.linkedlist;
+package top.hiccup.algorithm.link;
 
 import java.util.HashSet;
 import java.util.Set;

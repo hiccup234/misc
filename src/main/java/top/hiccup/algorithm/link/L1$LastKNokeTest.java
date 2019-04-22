@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.linkedlist;
+package top.hiccup.algorithm.link;
 
 import java.util.Random;
 
