@@ -34,6 +34,11 @@ import lombok.Data;
  * 而JMM的happens-before规则，对volatile的写指令不会被重排序到其他操作之前（线程间通信的读写模型）
  * JSR-133规范 重新定义了JMM模型，能够保证线程B获取的configOptions是更新后的值，即volatile语义得到增强，可以守护上下文
  *
+ * volatile重排序规则：
+ * 1、当第二个操作为volatile写操做时,不管第一个操作是什么(普通读写或者volatile读写),都不能进行重排序。这个规则确保volatile写之前的所有操作都不会被重排序到volatile之后;
+ * 2、当第一个操作为volatile读操作时,不管第二个操作是什么,都不能进行重排序。这个规则确保volatile读之后的所有操作都不会被重排序到volatile之前;
+ * 3、当第一个操作是volatile写操作时,第二个操作是volatile读操作,不能进行重排序。
+ *
  * @author wenhy
  * @date 2019/1/10
  */
