@@ -8,9 +8,10 @@ import org.junit.Test;
 import lombok.Data;
 
 /**
- * volatile关键字可见性测试：
+ * 【volatile关键字可见性测试】
+ *
  * 1、修饰原始类型变量可以保证变量在线程间的可见性
- * 2、修饰对象或数组，如果数组元素被修改，可以间接保证对象成员或数组元素的线程可见性（原因见test3分析）
+ * 2、修饰对象或数组，如果对象属性或数组元素被修改，可以间接保证对象属性或数组元素的线程可见性（原因见test3分析）
  * 3、修饰List等，添加元素以及更新元素的字段都能保证线程可见性
  *
  * 参考这段代码：
@@ -29,8 +30,8 @@ import lombok.Data;
  *   sleep();
  * // use configOptions
  *
- * 线程A堆volatile变量的赋值会导致JVM强制将该变量和当时的其他变量状态都刷出CPU缓存（多级）
- * 而JMM的happen-before规则，对volatile的写指令不会被重排序到其他操作之前
+ * 线程A对volatile变量的赋值会导致JVM强制将该变量和当时的其他变量状态都刷出CPU缓存
+ * 而JMM的happens-before规则，对volatile的写指令不会被重排序到其他操作之前（线程间通信的读写模型）
  * JSR-133规范 重新定义了JMM模型，能够保证线程B获取的configOptions是更新后的值，即volatile语义得到增强，可以守护上下文
  *
  * @author wenhy
@@ -95,9 +96,9 @@ public class VolatileTest {
     private Base b = new Base();
     /**
      * 变量base加上volatile也能使线程退出循环结束
-     * Q: volatile变量修饰对象或者数组时，当我们改变对象或者数组的成员的时候，也能保证线程间的可见性？
+     * Q: volatile变量修饰对象或者数组时，当我们改变对象属性或者数组元素的时候，也能保证线程间的可见性？
      * A: volatile变量从语义上来讲只是保证了对象或数组引用的内存地址的线程可见性，
-     *    如果线程通过volatile变量访问其属性时，会提示JVM不要对这个属性做缓存拷贝（是缓存整个对象还是说仅仅是访问的这个属性呢？）
+     *    如果线程通过volatile变量访问其属性时，会提示JVM不要对这个属性做缓存拷贝（是缓存整个对象还是说仅仅是访问的这个属性呢？ 答：缓存要访问的属性到工作内存中）
      */
     @Test
     public void test3() {

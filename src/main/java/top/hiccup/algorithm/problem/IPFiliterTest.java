@@ -3,6 +3,7 @@ package top.hiccup.algorithm.problem;
 import java.util.BitSet;
 
 import org.junit.Test;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -18,12 +19,16 @@ import org.springframework.util.StringUtils;
  *     代码可运行，且包含单测
  *
  * 思路：
- * 针对IPV4，一个IP地址为32个bit位，可以转换为int类型，用两个BitSet即可存储全部IPV4的地址，占用512M多的内存，支持随机访问
+ *      如题，需要实现的是一个白名单的功能而不是黑名单，且要求尽可能存储整个IP地址空间，所以如果直接存储ip地址的字符串32位JVM下需要约：
+ *  2^32 * (32+32+ (7+15)/2) = 300GB（这里只是非常粗略的估算），当然如果把字符串换成char数组可以省下对象头和类型指针，预计需约44GB，
+ *  这完全超出了32位JVM的堆空间，而且就算借助于文件系统和硬盘，这么大数据量的字符串比较效率也是非常低下的。
+ *      所以换个思路，针对IPV4，一个IP地址为32个bit位，可以直接将IP地址转换为int类型，又因为白名单只有两种状态，
+ *  要么在白名单中要不不在，所以很自然就想到位图了，用两个BitSet即可存储全部IPV4的地址，占用512M多的内存，也支持随机访问。
  *
  * 缺点：
- * 1、volatile修饰，性能会降低（volatile修饰数组可以保证数组元素的线程可见性）
+ * 1、volatile修饰，性能会降低（修饰对象或数组，如果对象属性或数组元素被修改，可以间接保证对象属性或数组元素的线程可见性）
  * 2、目前没考虑IPV6
- * 3、还没做性能测试
+ * 3、测试的数据量不够，可能有些边界还没考虑到，还没做性能测试
  *
  * @author wenhy
  * @date 2019/4/18
@@ -105,25 +110,23 @@ public class IPFiliterTest {
     @Test
     public void test() throws InterruptedException {
         String ip1= "0.0.0.0";
-        String ip2= "127.0.0.1";
-        String ip3= "255.255.255.255";
-        String ip4= "128.0.0.0";
-
         addWhiteIpAddress(ip1);
-        System.out.println(isWhiteIpAddress(ip1));
+        Assert.isTrue(isWhiteIpAddress(ip1));
 
+        String ip2= "127.0.0.1";
         addWhiteIpAddress(ip2);
-        System.out.println(isWhiteIpAddress(ip2));
+        Assert.isTrue(isWhiteIpAddress(ip2));
 
+        String ip3= "255.255.255.255";
         addWhiteIpAddress(ip3);
-        System.out.println(isWhiteIpAddress(ip3));
+        Assert.isTrue(isWhiteIpAddress(ip3));
 
+        String ip4= "128.0.0.0";
         addWhiteIpAddress(ip4);
-        System.out.println(isWhiteIpAddress(ip4));
+        Assert.isTrue(isWhiteIpAddress(ip4));
 
-        System.out.println(isWhiteIpAddress("0.0.0.1"));
-        while(true) {
-
-        }
+        Assert.isTrue(!isWhiteIpAddress("0.0.0.1"));
+        Assert.isTrue(!isWhiteIpAddress("1.1.1.1"));
+        Assert.isTrue(!isWhiteIpAddress("001.001.001.001"));
     }
 }
