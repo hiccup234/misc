@@ -3,7 +3,9 @@ package top.hiccup.algorithm.bintree;
 import lombok.Data;
 
 /**
- * 树节点
+ * 二叉树树节点
+ *
+ * 注意：二叉树不是树的特殊结构
  *
  * @author wenhy
  * @date 2019/3/31

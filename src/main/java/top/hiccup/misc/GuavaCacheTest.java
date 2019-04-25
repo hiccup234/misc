@@ -8,5 +8,5 @@ package top.hiccup.misc;
  * @author wenhy
  * @date 2019/4/15
  */
-public class GuavaCache {
+public class GuavaCacheTest {
 }

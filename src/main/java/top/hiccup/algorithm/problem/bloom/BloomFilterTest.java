@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.bloom;
+package top.hiccup.algorithm.problem.bloom;
 
 import org.junit.Assert;
 import org.junit.Test;

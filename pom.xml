@@ -14,11 +14,6 @@
             <artifactId>cglib</artifactId>
             <version>3.2.5</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>io.netty</groupId>-->
-            <!--<artifactId>netty-all</artifactId>-->
-            <!--<version>5.0.0.Alpha2</version>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>io.netty</groupId>
@@ -79,10 +74,10 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
-            <version>20.0</version>
+            <version>26.0-jre</version>
         </dependency>
 
-        <!--性能测试>>基准测试>>测试工具JMH-->
+        <!--性能测试 基准测试 测试工具JMH-->
         <dependency>
             <groupId>org.openjdk.jmh</groupId>
             <artifactId>jmh-core</artifactId>
@@ -93,6 +88,8 @@
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>1.15</version>
         </dependency>
+
+        
 
 
     </dependencies>

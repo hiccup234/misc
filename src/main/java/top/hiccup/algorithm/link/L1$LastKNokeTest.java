@@ -13,7 +13,7 @@ import org.junit.Test;
 public class L1$LastKNokeTest {
 
     /**
-     * 1、最容易想到的方法：先遍历出链表总长度，再遍历k个节点即可
+     * 1、最容易想到的方法：先遍历出链表总长度count，再遍历count-k个节点即可
      *
      * @param head 链表头节点
      * @param k

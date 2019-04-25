@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.bloom;
+package top.hiccup.algorithm.problem.bloom;
 
 /**
  * 布隆过滤器：（利用了hash的思想）

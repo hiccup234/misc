@@ -32,7 +32,6 @@ public class A_HungrySingleton {
     }
 
 
-    /** 测试代码 */
     public static void main(String[] args) {
         A_HungrySingleton AHungrySingleton1 = A_HungrySingleton.getInstance();
         A_HungrySingleton AHungrySingleton2 = A_HungrySingleton.getInstance();
