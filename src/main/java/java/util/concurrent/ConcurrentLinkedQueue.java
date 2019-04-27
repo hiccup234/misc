@@ -259,6 +259,7 @@ public class ConcurrentLinkedQueue<E> extends AbstractQueue<E>
      * Creates a {@code ConcurrentLinkedQueue} that is initially empty.
      */
     public ConcurrentLinkedQueue() {
+        // TODO 注意：这里new了一个Node
         head = tail = new Node<E>(null);
     }
 
@@ -332,7 +333,8 @@ public class ConcurrentLinkedQueue<E> extends AbstractQueue<E>
     public boolean offer(E e) {
         checkNotNull(e);
         final Node<E> newNode = new Node<E>(e);
-        // TODO 如果cas失败，则重新取tail再执行casTail，一直自旋直到成功
+        // TODO 注意：需要理解的一点是：tail并不是一直都指向尾节点，其可能还有next节点，不会及时更新，
+        // TODO                    这样可以在高并发插入时尽量减少对tail的cas成功的自旋判断
         for (Node<E> t = tail, p = t;;) {
             Node<E> q = p.next;
             if (q == null) {
@@ -342,6 +344,7 @@ public class ConcurrentLinkedQueue<E> extends AbstractQueue<E>
                     // for e to become an element of this queue,
                     // and for newNode to become "live".
                     if (p != t) // hop two nodes at a time
+                        // TODO 这里没有判断cas结果，如果更新失败，则表明有其他线程已经更新了tail，所以这里不再关心
                         casTail(t, newNode);  // Failure is OK.
                     return true;
                 }

@@ -63,7 +63,7 @@ import sun.misc.Unsafe;
 
 /**
  * 1、AbstractQueuedSynchronizer的64位版本，private volatile long state;而不是private volatile int state;
- * 2、除了state是long以外，其他完全一样
+ * 2、除了state是long以外，其他完全一样（Doug Lea这里怎么没做设计复用呢，有点奇怪）
  */
 public abstract class AbstractQueuedLongSynchronizer
     extends AbstractOwnableSynchronizer

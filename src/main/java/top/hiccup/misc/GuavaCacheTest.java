@@ -9,4 +9,5 @@ package top.hiccup.misc;
  * @date 2019/4/15
  */
 public class GuavaCacheTest {
+
 }

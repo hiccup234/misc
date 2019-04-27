@@ -213,6 +213,11 @@ import java.util.concurrent.TimeUnit;
  * @since 1.5
  * @author Doug Lea
  */
+
+
+/**
+ * 1、读写锁涉及到锁降级的问题：同一线程先获取了写锁，在同步块中获取读锁，然后释放写锁，最后释放读锁
+ */
 public class ReentrantReadWriteLock
         implements ReadWriteLock, java.io.Serializable {
     private static final long serialVersionUID = -6992448646407690164L;
@@ -259,7 +264,7 @@ public class ReentrantReadWriteLock
          * The lower one representing the exclusive (writer) lock hold count,
          * and the upper the shared (reader) hold count.
          */
-
+        // TODO 高16位表示读，低16位表示写
         static final int SHARED_SHIFT   = 16;
         static final int SHARED_UNIT    = (1 << SHARED_SHIFT);
         static final int MAX_COUNT      = (1 << SHARED_SHIFT) - 1;
@@ -464,12 +469,14 @@ public class ReentrantReadWriteLock
              */
             Thread current = Thread.currentThread();
             int c = getState();
+            // TODO 如果当前线程已经获取了写锁，则还可直接获取读锁
             if (exclusiveCount(c) != 0 &&
                 getExclusiveOwnerThread() != current)
                 return -1;
             int r = sharedCount(c);
             if (!readerShouldBlock() &&
                 r < MAX_COUNT &&
+                // TODO c + SHARED_UNIT是把c的高16位加1，即读锁count加1，失败则证明有其他线程获取了写锁，或则其他线程获取了读锁
                 compareAndSetState(c, c + SHARED_UNIT)) {
                 if (r == 0) {
                     firstReader = current;

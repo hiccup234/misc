@@ -835,6 +835,7 @@ public abstract class AbstractQueuedSynchronizer
     private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
         int ws = pred.waitStatus;
         // TODO 如果前继节点是SIGNAL状态，则表明当前线程（节点）需要被unpark唤醒
+        // TODO 但是被唤醒后竞争锁失败，所以还需要重新park
         if (ws == Node.SIGNAL)
             /*
              * This node has already set status asking a release
@@ -861,7 +862,7 @@ public abstract class AbstractQueuedSynchronizer
             compareAndSetWaitStatus(pred, ws, Node.SIGNAL);
         }
         // TODO 规则1：如果前继节点状态为SIGNAL，表明当前节点需要被unpark(唤醒)，此时则返回true。
-        // TODO 规则2：如果前继节点状态为CANCELLED(ws>0)，说明前继节点已经被取消，则通过先前回溯找到一个有效(非CANCELLED状态)的节点，并返回false。
+        // TODO 规则2：如果前继节点状态为CANCELLED(ws>0)，说明前继节点已经被取消，则通过回溯找到一个有效(非CANCELLED状态)的节点，并返回false。
         // TODO 规则3：如果前继节点状态为非SIGNAL、非CANCELLED，则设置前继的状态为SIGNAL，并返回false。
         return false;
     }
@@ -919,6 +920,7 @@ public abstract class AbstractQueuedSynchronizer
                     interrupted = true;
             }
         } finally {
+            // TODO 如果入队列失败，则要取消node节点
             if (failed)
                 cancelAcquire(node);
         }
@@ -2286,7 +2288,7 @@ public abstract class AbstractQueuedSynchronizer
          * @throws IllegalMonitorStateException if {@link #isHeldExclusively}
          *         returns {@code false}
          */
-        // TODO 这里不考虑线程安全的问题嚒？
+        // TODO 这里不考虑线程安全的问题嚒？ 答：调用这个方法会首先判断当前线程是否获取了独占锁，如果不是会报错，如果是则处于同步块中，是线程安全的
         protected final Collection<Thread> getWaitingThreads() {
             if (!isHeldExclusively())
                 throw new IllegalMonitorStateException();

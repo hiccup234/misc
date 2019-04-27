@@ -180,6 +180,8 @@ public class LockSupport {
      */
     public static void park(Object blocker) {
         Thread t = Thread.currentThread();
+        // TODO 这里设置阻塞对象是为了像synchronized一样，在jstack打印栈信息的显示当前线程是为了获取哪个锁而导致的等待
+        // TODO JDK1.5没有这个功能导致排查问题不方便，1.6中新增
         setBlocker(t, blocker);
         // TODO 调用UNSAFE.park会让当前线程阻塞在此
         UNSAFE.park(false, 0L);
