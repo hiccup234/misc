@@ -76,5 +76,7 @@ public class ThreadPoolTest {
         // 5、调度线程池，按一定的周期执行任务（定时任务），工作队列为DelayedWorkQueue
         ExecutorService threadPool5 = Executors.newScheduledThreadPool(8);
 
+        // 6、JDK8新增线程池，内部会构建ForkJoinPool框架，利用Work-Stealing（窃取）算法并行地处理任务，不保证处理顺序
+        ExecutorService threadPool6 = Executors.newWorkStealingPool();
     }
 }

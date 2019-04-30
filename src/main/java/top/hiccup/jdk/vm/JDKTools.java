@@ -71,6 +71,8 @@ public class JDKTools {
     /**
      * Linux环境下如何查找哪个线程使用CPU最长？
      * top -H -p pid
+     *
+     * JProfiler, YourKit 监控CPU消耗的工具，可以列出整个请求中每个函数的CPU执行时间
      */
 
     /**
