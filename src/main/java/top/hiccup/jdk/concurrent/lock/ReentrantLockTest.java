@@ -1,93 +1,98 @@
 package top.hiccup.jdk.concurrent.lock;
 
-import java.util.concurrent.locks.Lock;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 1、ReentrantLock可重入锁使用示例
+ * 可重入锁测试：
+ * =====================================================================================================================
+ * synchronized 与 ReentrantLock区别？
+ * 1、synchronized 是Java语言原生的关键字，依赖VM指令monitorenter和monitorexit，底层基于操作系统的互斥量mutex。
+ *   ReentrantLock 是JDK的API，基于AQS，底层原理是cas，依赖于CPU的硬件支持（IA64、x86架构中汇编指令为：cmpxchg），不会导致线程的阻塞和挂起
+ *                 锁竞争激烈的情况下，性能表现更好
  *
- * 2、synchronized锁是“非公平”的可重入锁
+ * 2、ReentrantLock还有这些优点：
+ *      a、阻塞等待可中断
+ *      b、带超时的获取锁以及tryLock的尝试获取锁
+ *      c、可实现公平锁
+ *      d、可绑定多个条件（Condition）
+ *      e、可以判断某个线程是否在排队等待锁
+ *      f、可以判断锁是否被占用，而synchronized无法直接做到（可以通过Unsafe判断对象头）
+ *
+ * =====================================================================================================================
+ * 为什么lock.lock();和lock.unlock();能保证共享变量的线程可见性？
+ *
+ * 查看unlock源码发现 setState(c); 而private volatile int state;
+ * volatile写会产生写读内存屏障（storeload），会导致这之前的所有共享变量（包括非volatile）都刷回主存，从而保证了可见性
+ * （JDK5增强的语义，所以JUC才得以开发出来）
+ *
+ * =====================================================================================================================
  *
  * @author wenhy
- * @date 2018/1/8
+ * @date 2019/1/14
  */
 public class ReentrantLockTest {
 
-    private Lock lock = new ReentrantLock();
-    // 公平锁，先请求锁的线程先获得锁
-//    private Lock lock = new ReentrantLock(true);
-    public void method1(){
-        try {
-            lock.lock();
-            System.out.println("当前线程:" + Thread.currentThread().getName() + "进入method1..");
-            Thread.sleep(1000);
-            System.out.println("当前线程:" + Thread.currentThread().getName() + "退出method1..");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            // 一定要记得在finally块释放锁
-            lock.unlock();
+    private static CountDownLatch latch;
+
+    /**
+     * 多线程情况下，加上volatile才可以保证线程可见性
+     * 同理用synchronized关键字修饰也可以保证可见性
+     */
+    public static int inc = 0;
+
+    private static void test1() {
+        for (int j = 0; j < 1000000; j++) {
+            // 不能保证原子性
+            inc++;
         }
     }
 
-    public void method2(){
-        try {
-            lock.lock();
-            System.out.println("当前线程:" + Thread.currentThread().getName() + "进入method2..");
-            Thread.sleep(2000);
-            System.out.println("当前线程:" + Thread.currentThread().getName() + "退出method2..");
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
+    private static void test2() {
+        for (int j = 0; j < 1000000; j++) {
+            synchronized (ReentrantLockTest.class) {
+                inc++;
+            }
         }
     }
 
-    public void m1(){
-        try {
-            lock.lock();
-            System.out.println("进入m1方法，holdCount数为：" + ((ReentrantLock)lock).getHoldCount());
-            m2();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
+    private static ReentrantLock lock = new ReentrantLock();
+    private static void test3() {
+        for (int j = 0; j < 1000000; j++) {
+            try {
+                // 为什么lock和unlock也能保证线程的可见性呢？
+                lock.lock();
+                inc++;
+            } finally {
+                lock.unlock();
+            }
         }
     }
 
-    public void m2(){
-        try {
-            lock.lock();
-            System.out.println("进入m2方法，holdCount数为：" +  ((ReentrantLock)lock).getHoldCount());
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            lock.unlock();
-        }
-    }
 
     public static void main(String[] args) {
-        final ReentrantLockTest lock = new ReentrantLockTest();
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                lock.method1();
-                lock.method2();
+        ExecutorService service = Executors.newFixedThreadPool(50);
+        for (int k = 0; k < 100; k++) {
+            inc = 0;
+            latch = new CountDownLatch(50);
+            for (int i = 0; i < 50; i++) {
+                service.execute(() -> {
+//                    test1();
+//                    test2();
+                    test3();
+                    latch.countDown();
+                });
             }
-        }, "t1");
-
-        t1.start();
-        try {
-            Thread.sleep(10);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("inc = " + inc);
         }
-//        System.out.println(lock.lock.getQueueLength());
-        // 重入次数测试
-        lock.m1();
-
+        // 关闭线程池
+        service.shutdown();
     }
-
 }

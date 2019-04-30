@@ -6,7 +6,9 @@ import java.util.Random;
 
 /**
  * 1、ThreadLocal可用于解决线程安全问题，创建线程隔离的变量，是一种无锁解决线程安全问题的方式。
- *   但是本身并不存在线程安全与不安全的说法，因为是线程私有的，不存在多线程访问
+ *   但是本身并不存在线程安全与不安全的说法，因为是线程私有的，不存在多线程访问。
+ *
+ * 2、使用完之后一定要记得remove，不然在线程池中很容易造成内存泄漏。
  *
  * @author wenhy
  * @date 2019/3/19
@@ -19,6 +21,9 @@ public class ThreadLocalTest {
         threadLocal.set(list);
         while (true) {
             list.add("test"+new Random().nextInt(50000));
+
+            // 一般情况下，使用完之后一定要记得remove
+            System.out.println(threadLocal.get());
         }
     }
 }

@@ -9,37 +9,40 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * JDK多线程框架 Executor 以及 “自定义线程池” 使用示例
+ *
+ * Executors：线程池的工具类，类似Collections之于Collection。
+ *
  * Created by wenhy on 2018/1/6.
  */
-public class UseExecutor {
+public class ExecutorTest {
 
-    /**
-     * JDK多线程框架Executors及自定义线程池使用示例
-     */
     public static void main(String[] args) {
-        //固定数量线程池   ThreadPoolExecutor
-        ExecutorService executorService = Executors.newFixedThreadPool(10);
-        executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-        //单个线程的线程池
-        executorService = Executors.newSingleThreadExecutor();
-        //没有数量上限的线程池
-        executorService = Executors.newCachedThreadPool();
+        // 1、单线程线程池
+        ExecutorService singleThreadExecutor = Executors.newSingleThreadExecutor();
 
+        // 2、固定数量线程池
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
+        fixedThreadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
-        /**
-         * 自定义线程池
-         */
-        //在使用有界队列时，若有新的任务需要执行，如果线程池实际线程数小于corePoolSize，则优先创建线程，
-        //若大于corePoolSize，则会将任务加入队列，
-        //若队列已满，则在总线程数不大于maximumPoolSize的前提下，创建新的线程，
-        //若线程数大于maximumPoolSize，则执行拒绝策略，或其他自定义方式。
+        // 3、缓存线程池，没有数量上限
+        ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
+        // 4、调度线程池
+        ExecutorService scheduledThreadPool = Executors.newScheduledThreadPool(5);
+
+        // 5、自定义线程池
+
+        // 在使用有界队列时，若有新的任务需要执行，如果线程池实际线程数小于corePoolSize，则优先创建线程，
+        // 若大于corePoolSize，则会将任务加入队列，
+        // 若队列已满，则在总线程数不大于maximumPoolSize的前提下，创建新的线程，
+        // 若线程数大于maximumPoolSize，则执行拒绝策略，或其他自定义方式。
         ExecutorService pool = new ThreadPoolExecutor(
                 1,2,
                 60, TimeUnit.SECONDS,
-                new ArrayBlockingQueue<Runnable>(3)     //指定一种队列 （有界队列）
+                new ArrayBlockingQueue<Runnable>(3)
                 //new LinkedBlockingQueue<Runnable>()
                 , new MyRejected()
-                //, new DiscardOldestPolicy()
         );
 
         MyTask mt1 = new MyTask(1, "任务1");
@@ -57,13 +60,12 @@ public class UseExecutor {
         pool.execute(mt6);
         Future<?> f = pool.submit(mt6);
         System.out.println("submit返回："+f);
+
         /**
          * submit与execute方法的区别：1、submit可以接收Callable对象   2、submit有返回值
          * Callable接口有返回值   Runnable接口没有返回值
          */
-
         pool.shutdown();
-
     }
 }
 

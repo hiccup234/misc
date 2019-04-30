@@ -7,13 +7,14 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
+ * 定时任务器（比Timer功能更强大）
+ *
+ * 主要有两种api: Delay 和 FixedRate
+ *
  * Created by wenhy on 2018/1/7.
  */
-public class ScheduledJob {
+public class ScheduledJobTes {
 
-    /**
-     * 定时任务器（Timer）
-     */
     private static class Task implements Runnable {
         private static AtomicInteger count = new AtomicInteger(0);
         @Override

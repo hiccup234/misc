@@ -1,4 +1,4 @@
-package top.hiccup.jdk.concurrent;
+package top.hiccup.jdk.concurrent.lock;
 
 import java.lang.reflect.Field;
 

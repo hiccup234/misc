@@ -1,13 +1,12 @@
 package top.hiccup.jdk.concurrent;
 
 /**
+ * 使用Thread的join方法示例
+ *
  * Created by wenhy on 2018/1/7.
  */
-public class UseThreadJoin {
+public class ThreadJoinTest {
 
-    /**
-     * 使用Thread自带的fork/join方法示例
-     */
     private static class Task implements Runnable {
         @Override
         public void run() {
@@ -24,7 +23,7 @@ public class UseThreadJoin {
         Thread t1 = new Thread(new Task(), "t1");
         t1.start();
         try {
-            t1.join(1000);//方法中调用了wait方法，需要获得对象上的锁然后再等待1000ms
+            t1.join(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
