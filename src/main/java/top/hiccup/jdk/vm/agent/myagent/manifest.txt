@@ -1,0 +1,1 @@
+Premain-Class: top.hiccup.jdk.vm.agent.myagent.MyAgent

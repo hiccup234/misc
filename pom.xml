@@ -10,6 +10,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>asm</groupId>
+            <artifactId>asm-tree</artifactId>
+            <version>3.3.1</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
             <version>3.2.5</version>
@@ -88,8 +100,18 @@
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>1.15</version>
         </dependency>
-
-        
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>tools</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>tools</artifactId>
+            <version>RELEASE</version>
+            <scope>compile</scope>
+        </dependency>
 
 
     </dependencies>
