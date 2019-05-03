@@ -12,7 +12,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/4/3
  */
-public class L5$ReverseListTest {
+public class $5_ReverseListTest {
 
     public static Node reverse1(Node head) {
         if (head == null) {

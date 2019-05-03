@@ -14,7 +14,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/4/6
  */
-public class L6$TwoListMeetingTest {
+public class $6_TwoListMeetingTest {
 
     public static Node meeting(Node head1, Node head2) {
         if (head1 == null || head2 == null) {
@@ -26,7 +26,7 @@ public class L6$TwoListMeetingTest {
         }
         tail.next = head2;
         // 判断是否有环
-        if (L2$CycledListTest.cycled2(tail)) {
+        if ($2_CycledListTest.cycled2(tail)) {
             // 这里记得断开环
             tail.next = null;
             Node prev = head1;

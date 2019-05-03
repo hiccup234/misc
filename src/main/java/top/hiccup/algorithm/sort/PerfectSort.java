@@ -1,5 +1,7 @@
 package top.hiccup.algorithm.sort;
 
+import static top.hiccup.algorithm.sort.SortTest.swap;
+
 /**
  * 完美排序算法：
  * <p>
@@ -26,11 +28,5 @@ public class PerfectSort {
         sort(arr, i, j - k);
         sort(arr, i + k, j);
         sort(arr, i, j - k);
-    }
-
-    private static void swap(int[] arr, int a, int b) {
-        int temp = arr[a];
-        arr[a] = arr[b];
-        arr[b] = temp;
     }
 }

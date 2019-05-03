@@ -1,6 +1,6 @@
 package top.hiccup.algorithm;
 
-import top.hiccup.algorithm.sort.QuickSort;
+import top.hiccup.algorithm.sort.$6_QuickSort;
 
 /**
  * 时间复杂度计算
@@ -146,7 +146,7 @@ public class TimeComplexity {
         if (left >= right) {
             return;
         }
-        int i = QuickSort.partition(arr, left, right);
+        int i = $6_QuickSort.partition(arr, left, right);
         quickSort(arr, left, i - 1);
         quickSort(arr, i + 1, right);
     }
@@ -160,7 +160,7 @@ public class TimeComplexity {
         if (left >= right) {
             return arr[left];
         }
-        int i = QuickSort.randPartition(arr, left, right);
+        int i = $6_QuickSort.randPartition(arr, left, right);
         // 数组前半部分元素个数
         int cout = i - left;
         if (cout >= k) {

@@ -10,7 +10,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/3/31
  */
-public class L1$LastKNokeTest {
+public class $1_LastKNokeTest {
 
     /**
      * 1、最容易想到的方法：先遍历出链表总长度count，再遍历count-k个节点即可
