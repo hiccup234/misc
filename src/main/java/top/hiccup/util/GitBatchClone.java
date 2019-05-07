@@ -16,7 +16,7 @@ import org.springframework.util.StringUtils;
 public class GitBatchClone {
 
     public static void main(String[] args) throws IOException {
-        FileInputStream in = new FileInputStream("./git-wallet-channel.txt");
+        FileInputStream in = new FileInputStream("./git-***.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
         String line;
         while ((line = reader.readLine()) != null) {

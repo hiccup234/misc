@@ -1,0 +1,6 @@
+n/
+target/
+.settings/
+.classpath
+.project
+.idea/
