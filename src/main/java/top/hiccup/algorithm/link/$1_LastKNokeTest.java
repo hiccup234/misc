@@ -90,6 +90,33 @@ public class $1_LastKNokeTest {
         return n2;
     }
 
+    /**
+     * 删除倒数第n个元素，n从1开始（注意dummy节点的使用）
+     * @see https://leetcode.com/problems/remove-nth-node-from-end-of-list/
+     */
+    public Node removeNthFromEnd(Node head, int n) {
+        if (head == null || n <= 0) {
+            return null;
+        }
+        Node dummy = new Node(0);
+        dummy.next = head;
+        Node nodeN = dummy;
+        Node pCur = dummy;
+        int i;
+        for (i=0; i < n + 1 && pCur != null; i++) {
+            pCur = pCur.next;
+        }
+        if (i != n) {
+            return null;
+        }
+        while (pCur != null) {
+            pCur = pCur.next;
+            nodeN = nodeN.next;
+        }
+        nodeN.next = nodeN.next.next;
+        return dummy.next;
+    }
+
     @Test
     public void test1() {
         Random random = new Random(47);

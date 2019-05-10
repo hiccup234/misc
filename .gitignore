@@ -1,6 +1,6 @@
 # 需要忽略的目录和文件
 
-.idea/
+.idea/*
 target/
 .settings/
 .classpath

@@ -7,7 +7,7 @@ import org.junit.Test;
  * 
  * 1、新建链表反转，一直在链表表头插入
  *
- * 2、就地反转法
+ * 2、就地反转法（不会新建一个临时引用）
  * 
  * @author wenhy
  * @date 2019/4/3
@@ -52,6 +52,21 @@ public class $5_ReverseListTest {
             pCur = head.next;
         }
         return dummy.next;
+    }
+
+    /**
+     * 不用虚拟头节点（注意判断head的写法）
+     */
+    public static Node reverseList(Node head) {
+        Node prev = null;
+        Node curr = head;
+        while (curr != null) {
+            Node nextTemp = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextTemp;
+        }
+        return prev;
     }
 
     @Test

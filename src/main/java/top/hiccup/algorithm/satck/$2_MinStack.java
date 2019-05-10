@@ -8,19 +8,19 @@ import org.junit.Test;
 
 /**
  * 最小栈：
- * <p>
+ * 
  * 设计含最小函数min()、pop()、push()的栈MinStack，存储数据元素为int
- * <p>
+ * 
  * 1、普通栈+一个临时保存最小值，出栈元素如果是最小值则要重新遍历整个栈找到最小值
  * 时间复杂度：O(n)  空间复杂度：O(1)
- * <p>
+ * 
  * 2、空间换时间，利用辅助栈来保存当前最小值
  * 时间复杂度：O(1)  空间复杂度：O(n)
  *
  * @author wenhy
  * @date 2019/4/28
  */
-public class MinStackTest {
+public class $2_MinStack {
 
     private static class MinStack1 {
         private List<Integer> data = new LinkedList<>();

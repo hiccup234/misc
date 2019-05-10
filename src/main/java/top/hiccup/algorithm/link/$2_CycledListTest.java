@@ -57,6 +57,25 @@ public class $2_CycledListTest {
     }
 
     /**
+     * 更好的写法：只有一个循环条件
+     */
+    public static boolean hasCycle(Node head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
+        Node slow = head;
+        Node fast = head.next;
+        while (slow != fast) {
+            if (fast == null || fast.next == null) {
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        return true;
+    }
+
+    /**
      * 2.1、找出环入口：n1是慢指针，走s步，则n2走2s步，是n1的两倍
      *               如果n1从head出发，而n2从环上的相遇点出发，相同步长则他们一定会在环入口相遇（有等式可以验证）
      */
