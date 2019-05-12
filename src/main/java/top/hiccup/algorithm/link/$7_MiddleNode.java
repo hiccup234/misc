@@ -14,7 +14,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/4/26
  */
-public class $7_MiddleNodeTest {
+public class $7_MiddleNode {
 
     public static Node middleNode(Node head) {
         if (head == null) {

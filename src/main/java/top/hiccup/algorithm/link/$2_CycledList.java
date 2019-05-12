@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/3/31
  */
-public class $2_CycledListTest {
+public class $2_CycledList {
 
     /**
      * 1、穷举比较法：遍历的时候记录已经访问的节点，并与之前访问的做比较，时间复杂度O(n^2)
@@ -136,7 +136,7 @@ public class $2_CycledListTest {
             tail = tail.next;
         }
         count++;
-        Node nodeK = $1_LastKNokeTest.lastK3(head, 3);
+        Node nodeK = $1_LastKNoke.lastK3(head, 3);
         tail.next = nodeK;
     }
 

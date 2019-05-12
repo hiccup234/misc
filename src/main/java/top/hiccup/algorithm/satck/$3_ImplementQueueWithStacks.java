@@ -4,6 +4,7 @@ import java.util.LinkedList;
 
 /**
  * 用栈来实现队列
+ * 注意：push和pop的交替问题
  *
  * @author wenhy
  * @date 2019/5/10
@@ -27,7 +28,7 @@ public class $3_ImplementQueueWithStacks {
             if (empty()) {
                 throw new NullPointerException();
             }
-            if (stackIn.size() != 0) {
+            if (stackOut.size() == 0) {
                 int size = stackIn.size();
                 for (int i = 0; i < size; i++) {
                     stackOut.push(stackIn.pop());
@@ -40,7 +41,7 @@ public class $3_ImplementQueueWithStacks {
             if (empty()) {
                 throw new NullPointerException();
             }
-            if (stackIn.size() != 0) {
+            if (stackOut.size() == 0) {
                 int size = stackIn.size();
                 for (int i = 0; i < size; i++) {
                     stackOut.push(stackIn.pop());

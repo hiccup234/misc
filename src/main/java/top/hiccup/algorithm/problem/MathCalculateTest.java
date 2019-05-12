@@ -1,6 +1,7 @@
 package top.hiccup.algorithm.problem;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -26,6 +27,103 @@ import org.junit.Test;
  * @date 2019/4/23
  */
 public class MathCalculateTest {
+
+    public static int calculate(String s) {
+        java.util.LinkedList<Integer> stackData = new java.util.LinkedList<>();
+        java.util.LinkedList<Character> stackOp = new java.util.LinkedList<>();
+        java.util.Map<Character, Integer> priorityMap = new HashMap<>(8);
+        priorityMap.put('(', -1);
+        priorityMap.put(')', -1);
+        priorityMap.put('*', -2);
+        priorityMap.put('/', -2);
+        priorityMap.put('+', -3);
+        priorityMap.put('-', -3);
+
+        char[] chars = s.toCharArray();
+        for (int i = 0; i < chars.length; i++) {
+            Character c = chars[i];
+            // 如果遇到')'，则说明这个子表达式必须要运算完成
+            if (c == ' ') {
+                continue;
+            }
+            if (c == ')') {
+                while (stackOp.peek() != '(') {
+                    Character cal = stackOp.pop();
+                    Integer d1 = stackData.pop();
+                    Integer d2 = stackData.pop();
+                    if ('+' == cal.charValue()) {
+                        stackData.push(d1 + d2);
+                    } else if ('-' == cal.charValue()) {
+                        stackData.push(d2 - d1);
+                    }
+                }
+                stackOp.pop();
+                continue;
+            }
+
+            Integer priority = null;
+            if ((priority = priorityMap.get(c)) != null) {
+                // 计算前一个操作符
+                if (stackOp.size() > 0 && priorityMap.get(stackOp.peek()).intValue() < -1
+                        && priorityMap.get(stackOp.peek()).intValue() >= priority) {
+                    Character cal = stackOp.pop();
+                    Integer d1 = stackData.pop();
+                    Integer d2 = stackData.pop();
+                    if ('+' == cal.charValue()) {
+                        stackData.push(d1 + d2);
+                    } else if ('-' == cal.charValue()) {
+                        stackData.push(d2 - d1);
+                    }
+                }
+                stackOp.push(c);
+            } else {
+                if (Character.isDigit(c)) {
+                    int num = c - '0';
+                    i++;
+                    while (i < chars.length && chars[i] >= '0' && chars[i] <= '9') {
+                        num = num * 10 + (chars[i] - '0');
+                        i++;
+                    }
+                    stackData.push(num);
+                    i = i - 1;
+                }
+            }
+        }
+
+        while (stackOp.size() != 0) {
+            Character c = stackOp.pop();
+            if ('+' == c.charValue()) {
+                Integer d1 = stackData.pop();
+                Integer d2 = stackData.pop();
+                stackData.push(d1 + d2);
+            } else if ('-' == c.charValue()) {
+                Integer d1 = stackData.pop();
+                Integer d2 = stackData.pop();
+                stackData.push(d2 - d1);
+            }
+        }
+        return stackData.pop();
+    }
+
+    public static void main(String[] args) {
+        System.out.println(calculate("(1+(4+5+2)-3)+(6+8)"));
+//        System.out.println(calculate(" 2-1 + 2 "));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // 43+     45-    42*     47/     40(    41)
     public static double calc(String s) {

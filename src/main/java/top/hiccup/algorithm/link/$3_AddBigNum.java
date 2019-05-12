@@ -16,7 +16,7 @@ import org.junit.Test;
  * @date 2019/4/1
  * @see https://leetcode.com/problems/add-two-numbers
  */
-public class $3_AddBigNumTest {
+public class $3_AddBigNum {
 
     public static Node addBigNum(Node head1, Node head2) {
         Node n1 = head1, n2 = head2;
