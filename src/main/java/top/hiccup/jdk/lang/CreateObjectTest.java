@@ -1,10 +1,10 @@
 package top.hiccup.jdk.lang;
 
-import top.hiccup.util.ObjectUtils;
-import sun.misc.Unsafe;
-
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+
+import sun.misc.Unsafe;
+import top.hiccup.misc.ObjectUtils;
 
 /**
  * 创建对象的5种常见方式

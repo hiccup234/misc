@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.problem;
+package top.hiccup.algorithm.satck;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,9 +10,9 @@ import org.junit.Test;
 
 /**
  * 请实现一个简单计算器功能，实现以下接口
- * <p>
+ * 
  * double calc(string st);
- * <p>
+ * 
  * 要求如下:
  * 支持加，减，乘，除运算
  * 支持括号的优先级
@@ -20,13 +20,13 @@ import org.junit.Test;
  * 占用空间尽量少
  * 支持小数
  * 例如：输入字符串“(6+4)*2/(1.1+2.9)”,输出5
- * <p>
+ * 
  * 思路：借鉴JVM执行字节码的基于栈的指令架构
  *
  * @author wenhy
  * @date 2019/4/23
  */
-public class MathCalculateTest {
+public class $4_MathCalculateTest {
 
     public static int calculate(String s) {
         java.util.LinkedList<Integer> stackData = new java.util.LinkedList<>();
