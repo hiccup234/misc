@@ -3,8 +3,8 @@ package top.hiccup.algorithm.sort;
 import java.util.Arrays;
 
 /**
- * 归并排序：采用分治的思想（特别适合超大规模数据，非本地排序）
- * 
+ * 归并排序：采用分治的思想（特别适合超大规模数据，非本地稳定排序）
+ *
  * https://www.cnblogs.com/chengxiao/p/6194356.html
  *
  * @author wenhy
@@ -14,7 +14,7 @@ public class $5_MergeSort {
 
     public static void sort(int[] arr) {
         if (arr == null || arr.length < 2) {
-            return ;
+            return;
         }
         // 归并排序辅助空间，与原数组等长，不是每次把辅助空间用完
         int[] tempArr = new int[arr.length];
@@ -54,10 +54,6 @@ public class $5_MergeSort {
         while (j <= right) {
             tempArr[t++] = arr[j++];
         }
-//        t = 0;
-//        while (left <= right) {
-//            arr[left++] = tempArr[t++];
-//        }
         // 将temp中的元素全部拷贝到原数组中
         System.arraycopy(tempArr, 0, arr, left, right - left + 1);
     }
@@ -80,7 +76,7 @@ public class $5_MergeSort {
 
     private static int[] merge2(int[] left, int[] right) {
         int[] ret = new int[left.length + right.length];
-        for (int p=0,i=0,j=0; p < ret.length; p++) {
+        for (int p = 0, i = 0, j = 0; p < ret.length; p++) {
             if (i >= left.length) {
                 ret[p] = right[j++];
             } else if (j >= right.length) {

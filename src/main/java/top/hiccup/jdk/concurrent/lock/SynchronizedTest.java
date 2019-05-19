@@ -100,21 +100,6 @@ public class SynchronizedTest {
     }
 
 
-    private static String getLongBinaryString(long num) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < 64; i++) {
-            if ((num & 1) == 1) {
-                sb.append(1);
-            } else {
-                sb.append(0);
-            }
-            num = num >> 1;
-        }
-        return sb.reverse().toString();
-    }
-    private static void printf(String str) {
-        System.out.printf("%100s%n", str);
-    }
     /**
      *  TODO JDK8偏向锁的特性默认是打开的，但是出于性能（启动时间）考虑，在JVM启动后的的头4秒这个feature是被禁止的。可用-XX:BiasedLockingStartupDelay=0来关闭
      *  TODO 这也意味着在此期间，prototype MarkWord会将它们的bias位设置为0，以禁止实例化的对象被偏向。
@@ -181,5 +166,21 @@ public class SynchronizedTest {
             Thread.sleep(1000);
         }
         Thread.sleep(500);
+    }
+
+    private static String getLongBinaryString(long num) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 64; i++) {
+            if ((num & 1) == 1) {
+                sb.append(1);
+            } else {
+                sb.append(0);
+            }
+            num = num >> 1;
+        }
+        return sb.reverse().toString();
+    }
+    private static void printf(String str) {
+        System.out.printf("%100s%n", str);
     }
 }

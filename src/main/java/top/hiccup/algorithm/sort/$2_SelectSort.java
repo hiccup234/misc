@@ -5,6 +5,8 @@ import static top.hiccup.algorithm.sort.SortTest.swap;
 /**
  * 选择排序：每一趟从待排序的数据元素中选择最小（或最大）的一个元素作为首元素，直到所有元素排完为止，简单选择排序是不稳定排序
  *
+ * 注意：选择排序最好情况的复杂度也是O(n^2)
+ *
  * @author wenhy
  * @date 2018/10/10
  */

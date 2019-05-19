@@ -8,7 +8,7 @@ import static top.hiccup.algorithm.sort.SortTest.swap;
  * 希尔排序是把记录按下标的一定增量分组，对每组使用直接插入排序算法排序；随着增量逐渐减少，
  * 每组包含的关键词越来越多，当增量减至1时，整个文件恰被分成一组，算法便终止。
  * 
- * https://www.cnblogs.com/chengxiao/p/6104371.html
+ * @see https://www.cnblogs.com/chengxiao/p/6104371.html
  *
  * @author wenhy
  * @date 2018/10/10
