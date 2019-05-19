@@ -3,7 +3,9 @@ package top.hiccup.algorithm;
 import org.junit.Test;
 
 /**
- * 二分查找：最简单基础的算法，要求给定的数组必须有序
+ * 二分查找：最简单基础的算法，要求给定的数组必须有序，而且元素不存在重复的情况
+ *
+ * 一般只能用在数组上（支持随机访问，而链表则不行）
  *
  * @author wenhy
  * @date 2019/5/1
@@ -37,7 +39,12 @@ public class BinarySearch {
         int left = 0;
         int right = arr.length-1;
         while (left <= right) {
-            int mid = (left + right)/2;
+//             int mid = (left + right)/2;
+            // 优化
+//            int mid = (left + right) >> 1;
+            // 再优化，防止left和right都很大的时候，计算移除
+            int mid = left + ((right - left) >> 1);
+
             if (arr[mid] == target) {
                 return mid;
             } else if (arr[mid] > target) {

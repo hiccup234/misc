@@ -5,7 +5,7 @@ import java.util.Arrays;
 /**
  * 归并排序：采用分治的思想（特别适合超大规模数据，非本地稳定排序）
  *
- * https://www.cnblogs.com/chengxiao/p/6194356.html
+ * @see https://www.cnblogs.com/chengxiao/p/6194356.html
  *
  * @author wenhy
  * @date 2018/10/18

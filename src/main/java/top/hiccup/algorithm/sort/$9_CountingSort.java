@@ -3,7 +3,7 @@ package top.hiccup.algorithm.sort;
 import java.util.Arrays;
 
 /**
- * 计数排序：计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中。（有点bitmap位图的味道）
+ * 计数排序：计数排序的核心在于将输入的数据值转化为键存储在额外开辟的数组空间中，可以看作是n个桶的排序，只不过桶内不再需要排序。（有点bitmap位图的味道）
  *
  * O(n) 稳定的排序 计数排序要求输入的数据必须是有确定范围的整数。
  *
@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author wenhy
  * @date 2019/5/3
  */
-public class $8_CountingSort {
+public class $9_CountingSort {
 
     public static void sort(int[] arr) {
         if (arr == null || arr.length < 2) {
@@ -35,8 +35,10 @@ public class $8_CountingSort {
         for (int i = 0; i < arr.length; i++) {
             bucket[arr[i] + bias]++;
         }
+        // 数据回填（这种方式依赖于数组的整数下标，无法应用于排序对象属性这种情况，而且本身也无法区分是否稳定的）
         for (int i = 0, p = 0; i < arr.length; ) {
             if (bucket[p] != 0) {
+                // 注意：这里的值是直接依赖于bucket的下标的，实际工作中可能不常用
                 arr[i] = p - bias;
                 bucket[p]--;
                 i++;
@@ -44,5 +46,20 @@ public class $8_CountingSort {
                 p++;
             }
         }
+
+        // 还有另外一种数据回填方式（这种方式感觉更浪费空间，而且也不好理解，但是可以应用于对象排序，而且是稳定的）
+        // 先将bucket数组做累加
+        for (int i = 1; i < bucket.length; i++) {
+            bucket[i] = bucket[i-1] + bucket[i];
+        }
+        int [] ret = new int[arr.length];
+        for (int i = arr.length-1; i >= 0; i--) {
+            // 这个index就是arr[i]在排序后数组中的位置
+            int index = bucket[arr[i]] - 1;
+            ret[index] = arr[i];
+            bucket[arr[i]]--;
+        }
+        // 再将ret拷贝到原数组arr
+        System.arraycopy(ret, 0, arr, 0, arr.length);
     }
 }
