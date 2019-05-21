@@ -1,7 +1,12 @@
 package top.hiccup.algorithm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+
+import javax.swing.tree.TreeNode;
 
 /**
  * 常见数据结构（其实最终底层存储的时候只有数组和链表两种结构，其他结构都是通过算法来实现的）：
@@ -37,17 +42,4 @@ import java.util.Map;
  */
 public class DataStructAndAlgorithm {
 
-
-    public int missingNumber(int[] nums) {
-        int n = nums.length;
-        int count = 0;
-        for (int i = 0; i < nums.length; i++) {
-            if (i/4 == 0) {
-                count -= n;
-                count -= n;
-            }
-            count += nums[i];
-        }
-        return n - count;
-    }
 }
