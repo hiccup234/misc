@@ -26,7 +26,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/4/23
  */
-public class $4_MathCalculateTest {
+public class $4_MathCalculate {
 
     public static int calculate(String s) {
         java.util.LinkedList<Integer> stackData = new java.util.LinkedList<>();

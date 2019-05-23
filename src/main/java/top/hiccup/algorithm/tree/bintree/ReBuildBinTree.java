@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.bintree;
+package top.hiccup.algorithm.tree.bintree;
 
 import org.junit.Test;
 
@@ -13,9 +13,9 @@ import org.junit.Test;
  * @author wenhy
  * @date 2019/4/22
  */
-public class ReBuildTreeTest {
+public class ReBuildBinTree {
 
-    public static Node reBuild(int[] pre, int[] in, int size) {
+    public static TreeNode reBuild(int[] pre, int[] in, int size) {
         if (pre == null || pre.length == 0 ||
                 in == null || in.length == 0 || size <= 0) {
             return null;
@@ -23,10 +23,10 @@ public class ReBuildTreeTest {
         return buildSubTree(pre, 0, size, in, 0, size);
     }
 
-    public static Node buildSubTree(int[] pre, int pLeft, int pRight, int[] in, int iLeft, int iRight) {
+    public static TreeNode buildSubTree(int[] pre, int pLeft, int pRight, int[] in, int iLeft, int iRight) {
         // 前序遍历的第一个节点是根节点
         int rootVal = pre[pLeft];
-        Node root = new Node(rootVal);
+        TreeNode root = new TreeNode(rootVal);
         if (pLeft == pRight) {
             if (iLeft == iRight && pre[pLeft] == in[iLeft]) {
                 return root;

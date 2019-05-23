@@ -60,7 +60,7 @@ public class BinarySearch {
     @Test
     public void test() {
         int[] arr = new int[]{1, 2, 5, 7, 9, 13, 17, 20};
-        System.out.println(binSearch(arr, 0, arr.length-1, 5));
+        System.out.println(binSearch(arr, 0, arr.length-1, 12));
         System.out.println(binSearch2(arr, 5));
     }
 
