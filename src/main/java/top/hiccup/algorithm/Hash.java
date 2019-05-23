@@ -1,5 +1,9 @@
 package top.hiccup.algorithm;
 
+import java.util.Arrays;
+
+import org.junit.Test;
+
 /**
  * 哈希函数应用：
  *
@@ -43,4 +47,93 @@ package top.hiccup.algorithm;
  * @date 2019/5/20
  */
 public class Hash {
+
+    public int getSum(int a, int b) {
+        char[] ac = getIntBinaryString(a);
+        char[] bc = getIntBinaryString(b);
+        if (a == Integer.MIN_VALUE) {
+            ac = "110000000000000000000000000000000".toCharArray();
+        }
+        if (b == Integer.MIN_VALUE) {
+            bc = "110000000000000000000000000000000".toCharArray();
+        }
+        return doSum(ac, bc);
+    }
+    private char[] getIntBinaryString(int num) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < 32; i++) {
+            if ((num & 1) == 1) {
+                sb.append(1);
+            } else {
+                sb.append(0);
+            }
+            num = num >> 1;
+        }
+        return sb.reverse().toString().toCharArray();
+    }
+
+    private int doSum(char[] a, char[] b) {
+        char[] carrys = new char[33];
+        char[] result = new char[33];
+        Arrays.fill(carrys, '0');
+        Arrays.fill(result, '0');
+        int i = a.length - 1;
+        int j = b.length - 1;
+        int idx = 32;
+        while (i>=0 && j>=0) {
+            if (a[i] == '1' && b[j] == '1' && carrys[idx] == '1') {
+                result[idx] = '1';
+                // 进位
+                carrys[idx-1] = '1';
+            } else if ((a[i] == '1' && b[j] == '1')
+                    || (a[i] == '1' || b[j] == '1') && carrys[idx] == '1') {
+                result[idx] = '0';
+                carrys[idx-1] = '1';
+            } else if (a[i] == '1' || b[j] == '1') {
+                result[idx] = '1';
+            } else if (carrys[idx] == '1'){
+                result[idx] = '1';
+            } else {
+                result[idx] = '0';
+            }
+            i--; j--; idx--;
+        }
+        while (i >= 0) {
+            result[idx--] = a[i--];
+        }
+        while (j >= 0) {
+            result[idx--] = b[j--];
+        }
+        if (result[1] == '0') {
+            return Integer.valueOf(new String(result, 2, 31), 2);
+        } else {
+            if ("011111111111111111111111111111111".equals(new String(result))) {
+                return Integer.MIN_VALUE;
+            }
+            result[1] = '0';
+            // 求补码（补码的补码就是原码）
+            boolean converse = false;
+            for (int k = result.length-1; k>1; k--) {
+                if (!converse && result[k] == '0') {
+                    continue;
+                } else if (!converse && result[k] == '1') {
+                    converse = true;
+                    continue;
+                } else {
+                    if (result[k] == '0') {
+                        result[k] = '1';
+                    } else {
+                        result[k] = '0';
+                    }
+                }
+            }
+            return - Integer.valueOf(new String(result, 2, 31), 2);
+        }
+    }
+
+    @Test
+    public void test() {
+        System.out.println(getSum(Integer.MIN_VALUE, Integer.MAX_VALUE));
+//        System.out.println(getSum(2, 3));
+    }
 }
