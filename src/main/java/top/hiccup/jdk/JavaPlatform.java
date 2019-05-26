@@ -23,5 +23,6 @@ public class JavaPlatform {
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
+        System.currentTimeMillis(); // 时间戳
     }
 }

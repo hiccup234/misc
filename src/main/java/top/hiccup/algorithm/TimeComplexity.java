@@ -3,34 +3,22 @@ package top.hiccup.algorithm;
 import top.hiccup.algorithm.sort.$6_QuickSort;
 
 /**
- * 时间复杂度计算
+ * 时间复杂度分析：1、递推公式计算 2、递归树分析
  *
  * @author wenhy
  * @date 2019/4/3
  * @see https://mp.weixin.qq.com/s/yfzrFYn0Dogy0HkN5XAS0Q
  * 
  * 【简单规则】
- * 
  * 规则一：“有限次操作”的时间复杂度往往是O(1)
- * 
  * 规则二：“for循环”的时间复杂度往往是O(n)
- * 
  * 规则三：“树的高度”的时间复杂度往往是O(lg(n)) （树的总节点个数是n，则树的高度是lg(n)）
  * 
  * 【递归求解】
- * 案例一：计算 1到n的和，时间复杂度分析。
- * 如果用非递归的算法：
+ * 案例一：递归求解1到n的和（循环方式为O(n)不再讨论）
  * int sum(int n){
- * int result=0;
- * for(int i=0;i<n;i++)
- * result += i;
- * return result;
- * }
- * 根据简单规则，for循环，sum的时间复杂度是O(n)。
- * 但如果是递归算法，就没有这么直观了：
- * int sum(int n){
- * if (n==1) return 1;
- * return n+sum(n-1);
+ *      if (n==1) return 1;
+ *      return n+sum(n-1);
  * }
  * 如何来进行时间复杂度分析呢？
  * 用f(n)来表示数据量为n时，算法的计算次数，很容易知道：
@@ -52,12 +40,9 @@ import top.hiccup.algorithm.sort.$6_QuickSort;
  * f(1)=1
  * 上面共n个等式，左侧和右侧分别相加：
  * f(n)+f(n-1)+…+f(2)+f(1)
- * =
- * [f(n-1)+1]+[f(n-2)+1]+…+[f(1)+1]+[1]
- * 即得到：
- * f(n)=n
- * 已经有那么点意思了哈，再来个复杂点的算法，见如下
- * 
+ * = [f(n-1)+1]+[f(n-2)+1]+…+[f(1)+1]+[1]
+ * 即得到：f(n)=n
+ *
  * @author wenhy
  * @date 2019/4/3
  */
@@ -152,7 +137,7 @@ public class TimeComplexity {
     }
 
     /**
-     * 作业：使用随机选择randomized_select来找到n个数中第k大元素。
+     * 作业：使用随机选择randomized_select来找到n个数中第k大元素（TopK的问题）
      * 问：randomized_select的时间复杂度是多少？
      * 答：f(n) = n + n/2 + n/4 + ... + 2 + 1 所以O(n) = n
      */
@@ -171,4 +156,16 @@ public class TimeComplexity {
             return rs(arr, i + 1, right, k - cout);
         }
     }
+
+    /**
+     * 练习：1个细胞的生命周期是3小时，1小时分裂一次。求n小时后容器内有多少细胞？结合递归时间复杂度的分析方法求解。
+     * 答：假设细胞到了第三个小时是先分裂完再死亡，n从第0个小时开始：
+     *        n = 0，f(0) = 1
+     *        n = 1，f(1) = 2*f(1)
+     *        n = 2，f(2) = 2*f(1)
+     *        n = 3，f(3) = 2*f(2) - f(0) ，减去存活了三个小时的细胞个数。
+     *        n = 4，f(4) = 2*f(3) - f(1)，减去存活了三个小时的细胞个数。
+     *    以此类推：f(n) = 2*f(n-1) - f(n-3)，减去存活了三个小时的细胞个数。
+     *    递归树最高应该有n层，最短的是n/3层，每层操作数都是指数增长，时间复杂度为O(2^n)。
+     */
 }
