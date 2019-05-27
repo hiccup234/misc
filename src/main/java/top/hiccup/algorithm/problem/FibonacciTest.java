@@ -54,10 +54,26 @@ public class FibonacciTest {
         return (long) result;
     }
 
+    public static long fibonacci4(int n) {
+        if (n < 2) {
+            return n;
+        }
+        long prepre = 0;
+        long pre = 1;
+        long x = 0;
+        for (int i = 2; i <= n; i++) {
+            x = prepre + pre;
+            prepre = pre;
+            pre = x;
+        }
+        return x;
+    }
+
     public static void main(String[] args) {
         System.out.println(fibonacci1(24));
         System.out.println(fibonacci2(24));
         System.out.println(fibonacci3(24));
+        System.out.println(fibonacci4(24));
     }
 
 }

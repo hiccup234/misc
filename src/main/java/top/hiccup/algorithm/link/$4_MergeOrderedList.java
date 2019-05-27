@@ -43,6 +43,35 @@ public class $4_MergeOrderedList {
         return retHead;
     }
 
+    /**
+     * 使用虚拟头节点，可以免除对合并后初始头节点的判断
+     */
+    public static Node merge(Node head1, Node head2) {
+        Node dummy = new Node();
+        Node tail = dummy;
+        Node p1 = head1, p2 = head2;
+        while (p1 != null && p2 != null) {
+            if (p1.val <= p2.val) {
+                tail.next = p1;
+                tail = p1;
+                p1 = p1.next;
+            } else {
+                tail.next = p2;
+                tail = p2;
+                p2 = p2.next;
+            }
+        }
+
+        if (p1 != null) {
+            tail.next = p1;
+        }
+
+        if (p2 != null) {
+            tail.next = p2;
+        }
+        return dummy.next;
+    }
+
     @Test
     public void test() {
         Node head1 = Node.buildLinkedList(10, (k) -> (int)(k * 1.5) + 2);
@@ -50,5 +79,12 @@ public class $4_MergeOrderedList {
         Node.printLinkedList(head1);
         Node.printLinkedList(head2);
         Node.printLinkedList(mergeList(head1, head2));
+
+        System.out.println("=================================");
+        Node h1 = Node.buildLinkedList(10, (k) -> (int)(k * 1.5) + 2);
+        Node h2 = Node.buildLinkedList(20, (k) -> k * 2);
+        Node.printLinkedList(h1);
+        Node.printLinkedList(h2);
+        Node.printLinkedList(merge(h1, h2));
     }
 }

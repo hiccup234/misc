@@ -54,57 +54,52 @@ import org.junit.Test;
  */
 public class Hash {
 
-    class Solution {
-        public int[] searchRange(int[] nums, int target) {
-            int[] result = new int[]{-1, -1};
-            if (nums == null || nums.length == 0) {
-                return result;
-            }
-            // 二分查找具有重复值
-            // 先找到最左边的值
-            int left = 0, right = nums.length - 1;
-            while (left <= right) {
-                int mid = left + ((right - left) >> 1);
-                if (target == nums[mid] && mid == 0) {
-                    result[0] = 0;
-                    break;
-                }
-                if (target == nums[mid] && target != nums[mid - 1]) {
-                    result[0] = mid;
-                    break;
-                }
-                if (target <= nums[mid]) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
-            }
-            // 再找到右边的值
-            left = 0;
-            right = nums.length - 1;
-            while (left <= right) {
-                int mid = left + ((right - left) >> 1);
-                if (target == nums[mid] && mid == nums.length - 1) {
-                    result[1] = nums.length - 1;
-                    break;
-                }
-                if (target == nums[mid] && target != nums[mid + 1]) {
-                    result[1] = mid;
-                    break;
-                }
-                if (target < nums[mid]) {
-                    right = mid - 1;
-                } else {
-                    left = mid + 1;
-                }
-            }
-            return result;
+
+    //    Definition for singly-linked list.
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
         }
     }
 
+    class Solution {
+        public ListNode mergeKLists(ListNode[] lists) {
+            if (lists == null || lists.length == 0) {
+                return null;
+            }
+            int n = lists.length;
+            int[] idxs = new int[n];
+            Arrays.fill(idxs, 0);
+            ListNode dummy = new ListNode(0);
+            ListNode tail = dummy;
+            int minIdx;
+            while ((minIdx = getMinIdx(lists)) != -1) {
+                ListNode minNode = lists[minIdx];
+                tail.next = minNode;
+                lists[minIdx] = lists[minIdx].next;
+            }
+            return dummy.next;
+        }
+
+        private int getMinIdx(ListNode[] lists) {
+            int n = lists.length;
+            // 取得当前最小值，如果都为空则返回-1
+            int minIdx = -1;
+            int min = Integer.MAX_VALUE;
+            for (int i = n-1; i >= 0; i--) {
+                if (lists[i] != null && lists[i].val <= min) {
+                    minIdx = i;
+                    min = lists[i].val;
+                }
+            }
+            return minIdx;
+        }
+    }
 
     @Test
     public void test() {
-        System.out.println(Arrays.toString(new Solution().searchRange(new int[]{5, 7, 7, 8, 8, 10}, 8)));
     }
 }
