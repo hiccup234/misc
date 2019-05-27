@@ -3,13 +3,15 @@ package top.hiccup.schema.principle;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.Test;
+
 /**
  * 开闭原则（对扩展开放，对修改关闭）
  *
  * @author wenhy
  * @date 2018/8/18
  */
-public class OpenClosePrinciple {
+public class $6_OpenClosePrinciple {
 
     interface User {}
 
@@ -74,7 +76,9 @@ public class OpenClosePrinciple {
         providers.put(VVIPUser.class, new VVIPUserServiceProvider());
     }
 
-    void test() {
+
+    @Test
+    public void test() {
         User user = new OrdinaryUser();
         service(user);
         user = new VIPUser();
@@ -89,10 +93,4 @@ public class OpenClosePrinciple {
         user2 = new VVIPUser();
         service2(user2);
     }
-
-    public static void main(String[] args) {
-        OpenClosePrinciple main = new OpenClosePrinciple();
-        main.test();
-    }
-
 }
