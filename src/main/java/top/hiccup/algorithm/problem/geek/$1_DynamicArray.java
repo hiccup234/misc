@@ -38,9 +38,9 @@ public class $1_DynamicArray<T> {
                 T ret = (T) table[i];
                 int p = i;
                 while (p < size && p < table.length - 1) {
-                    table[p] = table[p+1];
+                    table[p] = table[p + 1];
                 }
-                table[size-1] = null;
+                table[size - 1] = null;
                 size--;
                 return ret;
             }

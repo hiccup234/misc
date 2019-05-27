@@ -21,13 +21,13 @@ public class $2_InsertOrderedArray<T extends Comparable> {
         if (size >= table.length) {
             throw new RuntimeException("超过数组容量");
         }
-        for (int i = size-1; i>=0; i--) {
+        for (int i = size - 1; i >= 0; i--) {
             if (((T) table[i]).compareTo(t) >= 0) {
-                table[i+1] = table[i];
+                table[i + 1] = table[i];
             } else {
                 table[i] = t;
                 size++;
-                return ;
+                return;
             }
         }
     }
@@ -36,14 +36,14 @@ public class $2_InsertOrderedArray<T extends Comparable> {
         if (index < 0 || index >= size) {
             throw new RuntimeException("数组越界");
         }
-        if (index == size-1) {
-            T ret = (T) table[size-1];
-            table[size-1] = null;
+        if (index == size - 1) {
+            T ret = (T) table[size - 1];
+            table[size - 1] = null;
             return ret;
         }
         T ret = (T) table[index];
         for (int i = index; i < size; i++) {
-            table[i] = table[i+1];
+            table[i] = table[i + 1];
         }
         return ret;
     }
