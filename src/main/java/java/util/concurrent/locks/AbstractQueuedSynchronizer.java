@@ -397,7 +397,7 @@ public abstract class AbstractQueuedSynchronizer
      */
     static final class Node {
         /** Marker to indicate a node is waiting in shared mode */
-        // TODO 注意这里是static的，饿汉加载，共享锁共用同一个节点
+        // TODO 注意这里是static的，饥饿加载，共享锁共用同一个节点
         static final Node SHARED = new Node();
         /** Marker to indicate a node is waiting in exclusive mode */
         static final Node EXCLUSIVE = null;
@@ -406,7 +406,7 @@ public abstract class AbstractQueuedSynchronizer
         static final int CANCELLED =  1;
         /** waitStatus value to indicate successor's thread needs unparking */
         // TODO 表示当前节点的的后继节点将要或者已经被阻塞，在当前节点释放锁的时候需要unpark后继节点
-        // TODO 一般发生情况是：当前线程的后继线程处于阻塞状态，而当前线程被release或cancel掉，因此需要唤醒当前线程的后继线程
+        // TODO 一般发生情况是：当前线程的后继线程处于阻塞状态，而当前线程的锁被release或cancel掉，因此需要唤醒当前线程的后继线程
         static final int SIGNAL    = -1;
         /** waitStatus value to indicate thread is waiting on condition */
         // TODO 线程在CONDITION对象阻塞等待，即在condition队列中
@@ -500,13 +500,13 @@ public abstract class AbstractQueuedSynchronizer
          */
         // TODO 用来区别是独占锁还是共享锁
         // TODO 若nextWaiter=SHARED，则CLH队列是“独占锁”队列
-        // TODO 若nextWaiter=EXCLUSIVE（即nextWaiter=null），则CLH队列是“共享锁”队列
+        // TODO 若nextWaiter=EXCLUSIVE（即nextWaiter==null），则CLH队列是“共享锁”队列
         Node nextWaiter;
 
         /**
          * Returns true if node is waiting in shared mode.
          */
-        // TODO 这里为什么是直接用nextWaiter == SHARED？nextWaiter会不会为空？
+        // TODO 这里为什么是直接用nextWaiter == SHARED？nextWaiter会不会为空？（共享锁是同一个SHARED对象）
         final boolean isShared() {
             return nextWaiter == SHARED;
         }
