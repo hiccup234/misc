@@ -7,8 +7,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * 2. 一条N个格子组成的直线道路，每次可以前进1格或2格；设计算法计算有多少种方式走到终点？
  *
- * 3. 实现一个能够生产不同类型手机（Android，iPhone）的工厂，考虑未来可能的扩展（开闭原则）
- *
  * @author wenhy
  * @date 2019/5/29
  */

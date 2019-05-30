@@ -5,6 +5,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * 两把锁实现（其实还是依靠turn来实现交替，如果不依靠turn，则会有死锁风险）
  *
+ * 注意：仅仅为了验证两把锁实现线程切换执行，现实中不能这么写
+ *
  * @author wenhy
  * @date 2019/5/29
  */
