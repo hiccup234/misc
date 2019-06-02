@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @date 2019/6/2
  */
 public class Test {
-    private void swap(int[] arr, int s, int t) {
+    private static void swap(int[] arr, int s, int t) {
         int tmp = arr[s];
         arr[s] = arr[t];
         arr[t] = tmp;
@@ -55,12 +55,62 @@ public class Test {
     }
 
 
+    public void heap(int[] arr) {
+        int n = arr.length;
+        int[] tmpArr = new int[n + 1];
+        // 转换一下，方便计算
+        System.arraycopy(arr, 0, tmpArr, 1, n);
+        // 第一步，建堆（两种思路：1、初始堆只有一个元素，依此添加2~n的元素并调整 2、从最后一个非叶子节点（n/2）开始依此往上调整即可）
+        for (int i = (n + 1) / 2; i > 0; i--) {
+            int j = i;
+            // 向下调整
+            while (true) {
+                int maxIdx = j;
+                if (j * 2 <= n && tmpArr[j] < tmpArr[j * 2]) {
+                    maxIdx = j * 2;
+                }
+                if (j * 2 + 1 <= n && tmpArr[maxIdx] < tmpArr[j * 2 + 1]) {
+                    maxIdx = j * 2 + 1;
+                }
+                if (j == maxIdx) {
+                    break;
+                }
+                swap(tmpArr, j, maxIdx);
+                j = maxIdx;
+            }
+        }
+        swap(tmpArr, 1, n);
+        // 第二步，建堆后，堆顶元素则是最大元素
+        for (int i = n - 1; i > 1; i--) {
+            // 再次调整堆
+            int j = 1;
+            while (true) {
+                int maxIdx = j;
+                if (j * 2 <= i && tmpArr[j] < tmpArr[j * 2]) {
+                    maxIdx = j * 2;
+                }
+                if (j * 2 + 1 <= i && tmpArr[maxIdx] < tmpArr[j * 2 + 1]) {
+                    maxIdx = j * 2 + 1;
+                }
+                if (j == maxIdx) {
+                    break;
+                }
+                swap(tmpArr, j, maxIdx);
+                j = maxIdx;
+            }
+            swap(tmpArr, 1, i);
+        }
+        System.arraycopy(tmpArr, 1, arr, 0, n);
+    }
+
+
     @org.junit.Test
     public void test() {
         int[] arr = new int[]{5, 2, 12, 7, 9};
 //        bubble(arr);
-        select(arr);
+//        select(arr);
 //        insert(arr);
+        heap(arr);
         System.out.println(Arrays.toString(arr));
     }
 }

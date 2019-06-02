@@ -105,6 +105,11 @@ import java.util.function.Consumer;
  * @author Doug Lea
  * @param <E> the type of elements held in this collection
  */
+
+
+/**
+ * 利用数据结构堆，可以实现优先级队列
+ */
 @SuppressWarnings("unchecked")
 public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     implements BlockingQueue<E>, java.io.Serializable {
@@ -272,6 +277,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
         }
         this.queue = a;
         this.size = n;
+        // TODO 堆化调整
         if (heapify)
             heapify();
     }
