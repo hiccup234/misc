@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm.linklist;
 
 import org.junit.Test;
 
@@ -16,12 +16,12 @@ import org.junit.Test;
  */
 public class $7_MiddleNode {
 
-    public static Node middleNode(Node head) {
+    public static ListNode middleNode(ListNode head) {
         if (head == null) {
             return null;
         }
         // n1慢指针，每次步长为1，n2快指针，每次步长为2
-        Node n1 = head, n2 = head;
+        ListNode n1 = head, n2 = head;
         // 这里要注意判断n2.next是否为空，否则会造成NPE
         while (n1 != null && n2 != null && n2.next != null && n2.next.next != null) {
             n1 = n1.next;
@@ -32,12 +32,12 @@ public class $7_MiddleNode {
 
     @Test
     public void test() {
-        Node head = Node.buildLinkedList(10, (k) -> k+1);
-        Node.printLinkedList(head);
+        ListNode head = ListNode.buildLinkedList(10, (k) -> k+1);
+        ListNode.printLinkedList(head);
         System.out.println(middleNode(head));
 
-        head = Node.buildLinkedList(20, (k) -> k+1);
-        Node.printLinkedList(head);
+        head = ListNode.buildLinkedList(20, (k) -> k+1);
+        ListNode.printLinkedList(head);
         System.out.println(middleNode(head));
     }
 }

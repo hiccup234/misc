@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm.linklist;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,12 +20,12 @@ public class $2_CycledList {
      * @param head
      * @return
      */
-    public static boolean cycled1(Node head) {
+    public static boolean cycled1(ListNode head) {
         if (head == null) {
             return false;
         }
-        Set<Node> set = new HashSet<>();
-        for (Node p = head; p != null; p = p.next) {
+        Set<ListNode> set = new HashSet<>();
+        for (ListNode p = head; p != null; p = p.next) {
             if (set.contains(p)) {
                 // 因为是从头遍历，所以p节点就是环入口，剩下的节点数就是环长度
                 System.out.println("cycled node:" + p);
@@ -41,11 +41,11 @@ public class $2_CycledList {
      * @param head
      * @return
      */
-    public static boolean cycled2(Node head) {
+    public static boolean cycled2(ListNode head) {
         if (head == null) {
             return false;
         }
-        Node n1 = head, n2 = head;
+        ListNode n1 = head, n2 = head;
         while (n1 != null && n2 != null && n2.next != null) {
             n1 = n1.next;
             n2 = n2.next.next;
@@ -59,12 +59,12 @@ public class $2_CycledList {
     /**
      * 更好的写法：只有一个循环条件
      */
-    public static boolean hasCycle(Node head) {
+    public static boolean hasCycle(ListNode head) {
         if (head == null || head.next == null) {
             return false;
         }
-        Node slow = head;
-        Node fast = head.next;
+        ListNode slow = head;
+        ListNode fast = head.next;
         while (slow != fast) {
             if (fast == null || fast.next == null) {
                 return false;
@@ -79,21 +79,21 @@ public class $2_CycledList {
      * 2.1、找出环入口：n1是慢指针，走s步，则n2走2s步，是n1的两倍
      *               如果n1从head出发，而n2从环上的相遇点出发，相同步长则他们一定会在环入口相遇（有等式可以验证）
      */
-    public static Node cycled21(Node head) {
+    public static ListNode cycled21(ListNode head) {
         if (!cycled2(head)) {
             return null;
         }
-        Node n1 = head, n2 = head;
-        Node meetingNode = null;
+        ListNode n1 = head, n2 = head;
+        ListNode meetingListNode = null;
         while (n1 != null && n2 != null && n2.next != null) {
             n1 = n1.next;
             n2 = n2.next.next;
             if (n1 == n2) {
-                meetingNode = n1;
+                meetingListNode = n1;
             }
         }
-        Node p1 = head;
-        Node p2 = meetingNode;
+        ListNode p1 = head;
+        ListNode p2 = meetingListNode;
         while (p1 != p2) {
             p1 = p1.next;
             p2 = p2.next;
@@ -106,11 +106,11 @@ public class $2_CycledList {
      * @param head
      * @return
      */
-    public static long cycled22(Node head) {
+    public static long cycled22(ListNode head) {
         if (!cycled2(head)) {
             return -1;
         }
-        Node n1 = head, n2 = head;
+        ListNode n1 = head, n2 = head;
         while (n1 != null && n2 != null && n2.next != null) {
             n1 = n1.next;
             n2 = n2.next.next;
@@ -128,35 +128,35 @@ public class $2_CycledList {
         return length;
     }
 
-    private static void buildCycledLinkedList(Node head) {
+    private static void buildCycledLinkedList(ListNode head) {
         int count = 1;
-        Node tail = head;
+        ListNode tail = head;
         while (tail.next != null) {
             count ++;
             tail = tail.next;
         }
         count++;
-        Node nodeK = $1_LastKNoke.lastK3(head, 3);
-        tail.next = nodeK;
+        ListNode listNodeK = $1_LastKNoke.lastK3(head, 3);
+        tail.next = listNodeK;
     }
 
     @Test
     public void test1() {
-        Node head = Node.buildLinkedList(10, (k) -> k+1);
-        Node.printLinkedList(head);
+        ListNode head = ListNode.buildLinkedList(10, (k) -> k+1);
+        ListNode.printLinkedList(head);
         buildCycledLinkedList(head);
-//        Node.printLinkedList(head);
+//        ListNode.printLinkedList(head);
         System.out.println(cycled1(head));
     }
 
     @Test
     public void test2() {
-        Node head = Node.buildLinkedList(10, (k) -> k+1);
-        Node.printLinkedList(head);
+        ListNode head = ListNode.buildLinkedList(10, (k) -> k+1);
+        ListNode.printLinkedList(head);
         buildCycledLinkedList(head);
         System.out.println(cycled2(head));
 
-        head = Node.buildLinkedList(20, (k) -> k+1);
+        head = ListNode.buildLinkedList(20, (k) -> k+1);
         System.out.println(cycled2(head));
     }
 }

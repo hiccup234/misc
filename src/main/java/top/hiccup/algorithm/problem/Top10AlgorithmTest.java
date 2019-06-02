@@ -61,9 +61,9 @@ class Stack {
 }
 
 //class Queue {
-//    private Node head, tail;
+//    private ListNode head, tail;
 //
-//    public void enqueue(Node node) {
+//    public void enqueue(ListNode node) {
 //        if (tail != null) {
 //            tail.setNext(node);
 //        } else {
@@ -71,9 +71,9 @@ class Stack {
 //        }
 //    }
 //
-//    public Node dequeue() {
+//    public ListNode dequeue() {
 //        if (head != null) {
-//            Node node = head;
+//            ListNode node = head;
 //            head = head.getNext();
 //            return node;
 //        }

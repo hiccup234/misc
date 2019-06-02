@@ -35,7 +35,8 @@ public class $1_BubbleSort {
         if (arr == null || arr.length < 2) {
             return ;
         }
-        int n = arr.length;for (int i = n-1; i >= 0; i--) {
+        int n = arr.length;
+        for (int i = n-1; i >= 0; i--) {
             for (int j = n-1; j > n - i - 1; j--) {
                 if (arr[j] < arr[j - 1]) {
                     swap(arr, j, j - 1);

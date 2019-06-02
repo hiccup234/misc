@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm.linklist;
 
 import java.util.Random;
 
@@ -16,11 +16,11 @@ import org.junit.Test;
  */
 public class $6_TwoListMeeting {
 
-    public static Node meeting(Node head1, Node head2) {
+    public static ListNode meeting(ListNode head1, ListNode head2) {
         if (head1 == null || head2 == null) {
             return null;
         }
-        Node tail = head1;
+        ListNode tail = head1;
         while (tail != null && tail.next != null) {
             tail = tail.next;
         }
@@ -29,14 +29,14 @@ public class $6_TwoListMeeting {
         if ($2_CycledList.cycled2(tail)) {
             // 这里记得断开环
             tail.next = null;
-            Node prev = head1;
-            Node pCur = head1;
+            ListNode prev = head1;
+            ListNode pCur = head1;
             while (pCur != null && pCur != tail) {
                 prev = pCur;
                 pCur = pCur.next;
                 prev.next = null;
             }
-            Node tail2 = head2;
+            ListNode tail2 = head2;
             while (tail2 != null && tail2.next != null) {
                 tail2 = tail2.next;
             }
@@ -48,23 +48,23 @@ public class $6_TwoListMeeting {
 
     @Test
     public void test() {
-        Node head1 = Node.buildLinkedList(10, (k) -> k+1);
+        ListNode head1 = ListNode.buildLinkedList(10, (k) -> k+1);
         Random random = new Random(47);
-        Node head2 = Node.buildLinkedList(15, (k) -> random.nextInt(10));
-        Node.printLinkedList(head1);
-        Node.printLinkedList(head2);
+        ListNode head2 = ListNode.buildLinkedList(15, (k) -> random.nextInt(10));
+        ListNode.printLinkedList(head1);
+        ListNode.printLinkedList(head2);
         // 使相交
-        Node t1 = head1;
+        ListNode t1 = head1;
         for (int i=0; i< 9; i++) {
             t1 = t1.next;
         }
-        Node tail2 = head2;
+        ListNode tail2 = head2;
         while (tail2 != null && tail2.next != null) {
             tail2 = tail2.next;
         }
         tail2.next = t1;
-        Node.printLinkedList(head1);
-        Node.printLinkedList(head2);
+        ListNode.printLinkedList(head1);
+        ListNode.printLinkedList(head2);
         System.out.println(meeting(head1, head2));
     }
 }

@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm.linklist;
 
 import java.util.Random;
 
@@ -13,25 +13,25 @@ import org.junit.Test;
 public class $1_LastKNoke {
 
     /**
-     * 1、最容易想到的方法：先遍历出链表总长度count，再遍历count-k个节点即可
+     * 1、最容易想到的方法：先遍历出链表总长度count，再遍历count-k个节点即可，注意判断大小范围
      *
      * @param head 链表头节点
      * @param k
      * @return
      */
-    public static Node lastK1(Node head, int k) {
+    public static ListNode lastK1(ListNode head, int k) {
         if (head == null || k <= 0) {
             return null;
         }
         // 1、先计算出链表长度
         int count = 0;
-        for (Node tmp = head; tmp != null; tmp = tmp.next) {
+        for (ListNode tmp = head; tmp != null; tmp = tmp.next) {
             count++;
         }
         if (count < k) {
             return null;
         }
-        Node tmp = head;
+        ListNode tmp = head;
         // 这儿不能 i < count - k + 1，因为后面还要赋值tmp = tmp.next;类似+1的动作
         for (int i = 0; i < count - k; i++) {
             tmp = tmp.next;
@@ -40,22 +40,22 @@ public class $1_LastKNoke {
     }
 
     /**
-     * 2、递归遍历法：方法1的变种：递归遍历至末尾，从末尾开始返回，每返回一次num--，知道num为0则找到目标节点
+     * 2、递归遍历法：方法1的变种：递归遍历至末尾，从末尾开始返回，每返回一次num--，直到num为0则找到目标节点
      *
      * @param head
      * @param k
      * @return
      */
     private static int num = 0;
-    public static Node lastK2(Node head, int k) {
+    public static ListNode lastK2(ListNode head, int k) {
         num = k;
         if (head == null || k <= 0) {
             return null;
         }
-        Node node = lastK2(head.next, k);
+        ListNode listNode = lastK2(head.next, k);
         // 如果不为空则证明找到了倒数k的节点，并直接一路返回
-        if (node != null) {
-            return node;
+        if (listNode != null) {
+            return listNode;
         } else {
             num --;
             if (num == 0) {
@@ -73,13 +73,13 @@ public class $1_LastKNoke {
      * @param k
      * @return
      */
-    public static Node lastK3(Node head, int k) {
+    public static ListNode lastK3(ListNode head, int k) {
         if (head == null || k <= 0) {
             return null;
         }
-        Node n2 = null;
+        ListNode n2 = null;
         int count = 0;
-        for (Node n1 = head;n1 != null; n1 = n1.next) {
+        for (ListNode n1 = head; n1 != null; n1 = n1.next) {
             count++;
             if (count == k) {
                 n2 = head;
@@ -94,14 +94,14 @@ public class $1_LastKNoke {
      * 删除倒数第n个元素，n从1开始（注意dummy节点的使用）
      * @see https://leetcode.com/problems/remove-nth-node-from-end-of-list/
      */
-    public Node removeNthFromEnd(Node head, int n) {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
         if (head == null || n <= 0) {
             return null;
         }
-        Node dummy = new Node(0);
+        ListNode dummy = new ListNode(0);
         dummy.next = head;
-        Node nodeN = dummy;
-        Node pCur = dummy;
+        ListNode listNodeN = dummy;
+        ListNode pCur = dummy;
         int i;
         for (i=0; i < n + 1 && pCur != null; i++) {
             pCur = pCur.next;
@@ -111,9 +111,9 @@ public class $1_LastKNoke {
         }
         while (pCur != null) {
             pCur = pCur.next;
-            nodeN = nodeN.next;
+            listNodeN = listNodeN.next;
         }
-        nodeN.next = nodeN.next.next;
+        listNodeN.next = listNodeN.next.next;
         return dummy.next;
     }
 
@@ -121,24 +121,23 @@ public class $1_LastKNoke {
     public void test1() {
         Random random = new Random(47);
         for (int i = 0; i < 100; i++) {
-//            Node head = buildLinkList(random.nextInt(500));
-            Node head = Node.buildLinkedList(100, (k) -> k+1);
-            Node.printLinkedList(head);
+            ListNode head = ListNode.buildLinkedList(100, (k) -> k+1);
+            ListNode.printLinkedList(head);
             System.out.println(lastK1(head, 1));
         }
     }
 
     @Test
     public void test2() {
-        Node head = Node.buildLinkedList(100, (k) -> k+1);
-        Node.printLinkedList(head);
+        ListNode head = ListNode.buildLinkedList(100, (k) -> k+1);
+        ListNode.printLinkedList(head);
         System.out.println(lastK2(head, 100));
     }
 
     @Test
     public void test3() {
-        Node head = Node.buildLinkedList(100, (k) -> k+1);
-        Node.printLinkedList(head);
+        ListNode head = ListNode.buildLinkedList(100, (k) -> k+1);
+        ListNode.printLinkedList(head);
         System.out.println(lastK3(head, 1));
     }
 }

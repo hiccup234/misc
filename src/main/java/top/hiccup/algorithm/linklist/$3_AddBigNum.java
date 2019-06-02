@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm.linklist;
 
 import java.util.Random;
 
@@ -18,10 +18,10 @@ import org.junit.Test;
  */
 public class $3_AddBigNum {
 
-    public static Node addBigNum(Node head1, Node head2) {
-        Node n1 = head1, n2 = head2;
+    public static ListNode addBigNum(ListNode head1, ListNode head2) {
+        ListNode n1 = head1, n2 = head2;
         // 用新链表存储计算结果
-        Node retHead = null, retTail = null;
+        ListNode retHead = null, retTail = null;
         int up = 0;
         while (n1 != null || n2 != null) {
             int s1 = 0;
@@ -33,12 +33,12 @@ public class $3_AddBigNum {
                 s2 = ((Integer) n2.val).intValue();
             }
             int sum = s1 + s2 + up;
-            Node node = new Node();
+            ListNode listNode = new ListNode();
             if (sum > 10) {
-                node.val = sum - 10;
+                listNode.val = sum - 10;
                 up = sum/10;
             } else {
-                node.val = sum;
+                listNode.val = sum;
                 up = 0;
             }
             if (n1 != null) {
@@ -48,18 +48,18 @@ public class $3_AddBigNum {
                 n2 = n2.next;
             }
             if (retHead == null) {
-                retHead = node;
-                retTail = node;
+                retHead = listNode;
+                retTail = listNode;
             } else {
-                retTail.next = node;
-                retTail = node;
+                retTail.next = listNode;
+                retTail = listNode;
             }
 
         }
         if (up > 0) {
-            Node node = new Node();
-            node.val = up;
-            retTail.next = node;
+            ListNode listNode = new ListNode();
+            listNode.val = up;
+            retTail.next = listNode;
         }
         return retHead;
     }
@@ -67,10 +67,10 @@ public class $3_AddBigNum {
     @Test
     public void test() {
         Random random = new Random(47);
-        Node head1 = Node.buildLinkedList(10, (k) -> random.nextInt(10));
-        Node head2 = Node.buildLinkedList(20, (k) -> random.nextInt(10));
-        Node.printLinkedList(head1);
-        Node.printLinkedList(head2);
-        Node.printLinkedList(addBigNum(head1, head2));
+        ListNode head1 = ListNode.buildLinkedList(10, (k) -> random.nextInt(10));
+        ListNode head2 = ListNode.buildLinkedList(20, (k) -> random.nextInt(10));
+        ListNode.printLinkedList(head1);
+        ListNode.printLinkedList(head2);
+        ListNode.printLinkedList(addBigNum(head1, head2));
     }
 }

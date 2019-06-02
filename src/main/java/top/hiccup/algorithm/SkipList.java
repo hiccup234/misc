@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm;
 
 import java.util.Random;
 
@@ -13,12 +13,13 @@ import java.util.Random;
  * 劣势：跳表的索引层数越多则浪费的空间也越多（一般需要排序的对象都比较大，所以索引的空间占比相对来说还好）
  *      某个节点的索引层高需要设为随机值，以及插入和删除都要维护索引，否则复杂度容易退化为O(n)
  *
- * 跳表是不是更像B+Tree呢？
+ * Q：跳表是不是更像B+Tree呢？
+ * A：实际上，跳表确实跟B+Tree非常相像，不过B+Tree发明的时间更早且树的思想是从上之下，而跳表则是从下往上构建索引的
  *
  * @author wenhy
  * @date 2019/5/20
  */
-public class $8_SkipList {
+public class SkipList {
 
     /**
      * 最大索引层级
@@ -31,12 +32,12 @@ public class $8_SkipList {
     /**
      * 带头链表
      */
-    private Node head = new Node();
+    private ListNode head = new ListNode();
 
     private Random r = new Random();
 
-    public Node find(int value) {
-        Node p = head;
+    public ListNode find(int value) {
+        ListNode p = head;
         for (int i = levelCount - 1; i >= 0; --i) {
             while (p.forwards[i] != null && p.forwards[i].data < value) {
                 p = p.forwards[i];
@@ -52,16 +53,16 @@ public class $8_SkipList {
 
     public void insert(int value) {
         int level = randomLevel();
-        Node newNode = new Node();
+        ListNode newNode = new ListNode();
         newNode.data = value;
         newNode.maxLevel = level;
-        Node update[] = new Node[level];
+        ListNode update[] = new ListNode[level];
         for (int i = 0; i < level; ++i) {
             update[i] = head;
         }
 
         // record every level largest value which smaller than insert value in update[]
-        Node p = head;
+        ListNode p = head;
         for (int i = level - 1; i >= 0; --i) {
             while (p.forwards[i] != null && p.forwards[i].data < value) {
                 p = p.forwards[i];
@@ -69,21 +70,21 @@ public class $8_SkipList {
             update[i] = p;
         }
 
-        // in search path node next node become new node forwords(next)
+        // in search path ListNode next ListNode become new ListNode forwords(next)
         for (int i = 0; i < level; ++i) {
             newNode.forwards[i] = update[i].forwards[i];
             update[i].forwards[i] = newNode;
         }
 
-        // update node hight
+        // update ListNode hight
         if (levelCount < level) {
             levelCount = level;
         }
     }
 
     public void delete(int value) {
-        Node[] update = new Node[levelCount];
-        Node p = head;
+        ListNode[] update = new ListNode[levelCount];
+        ListNode p = head;
         for (int i = levelCount - 1; i >= 0; --i) {
             while (p.forwards[i] != null && p.forwards[i].data < value) {
                 p = p.forwards[i];
@@ -114,7 +115,7 @@ public class $8_SkipList {
     }
 
     public void printAll() {
-        Node p = head;
+        ListNode p = head;
         while (p.forwards[0] != null) {
             System.out.print(p.forwards[0] + " ");
             p = p.forwards[0];
@@ -122,7 +123,7 @@ public class $8_SkipList {
         System.out.println();
     }
 
-    class Node {
+    class ListNode {
         /**
          * 跳表中存储的是正整数，并且存储的是不重复的
          */
@@ -134,7 +135,7 @@ public class $8_SkipList {
         /**
          * 数组存储纵向的索引，避免在Node节点中增加向下和向后的“指针”，加快遍历速度以及维护索引的时候更方便
          */
-        private Node forwards[] = new Node[MAX_LEVEL];
+        private ListNode forwards[] = new ListNode[MAX_LEVEL];
 
         @Override
         public String toString() {

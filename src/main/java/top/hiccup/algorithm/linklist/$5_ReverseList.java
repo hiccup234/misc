@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm.linklist;
 
 import org.junit.Test;
 
@@ -14,13 +14,13 @@ import org.junit.Test;
  */
 public class $5_ReverseList {
 
-    public static Node reverse1(Node head) {
+    public static ListNode reverse1(ListNode head) {
         // 虚拟头节点
-        Node dummy = new Node();
-        Node pCur = head;
+        ListNode dummy = new ListNode();
+        ListNode pCur = head;
         while (pCur != null) {
             // 临时保存剩余链表
-            Node pNex = pCur.next;
+            ListNode pNex = pCur.next;
             // 把当前节点转换到新链表的头节点去
             pCur.next = dummy.next;
             dummy.next = pCur;
@@ -33,14 +33,14 @@ public class $5_ReverseList {
     /**
      * 就地反转法（不会新建一个临时引用）
      */
-    public static Node reverse2(Node head) {
+    public static ListNode reverse2(ListNode head) {
         if (head == null) {
             return head;
         }
         // 虚拟头节点
-        Node dummy = new Node();
+        ListNode dummy = new ListNode();
         dummy.next = head;
-        Node pCur = head.next;
+        ListNode pCur = head.next;
         while (pCur != null) {
             // 其实就是借助反转后链表的尾节点（即入参的head）的next来作为临时变量
             // 因为反转后head.next会置为空，所以不会存储元素，可以拿来做临时存储空间，但是这里就需要把判断head==null的逻辑单独拿出来
@@ -55,11 +55,11 @@ public class $5_ReverseList {
     /**
      * 不用虚拟头节点（注意判断head的写法）
      */
-    public static Node reverseList(Node head) {
-        Node prev = null;
-        Node curr = head;
+    public static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
         while (curr != null) {
-            Node nextTemp = curr.next;
+            ListNode nextTemp = curr.next;
             curr.next = prev;
             prev = curr;
             curr = nextTemp;
@@ -69,10 +69,10 @@ public class $5_ReverseList {
 
     @Test
     public void test() {
-        Node head = Node.buildLinkedList(10, (k) -> k);
-        Node.printLinkedList(head);
-        Node reverse = reverse1(head);
-        Node.printLinkedList(reverse);
-        Node.printLinkedList(reverse2(reverse));
+        ListNode head = ListNode.buildLinkedList(10, (k) -> k);
+        ListNode.printLinkedList(head);
+        ListNode reverse = reverse1(head);
+        ListNode.printLinkedList(reverse);
+        ListNode.printLinkedList(reverse2(reverse));
     }
 }

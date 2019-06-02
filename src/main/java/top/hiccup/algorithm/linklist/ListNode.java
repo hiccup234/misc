@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.link;
+package top.hiccup.algorithm.linklist;
 
 /**
  * 链表节点
@@ -6,24 +6,24 @@ package top.hiccup.algorithm.link;
  * @author wenhy
  * @date 2019/3/31
  */
-public class Node {
+public class ListNode {
     int val;
-    Node next;
+    ListNode next;
 
-    public Node() {}
+    public ListNode() {}
 
-    public Node(int val) {
+    public ListNode(int val) {
         this.val = val;
     }
 
-    public Node(int val, Node next) {
+    public ListNode(int val, ListNode next) {
         this.val = val;
         this.next = next;
     }
 
-    public Node(Node node) {
-        this.val = node.val;
-        this.next = node.next;
+    public ListNode(ListNode listNode) {
+        this.val = listNode.val;
+        this.next = listNode.next;
     }
 
     @Override
@@ -45,30 +45,30 @@ public class Node {
         return String.valueOf(val);
     }
 
-    public static Node buildLinkedList(int n, Command command) {
-        Node head = null;
-        Node tail = null;
+    public static ListNode buildLinkedList(int n, Command command) {
+        ListNode head = null;
+        ListNode tail = null;
         for (int i = 0; i < n; i++) {
-            Node node = new Node();
-            node.val = command.getVal(i);
+            ListNode listNode = new ListNode();
+            listNode.val = command.getVal(i);
             if (i == 0) {
-                head = node;
-                tail = node;
+                head = listNode;
+                tail = listNode;
                 continue;
             }
-            tail.next = node;
-            tail = node;
+            tail.next = listNode;
+            tail = listNode;
         }
         return head;
     }
 
-    public static void printLinkedList(Node head) {
+    public static void printLinkedList(ListNode head) {
         if (head == null) {
             System.out.println("none list");
         }
         StringBuilder sb = new StringBuilder();
         int count = 0;
-        for (Node p = head; p != null; p = p.next) {
+        for (ListNode p = head; p != null; p = p.next) {
             sb.append(++count + ":" + p);
             if (p.next != null) {
                 sb.append(" -> ");
