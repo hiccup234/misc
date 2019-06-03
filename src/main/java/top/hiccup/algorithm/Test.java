@@ -1,6 +1,11 @@
 package top.hiccup.algorithm;
 
+import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
+
+import sun.reflect.generics.tree.Tree;
 
 /**
  * 测试
@@ -115,24 +120,54 @@ public class Test {
     }
 
 
-
-
-
     public class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
-        TreeNode(int x) { val = x; }
-    }
 
-    class Solution {
-        public boolean leafSimilar(TreeNode root1, TreeNode root2) {
-
-
-            return false;
+        TreeNode(int x) {
+            val = x;
         }
     }
 
+    class Solution {
+        public int strStr(String haystack, String needle) {
+            if (haystack == null || haystack.length() == 0) {
+                return -1;
+            }
+            if (needle == null || needle.length() == 0) {
+                return 0;
+            }
+            char[] h = haystack.toCharArray();
+            char[] n = needle.toCharArray();
+            if (n.length > h.length) {
+                return -1;
+            }
+            int i = 0;
+            for (; i < h.length; i++) {
+                if (h[i] == n[0]) {
+                    int k = i;
+                    int j = 0;
+                    for (; j < n.length && k < h.length; j++) {
+                        if (h[k] == n[j]) {
+                            k++;
+                            continue;
+                        } else {
+                            break;
+                        }
+                    }
+                    if (j == n.length) {
+                        return i;
+                    }
+                }
+            }
+            return -1;
+        }
+    }
 
-
+    @org.junit.Test
+    public void test2() {
+        Solution solution = new Solution();
+        System.out.println(solution.strStr("mississippi", "mississippi"));
+    }
 }
