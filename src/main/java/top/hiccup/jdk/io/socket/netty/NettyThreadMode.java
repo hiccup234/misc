@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.netty;
+package top.hiccup.jdk.io.socket.netty;
 
 /**
  * Netty采用了Reactor线程模型（Spring 5.0也是采用了这种模型，见官网）

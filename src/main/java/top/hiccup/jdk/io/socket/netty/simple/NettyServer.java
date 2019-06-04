@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.netty.simple;
+package top.hiccup.jdk.io.socket.netty.simple;
 
 import io.netty.bootstrap.ServerBootstrap;
 

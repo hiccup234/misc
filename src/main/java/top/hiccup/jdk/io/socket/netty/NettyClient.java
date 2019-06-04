@@ -1,8 +1,11 @@
-package top.hiccup.jdk.io.netty;
+package top.hiccup.jdk.io.socket.netty;
 
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.tools.ant.util.DateUtils;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -14,7 +17,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringEncoder;
-import top.hiccup.jdk.io.DateUtils;
 
 /**
  * Netty框架NIO客户端
@@ -53,7 +55,8 @@ public class NettyClient {
                                     ctx.channel().writeAndFlush(buffer);
 
                                     ByteBuf byteBuf = (ByteBuf) msg;
-                                    System.out.println(DateUtils.now() + ": " + byteBuf.toString(Charset.forName("utf-8")));
+                                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                                    System.out.println(sdf.format(new Date()) + ": " + byteBuf.toString(Charset.forName("utf-8")));
                                 }
                             });
                         }

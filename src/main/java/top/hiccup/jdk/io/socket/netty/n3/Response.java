@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.netty.n3;
+package top.hiccup.jdk.io.socket.netty.n3;
 
 import java.io.Serializable;
 

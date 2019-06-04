@@ -3,6 +3,7 @@ package top.hiccup.jdk.io.socket.nio;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -15,6 +16,8 @@ import java.util.Set;
  * BIO：同步阻塞，如果网络传输速度很慢，处理I/O的线程就要一直等待，直到数据传输完毕
  * NIO(Non-block IO)：同步非阻塞（JDK1.5）
  * AIO(NIO2.0)：异步非阻塞（JDK1.7）
+ *
+ * JDK的NIO底层由epoll实现，该实现饱受诟病的空轮询bug会导致cpu飙升100%（Netty解决了这个问题）
  *
  * @author wenhy
  * @date 2018/2/5
@@ -98,18 +101,10 @@ public class Server {
             } catch (IOException ignored) {
             }
         }).start();
-
-
-
-//        new Thread(new ServerInner(23401)).start();
     }
 }
 
-class ServerInner implements Runnable {
-    /**
-     * 1、多路复用器（管理所有的通道Channel）
-     * Linux内核IO多路复用：select（轮询监听） 和 epoll（事件通知）
-     */
+class AnOtherServer implements Runnable {
     private Selector seletor;
     /**
      * 2、建立读缓冲区
@@ -120,7 +115,7 @@ class ServerInner implements Runnable {
      */
     private ByteBuffer writeBuf = ByteBuffer.allocate(1024);
 
-    public ServerInner(int port) {
+    public AnOtherServer(int port) {
         try {
             // 1、打开多路复用器
             this.seletor = Selector.open();
@@ -164,7 +159,7 @@ class ServerInner implements Runnable {
                         }
                         // 9、写数据
                         if (key.isWritable()) {
-                            //this.write(key); //ssc
+                            this.write(key);
                         }
                     }
                 }
@@ -172,43 +167,6 @@ class ServerInner implements Runnable {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void write(SelectionKey key) {
-        //ServerSocketChannel ssc =  (ServerSocketChannel) key.channel();
-        //ssc.register(this.seletor, SelectionKey.OP_WRITE);
-    }
-
-    private void read(SelectionKey key) {
-        try {
-            // 1、清空缓冲区旧的数据
-            this.readBuf.clear();
-            // 2、获取之前注册的socket通道对象
-            SocketChannel sc = (SocketChannel) key.channel();
-            // 3、读取数据
-            int count = sc.read(this.readBuf);
-            // 4、如果没有数据
-            if (count == -1) {
-                key.channel().close();
-                key.cancel();
-                return;
-            }
-            // 5、有数据则进行读取 读取之前需要进行复位方法(把position 和limit进行复位)
-            this.readBuf.flip();
-            // 6、根据缓冲区的数据长度创建相应大小的byte数组，接收缓冲区的数据
-            byte[] bytes = new byte[this.readBuf.remaining()];
-            // 7、接收缓冲区数据
-            this.readBuf.get(bytes);
-            // 8、打印结果
-            String body = new String(bytes).trim();
-            System.out.println("NettyServer : " + body);
-
-            // 9、可以写回给客户端数据
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     private void accept(SelectionKey key) {
@@ -224,5 +182,34 @@ class ServerInner implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void read(SelectionKey key) throws IOException {
+        // 1、清空缓冲区旧的数据
+        this.readBuf.clear();
+        // 2、获取之前注册的socket通道对象
+        SocketChannel sc = (SocketChannel) key.channel();
+        // 3、读取数据
+        int count = sc.read(this.readBuf);
+        // 4、如果没有数据
+        if (count == -1) {
+            key.channel().close();
+            key.cancel();
+            return;
+        }
+        // 5、有数据则进行读取 读取之前需要进行复位方法(把position 和limit进行复位)
+        this.readBuf.flip();
+        // 6、根据缓冲区的数据长度创建相应大小的byte数组，接收缓冲区的数据
+        byte[] bytes = new byte[this.readBuf.remaining()];
+        // 7、接收缓冲区数据
+        this.readBuf.get(bytes);
+        // 8、打印结果
+        String body = new String(bytes).trim();
+        System.out.println("Server: " + body);
+    }
+
+    private void write(SelectionKey key) throws ClosedChannelException {
+        ServerSocketChannel ssc = (ServerSocketChannel) key.channel();
+        ssc.register(this.seletor, SelectionKey.OP_WRITE);
     }
 }

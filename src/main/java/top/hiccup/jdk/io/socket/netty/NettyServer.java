@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.netty;
+package top.hiccup.jdk.io.socket.netty;
 
 import java.nio.charset.Charset;
 import java.util.Date;

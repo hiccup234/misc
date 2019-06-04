@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.netty.n1;
+package top.hiccup.jdk.io.socket.netty.n1;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.Unpooled;
