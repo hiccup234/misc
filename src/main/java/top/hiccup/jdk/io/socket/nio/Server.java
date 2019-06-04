@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * BIO：（伪异步）阻塞：如果网络传输速度很慢，应用程序就要一直等待，直到数据传输完毕
+ * BIO：同步阻塞，如果网络传输速度很慢，处理I/O的线程就要一直等待，直到数据传输完毕
  * NIO(Non-block IO)：同步非阻塞（JDK1.5）
  * AIO(NIO2.0)：异步非阻塞（JDK1.7）
  *
@@ -24,10 +24,8 @@ public class Server {
     private static final int PORT = 23401;
 
     public static void main(String[] args) throws IOException {
-        /**
-         * 1、打开多路复用器（管理所有的通道Channel）
-         * Linux内核IO多路复用：select（轮询监听） 和 epoll（事件通知）
-         */
+        // 1、打开多路复用器（管理所有的通道Channel）
+        // Linux内核IO多路复用：select（轮询监听） 和 epoll（事件通知）
         Selector serverSelector = Selector.open();
         Selector clientSelector = Selector.open();
 
@@ -42,7 +40,7 @@ public class Server {
                 listenerChannel.socket().bind(new InetSocketAddress(PORT));
                 // 5、把服务器通道注册到多路复用器上，并且监听阻塞事件
                 listenerChannel.register(serverSelector, SelectionKey.OP_ACCEPT);
-                System.out.println("NettyServer start at port: " + PORT);
+                System.out.println("Server start at port: " + PORT);
 
                 while (true) {
                     // 监测是否有新的连接，这里的1指的是阻塞的时间为 1ms
@@ -86,9 +84,8 @@ public class Server {
                                     // 使用ByteBuffer
                                     clientChannel.read(byteBuffer);
                                     byteBuffer.flip();
-//                                    System.out.println(Charset.defaultCharset().newDecoder().decode(byteBuffer)
-//                                            .toString());
-                                    System.out.println(new String(byteBuffer.array(), "UTF-8"));
+                                    System.out.println(Charset.forName("UTF-8").newDecoder().decode(byteBuffer).toString());
+//                                    System.out.println(new String(byteBuffer.array(), "UTF-8"));
                                 } finally {
                                     keyIterator.remove();
                                     key.interestOps(SelectionKey.OP_READ);

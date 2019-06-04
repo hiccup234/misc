@@ -10,7 +10,7 @@ import java.net.Socket;
 /**
  * 面向Socket（插座）编程简单示例：应用程序TCP/IP直连通信（进程通信）方式
  * <p>
- * Socket是位于传输层和网络层的
+ * Socket是位于传输层和网络层的，即：TCP/UDP --> (Socket 抽象) --> IP
  *
  * @author wenhy
  * @date 2017/2/5
@@ -23,11 +23,11 @@ public class Server {
         ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(PORT);
-            System.out.println("NettyServer start at port: " + PORT);
+            System.out.println("Server start at port: " + PORT);
             // 阻塞等待客户端的请求到来，由本地方法accept0阻塞程序
             Socket socket = serverSocket.accept();
-            // 这里存在的问题是：每来一个客户端请求就要创建一个线程，Windows目前最多能支持到1000个，Linux最多也只能到2000左右
-            // 而且频繁创建线程很消耗系统资源，如果由当前线程处理请求，则Server就没法监听其他客户端请求的到来了（只能一个一个响应客户端请求）
+            // 这里存在的问题是：每来一个客户端请求就要创建一个线程，Windows目前最多能支持到1000个，Linux最多也只能到2000左右线程数
+            // 而且频繁创建线程很消耗系统资源，如果由当前线程处理请求，则Server就没法监听其他客户端请求的到来了（只能串行一个一个响应客户端请求）
             new Thread(new ServerHandler(socket)).start();
         } catch (Exception e) {
             e.printStackTrace();

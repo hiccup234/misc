@@ -30,7 +30,7 @@ public class Client {
             socketChannel.connect(address);
             while (true) {
                 // 6、定义1KB的字节数组，然后使用从标准输入读取
-                System.out.println("请输入：");
+                System.out.print("请输入：");
                 byte[] bytes = new byte[1024];
                 System.in.read(bytes);
                 // 7、把数据放到缓冲区中

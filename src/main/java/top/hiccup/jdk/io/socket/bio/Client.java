@@ -7,7 +7,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * 客户端类
+ * 传统阻塞I/O：客户端类
  *
  * @author wenhy
  * @date 2018/2/5

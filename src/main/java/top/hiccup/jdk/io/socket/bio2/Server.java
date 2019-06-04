@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 面向Socket（插座）编程简单示例：应用程序TCP/IP直连通信（进程通信）方式
- * <p>
+ *
  * 改进：采用线程池而不是每来一个请求就创建一个线程，这样可以大幅减少操作系统创建线程带来的性能开销
  *
  * @author wenhy
@@ -31,11 +31,11 @@ public class Server {
         PrintWriter out = null;
         try {
             server = new ServerSocket(PORT);
-            System.out.println("NettyServer start at port: " + PORT);
+            System.out.println("Server start at port: " + PORT);
             Socket socket = null;
             // 持有一个线程池
             ExecutorService executorService = new ThreadPoolExecutor(
-                    // 可用处理器数
+                    // 核心线程数--可用处理器数
                     Runtime.getRuntime().availableProcessors(),
                     50,
                     120L,
@@ -96,7 +96,7 @@ class ServerHandler implements Runnable {
                 if (body == null) {
                     break;
                 }
-                System.out.println("NettyServer:" + body);
+                System.out.println("Server:" + body);
                 out.println(dateFormat.format(new Date()) + ":客户端你好..");
             }
         } catch (Exception e) {
