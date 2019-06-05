@@ -11,12 +11,12 @@ import org.junit.Test;
 
 /**
  * 1、Hashtable：早期(1.0)Java类库的哈希表实现，本身是同步的（线程安全），不支持null键和null值
- * <p>
+ * 
  * 2、HashMap：不是线程安全的，支持null键和null值，存储在第一个槽位
- * <p>
- * 3、LinkedHashMap：提供遍历顺序符合插入顺序(通过双向链表实现)
- * <p>
- * 4、TreeMap：基于红黑树的有序Map(由key的自然序或者指定的Comparator决定)
+ * 
+ * 3、LinkedHashMap：提供遍历顺序符合插入顺序（通过双向链表实现）
+ * 
+ * 4、TreeMap：基于红黑树的有序Map（由key的自然序或者指定的Comparator决定）
  *
  * @author wenhy
  * @date 2019/1/3

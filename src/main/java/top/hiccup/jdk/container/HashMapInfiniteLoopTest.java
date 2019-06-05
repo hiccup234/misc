@@ -36,5 +36,4 @@ public class HashMapInfiniteLoopTest {
             }, "myThread_" + i).start();
         }
     }
-
 }

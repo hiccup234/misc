@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.concurrent.PriorityBlockingQueue;
 
 /**
- * 优先队列测试
+ * 优先队列测试，底层数据结构为堆，每次add或offer都回做堆调整，以保证堆顶的优先级最高
  *
  * @author wenhy
  * @date 2018/1/4
@@ -42,10 +42,6 @@ public class PriorityQueueTest {
             }
             System.out.println(task.getName());
         }
-
-//        Delayed;
-//        DelayQueue;
-
     }
 
 }

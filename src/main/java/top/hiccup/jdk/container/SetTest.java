@@ -10,7 +10,7 @@ import java.util.TreeSet;
  *
  * LinkedHashSet：保证元素的添加顺序
  *
- * TreeSet：保证元素的自然顺序
+ * TreeSet：保证元素的自然顺序（或指定的排序顺序）
  *
  * @author wenhy
  * @date 2019/1/7

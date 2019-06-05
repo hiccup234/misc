@@ -9,9 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * 5种初始化List的方式
- *
- * ##论茴香豆的6种写法，哈哈哈
+ * 5种初始化List的方式（论茴香豆的6种写法，哈哈哈）
  *
  * @author wenhy
  * @date 2018/12/6
@@ -50,6 +48,5 @@ public class ListInitTest {
         // 6、JDK1.9 List.of Set.of等（接口默认实现：default方法）
 //        List list6 = List.of("aa", "bb", "cc");
 //        System.out.println(list6);
-
     }
 }

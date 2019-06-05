@@ -26,7 +26,6 @@ public class ArrayListTest {
 
         // Exception in thread "main" java.lang.OutOfMemoryError: Requested array size exceeds VM limit
 //        int[] arr = new int[Integer.MAX_VALUE - 8];
-
 //        list2 = new ArrayList<>(Integer.MAX_VALUE);
 
         list2.remove(-1);

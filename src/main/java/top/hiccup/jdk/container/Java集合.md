@@ -8,8 +8,8 @@
    2、List除了1.8添加的默认方法有所不同外，其他方法基本一致，而Set则与Collection完全一致
    3、List中可以有重复元素可以用null，而Set中不能存在重复元素
    
-有序集合：List的所有实现类ArrayList、LinkedList、Vector 以及 LinkedHashMap 和 LinkedHashSet
-无序集合：HashMap、TreeMap（排序有序）、TableMap 以及 HashSet、TreeSet
+    有序集合：List的所有实现类ArrayList、LinkedList、Vector 以及 LinkedHashMap 和 LinkedHashSet
+    无序集合：HashMap、TreeMap（排序有序）、TableMap 以及 HashSet、TreeSet
 
 ## Set如何保证元素不重复？
    一般是持有一个HashMap，然后通过HashMap的key的唯一性来实现元素不重复
@@ -44,7 +44,7 @@
    3、要求数组长度为2的n次方
 [OK]LinkedHashMap
    1、LinkedHashMap直接继承自HashMap，然后添加双向链表数据结构，以支持按插入顺序遍历
-[]TreeMap
+[OK]TreeMap
    1、TreeMap基于红黑树（Red-Black tree）实现，基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n)
    2、TreeMap也是非同步，线程不安全的
    
@@ -55,7 +55,7 @@
 
 [OK]HashTable
    1、HashMap的同步版本，初始化容量为11，扩容时*2倍+1
-[]ConcurrentHashMap
+[OK]ConcurrentHashMap
    1、JDK1.7采用锁分段的思想，一个Segment就是一个ReenTrantLock
    2、Segment数组不能扩容，扩容是针对Segment元素（一个小型HashMap）进行的
    3、get方法没有加锁，因为HashEntry的value字段是volatile修饰的，可以保证线程间的可见性
@@ -77,12 +77,9 @@
 
 ## 其他问题
 Collection 和 Collections    接口和工具集
-
-Arrays.asList 获得的 List     使用时需要注意什么（不可修改）
-
+Arrays.asList 获得的 List     使用时需要注意什么？（不可修改）
 fail-fast 和 fail-safe       非线程安全容器的检查（fail-fast）
 
 ## 有界队列和无界队列
-1.有界队列：ArrayBlockingQueue、LinkedBlockingQueue(如果没指定容量，则最大容量为Integer.MAX_VALUE)
-          SynchronousQueue(容量为0)
+1.有界队列：ArrayBlockingQueue、LinkedBlockingQueue(如果没指定容量，则最大容量为Integer.MAX_VALUE)、SynchronousQueue(容量为0)
 2.无界队列：PriorityBlockingQueue、DelayedQueue、LinkedTransferQueue

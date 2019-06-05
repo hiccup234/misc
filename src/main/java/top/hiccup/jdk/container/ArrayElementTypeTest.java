@@ -22,5 +22,4 @@ public class ArrayElementTypeTest {
         // 这时arro指向String[]，所以不能直接赋值一个Object对象，见ArrayList(Collection<? extends E> c)的处理
         arro[0] = new Object();
     }
-
 }

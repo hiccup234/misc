@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * 自动释放掉最不常访问的对象
+ * 自动释放掉最不常访问的对象，LRU算法的简单实现
  *
  * @author wenhy
  * @date 2019/4/8
