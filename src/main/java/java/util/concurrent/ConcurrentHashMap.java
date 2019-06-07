@@ -264,9 +264,9 @@ import java.util.stream.Stream;
 
 
 /**
- * 1、JDK1.7采用Segment锁分段的思想（继承ReentrantLock），JDK1.8是在每条链表头加锁，锁粒度更加的细化
- * 2、get方法并没有加锁，因为只需要通过volatile提供的线程可见性即可
- * 3、扩容？
+ * 1、JDK7采用Segment锁分段的思想（继承自ReentrantLock），JDK8是在每条链表头加锁（synchronized），锁粒度更加的细化
+ * 2、get方法并没有加锁，因为只需要通过Node中被volatile修饰的val提供的线程可见性即可，注意：next节点也是volatile修饰的
+ * 3、哈希表的一种实现方式（数组+链表），数组长度都是2^n以方便快速定位元素下标（h & (length - 1)），扩容也都是扩为2倍或4、8等
  */
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     implements ConcurrentMap<K,V>, Serializable {
@@ -519,7 +519,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * The default initial table capacity.  Must be a power of 2
      * (i.e., at least 1) and at most MAXIMUM_CAPACITY.
      */
-    // TODO 默认大小为16，数组长度必须是2的n次方，这样做是为了快速hash,方便定位到数组下标（经典的：(n - 1) & hash，避免了耗时的取模运算）
+    // TODO 默认大小为16，数组长度必须是2的n次方，这样做是为了快速定位到数组下标（经典的：(n - 1) & hash，避免了耗时的取模运算）
     private static final int DEFAULT_CAPACITY = 16;
 
     /**
@@ -533,7 +533,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * The default concurrency level for this table. Unused but
      * defined for compatibility with previous versions of this class.
      */
-    // TODO JDK7的ConcurrentHashMap以前有并发级别的概念（Segment数组长度，必须为2的n次方），目前已不再使用
+    // TODO JDK7的ConcurrentHashMap以前有并发级别的概念（Segment数组长度，必须为2的n次方），目前已不再使用仅为了兼容以前版本的反序列化
     private static final int DEFAULT_CONCURRENCY_LEVEL = 16;
 
     /**
@@ -543,6 +543,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * simpler to use expressions such as {@code n - (n >>> 2)} for
      * the associated resizing threshold.
      */
+    // TODO 默认的加载因子，0.75采用了空间换时间的思想来避免过多的哈希冲突，加载因子可以大于1
     private static final float LOAD_FACTOR = 0.75f;
 
     /**
@@ -643,7 +644,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
 
         public final K getKey()       { return key; }
         public final V getValue()     { return val; }
-        // TODO 这里为什么没跟HashMap保持同步用Objects.hashCode(key)呢?
+        // TODO 这里为什么没跟HashMap保持同步用Objects.hashCode(key)呢？
         public final int hashCode()   { return key.hashCode() ^ val.hashCode(); }
         public final String toString(){ return key + "=" + val; }
         // TODO 这里让子类继承，为什么不声明成Abstract呢？
@@ -697,6 +698,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * never be used in index calculations because of table bounds.
      */
     static final int spread(int h) {
+        // TODO h跟h的高16位异或，使得h的每个位都能参与运算，再跟0x7fffffff与，使得结果都是正数
         return (h ^ (h >>> 16)) & HASH_BITS;
     }
 
@@ -855,7 +857,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     public ConcurrentHashMap(int initialCapacity) {
         if (initialCapacity < 0)
             throw new IllegalArgumentException();
-        // 大于等于最大容量的一半（无符号右移）
+        // TODO 大于等于最大容量的一半（无符号右移）
         int cap = ((initialCapacity >= (MAXIMUM_CAPACITY >>> 1)) ?
                    MAXIMUM_CAPACITY :
                 // TODO HashMap是直接调用tableSizeFor(initialCapacity);
@@ -928,7 +930,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     /**
      * {@inheritDoc}
      */
-    // TODO size方法没有加锁，所以结果可能并不准确，具有弱一致性
+    // TODO size方法没有加锁，所以结果可能并不准确，具有弱一致性，cell模式能保证size结果尽量准确
     public int size() {
         long n = sumCount();
         return ((n < 0L) ? 0 :
@@ -956,15 +958,18 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      */
     public V get(Object key) {
         Node<K,V>[] tab; Node<K,V> e, p; int n, eh; K ek;
+        // TODO 计算hash值
         int h = spread(key.hashCode());
         if ((tab = table) != null && (n = tab.length) > 0 &&
             (e = tabAt(tab, (n - 1) & h)) != null) {
+            // TODO 如果首节点就是要找的值就直接返回
             if ((eh = e.hash) == h) {
                 if ((ek = e.key) == key || (ek != null && key.equals(ek)))
                     return e.val;
             }
-            // TODO 数组元素节点（链表首节点或红黑树根节点）存储的hash值小于0则代表以被树化
+            // TODO 这里为什么不直接调用e.find呢？（通过多态就可以调用到正确的find方法）
             else if (eh < 0)
+                // TODO 通过红黑树查找（数组元素节点（链表首节点或红黑树根节点）存储的hash值小于0则代表已被树化）
                 return (p = e.find(h, key)) != null ? p.val : null;
             while ((e = e.next) != null) {
                 if (e.hash == h &&

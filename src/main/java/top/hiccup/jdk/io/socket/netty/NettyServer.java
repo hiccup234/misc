@@ -1,6 +1,8 @@
 package top.hiccup.jdk.io.socket.netty;
 
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import io.netty.bootstrap.ServerBootstrap;
@@ -9,16 +11,13 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.string.StringDecoder;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import top.hiccup.jdk.io.DateUtils;
 
 /**
  * Netty线程模型：reactor
@@ -37,7 +36,7 @@ public class NettyServer {
     public static void main(String[] args) {
         // 服务端启动引导类
         ServerBootstrap serverBootstrap = new ServerBootstrap();
-        // 监听端口，accept 新连接的线程组
+        // 监听端口，accept新连接的线程组
         NioEventLoopGroup boss = new NioEventLoopGroup();
         // 处理每一条连接的数据读写的线程组
         NioEventLoopGroup worker = new NioEventLoopGroup();
@@ -89,7 +88,8 @@ public class NettyServer {
                             public void channelRead(ChannelHandlerContext ctx, Object msg) {
                                 ByteBuf byteBuf = (ByteBuf) msg;
                                 String msgStr = byteBuf.toString(Charset.forName("utf-8"));
-                                System.out.println(DateUtils.now() + ": 服务端接受数据: " + msgStr);
+                                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                                System.out.println(dateFormat.format(new Date()) + ": 服务端接受数据: " + msgStr);
 
                                 byte[] bytes = ("你好，客户端: " + msgStr).getBytes(Charset.forName("utf-8"));
                                 ByteBuf buffer = ctx.alloc().buffer();

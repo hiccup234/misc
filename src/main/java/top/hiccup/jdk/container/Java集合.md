@@ -8,8 +8,8 @@
    2、List除了1.8添加的默认方法有所不同外，其他方法基本一致，而Set则与Collection完全一致
    3、List中可以有重复元素可以用null，而Set中不能存在重复元素
    
-    有序集合：List的所有实现类ArrayList、LinkedList、Vector 以及 LinkedHashMap 和 LinkedHashSet
-    无序集合：HashMap、TreeMap（排序有序）、TableMap 以及 HashSet、TreeSet
+    稳定集合：List的所有实现类ArrayList、LinkedList、Vector等 以及 LinkedHashMap 和 LinkedHashSet
+    不稳定集合：HashMap、TreeMap（排序有序）、TableMap 以及 HashSet、TreeSet
 
 ## Set如何保证元素不重复？
    一般是持有一个HashMap，然后通过HashMap的key的唯一性来实现元素不重复

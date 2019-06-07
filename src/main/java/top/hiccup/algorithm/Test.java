@@ -3,7 +3,14 @@ package top.hiccup.algorithm;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import sun.reflect.generics.tree.Tree;
 
@@ -120,6 +127,15 @@ public class Test {
     }
 
 
+    public class ListNode {
+        int val;
+        ListNode next;
+
+        ListNode(int x) {
+            val = x;
+        }
+    }
+
     public class TreeNode {
         int val;
         TreeNode left;
@@ -131,43 +147,36 @@ public class Test {
     }
 
     class Solution {
-        public int strStr(String haystack, String needle) {
-            if (haystack == null || haystack.length() == 0) {
-                return -1;
-            }
-            if (needle == null || needle.length() == 0) {
+        public int maxProfit(int[] prices) {
+            if (prices == null || prices.length == 0) {
                 return 0;
             }
-            char[] h = haystack.toCharArray();
-            char[] n = needle.toCharArray();
-            if (n.length > h.length) {
-                return -1;
-            }
-            int i = 0;
-            for (; i < h.length; i++) {
-                if (h[i] == n[0]) {
-                    int k = i;
-                    int j = 0;
-                    for (; j < n.length && k < h.length; j++) {
-                        if (h[k] == n[j]) {
-                            k++;
-                            continue;
-                        } else {
-                            break;
-                        }
+            int sellDay = 0;
+            int maxProfit = 0;
+            for (int i = 0; i < prices.length - 1; i++) {
+                int buy = prices[i];
+                int max = buy;
+                int maxIdx = i;
+                int j = i + 1;
+                while (j < prices.length) {
+                    if (prices[j] > max) {
+                        max = prices[j];
+                        maxIdx = j;
                     }
-                    if (j == n.length) {
-                        return i;
-                    }
+                    j++;
+                }
+                if (max - buy > maxProfit) {
+                    sellDay = maxIdx;
                 }
             }
-            return -1;
+            return sellDay + 1;
         }
     }
+
 
     @org.junit.Test
     public void test2() {
         Solution solution = new Solution();
-        System.out.println(solution.strStr("mississippi", "mississippi"));
+        System.out.println(solution.toString());
     }
 }

@@ -1,12 +1,15 @@
 package top.hiccup.jdk.io.tel.server;
 
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.apache.tools.ant.util.DateUtils;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import top.hiccup.jdk.io.DateUtils;
-import top.hiccup.jdk.io.tel.protocol.BytePacket;
 import top.hiccup.jdk.io.tel.protocol.LoginRequestPacket;
 import top.hiccup.jdk.io.tel.protocol.MsgPacket;
 import top.hiccup.jdk.io.tel.protocol.Packet;
@@ -44,8 +47,9 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             }
         } else {
             System.out.println(((MsgPacket)packet).getMsg());
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-            byte[] bytes = ("你好，客户端，现在时间是：" + DateUtils.now()).getBytes(Charset.forName("utf-8"));
+            byte[] bytes = ("你好，客户端，现在时间是：" + dateFormat.format(new Date())).getBytes(Charset.forName("utf-8"));
             ByteBuf buffer = ctx.alloc().buffer();
             buffer.writeBytes(bytes);
             ctx.channel().writeAndFlush(buffer);
