@@ -146,37 +146,43 @@ public class Test {
         }
     }
 
-    class Solution {
-        public int maxProfit(int[] prices) {
-            if (prices == null || prices.length == 0) {
-                return 0;
+    public class Solution {
+        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+            if (headA == null || headB == null) {
+                return null;
             }
-            int sellDay = 0;
-            int maxProfit = 0;
-            for (int i = 0; i < prices.length - 1; i++) {
-                int buy = prices[i];
-                int max = buy;
-                int maxIdx = i;
-                int j = i + 1;
-                while (j < prices.length) {
-                    if (prices[j] > max) {
-                        max = prices[j];
-                        maxIdx = j;
+            // 先找到A的尾节点
+            ListNode tailA = headA;
+            while (tailA.next != null) {
+                tailA = tailA.next;
+            }
+            // 把A尾节点指向B头节点，再判断是否有环路，是的话则证明两个链表相交
+            // 记得要恢复回去
+            tailA.next = headB;
+            ListNode fast = headA;
+            ListNode slow = headA;
+            while (fast != null && fast.next != null) {
+                fast = fast.next.next;
+                slow = slow.next;
+                // 证明有环
+                if (fast == slow) {
+                    slow = headA;
+                    while (slow != fast) {
+                        slow = slow.next;
+                        fast = fast.next;
                     }
-                    j++;
-                }
-                if (max - buy > maxProfit) {
-                    sellDay = maxIdx;
+                    tailA.next = null;
+                    return slow;
                 }
             }
-            return sellDay + 1;
+            tailA.next = null;
+            return null;
         }
     }
-
 
     @org.junit.Test
     public void test2() {
         Solution solution = new Solution();
-        System.out.println(solution.toString());
+        System.out.println(solution.convertToTitle(52));
     }
 }

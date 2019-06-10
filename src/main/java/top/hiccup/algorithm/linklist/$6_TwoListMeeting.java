@@ -46,6 +46,37 @@ public class $6_TwoListMeeting {
         }
     }
 
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) {
+            return null;
+        }
+        // 先找到A的尾节点
+        ListNode tailA = headA;
+        while (tailA.next != null) {
+            tailA = tailA.next;
+        }
+        // 把A尾节点指向B头节点，再判断是否有环路，是的话则证明两个链表相交（记得要恢复回去）
+        tailA.next = headB;
+        ListNode fast = headA;
+        ListNode slow = headA;
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            // 证明有环
+            if (fast == slow) {
+                slow = headA;
+                while (slow != fast) {
+                    slow = slow.next;
+                    fast = fast.next;
+                }
+                tailA.next = null;
+                return slow;
+            }
+        }
+        tailA.next = null;
+        return null;
+    }
+
     @Test
     public void test() {
         ListNode head1 = ListNode.buildLinkedList(10, (k) -> k+1);
