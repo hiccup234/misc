@@ -1,7 +1,7 @@
 package top.hiccup.jdk.vm.classloader;
 
 /**
- * JVM装载class文件：加载>>链接（验证，准备，解析）>>初始化
+ * JVM装载class文件：加载 >> 链接（验证，准备，解析） >> 初始化
  *
  * 【加载】 ClassFormatError（如果输入的数据不是ClassFile的结构）
  * 把*.class文件的二进制流加载到元数据区，并在堆上创建对应类型的Class对象
@@ -25,7 +25,7 @@ package top.hiccup.jdk.vm.classloader;
  * ===================================================================================
  * 【引申】
  * Q: 在加载一个类之后，如果对类的字节码进行修改，如何在不重新启动JVM的情况下加载已经修改过的类？
- * A: 新创建一个ClassLoader并loadClass，原来加载的ClassLoader不能重新加载
+ * A: 新创建一个ClassLoader并loadClass，原来加载的ClassLoader不能重新加载（有缓存）
  * ===================================================================================
  *
  * 破坏双亲委派模型：
@@ -65,19 +65,18 @@ public class ClassLoaderTest {
         System.out.println(clazz);
         System.out.println("OtherClass.class 不会引起初始化");
         Class.forName("top.hiccup.jdk.vm.classloader.OtherClass");
-//        try {
-//            clazz.newInstance();
-//        } catch (InstantiationException e) {
-//            e.printStackTrace();
-//        } catch (IllegalAccessException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            clazz.newInstance();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
-
 }
 
 /**
- * OtherClass.class 不会引起初始化
+ * 程序中直接调用OtherClass.class不会引起初始化
  */
 class OtherClass {
     static {

@@ -127,6 +127,27 @@ public class Test {
     }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public class ListNode {
         int val;
         ListNode next;
@@ -147,42 +168,15 @@ public class Test {
     }
 
     public class Solution {
-        public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
-            if (headA == null || headB == null) {
-                return null;
-            }
-            // 先找到A的尾节点
-            ListNode tailA = headA;
-            while (tailA.next != null) {
-                tailA = tailA.next;
-            }
-            // 把A尾节点指向B头节点，再判断是否有环路，是的话则证明两个链表相交
-            // 记得要恢复回去
-            tailA.next = headB;
-            ListNode fast = headA;
-            ListNode slow = headA;
-            while (fast != null && fast.next != null) {
-                fast = fast.next.next;
-                slow = slow.next;
-                // 证明有环
-                if (fast == slow) {
-                    slow = headA;
-                    while (slow != fast) {
-                        slow = slow.next;
-                        fast = fast.next;
-                    }
-                    tailA.next = null;
-                    return slow;
-                }
-            }
-            tailA.next = null;
-            return null;
+        // you need treat n as an unsigned value
+        public int reverseBits(int n) {
+            return Integer.valueOf(new StringBuilder(Integer.toBinaryString(n)).reverse().toString());
         }
     }
 
     @org.junit.Test
     public void test2() {
         Solution solution = new Solution();
-        System.out.println(solution.convertToTitle(52));
+        System.out.println(solution.reverseBits(2019));
     }
 }
