@@ -1,20 +1,18 @@
-package top.hiccup.jdk.concurrent.thread.interview;
+package top.hiccup.misc.interview.线程轮流执行;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * 1. 两个线程分别打印26个英文字母的元音（a,e,i,o,u）和辅音（其他），按字母序输出
- *
- * 2. 一条N个格子组成的直线道路，每次可以前进1格或2格；设计算法计算有多少种方式走到终点？
+ * 用volatile变量来控制线程的交替执行
  *
  * @author wenhy
  * @date 2019/5/29
  */
-public class ThreadTurn1 {
+public class ThreadTurn3 {
+
+    private static volatile boolean turn = false;
 
     public static void main(String[] args) {
-        Object lock = new Object();
-
         AtomicInteger idx1 = new AtomicInteger(0);
         AtomicInteger idx2 = new AtomicInteger(0);
 
@@ -23,16 +21,15 @@ public class ThreadTurn1 {
 
         new Thread(() -> {
             while (true) {
-                synchronized (lock) {
+                if (!turn) {
                     System.out.println(chars1[idx1.get()]);
                     idx1.set((idx1.get() + 1) % chars1.length);
                     try {
                         Thread.sleep(1000);
-                        lock.notifyAll();
-                        lock.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    turn = true;
                 }
             }
         }, "t1").start();
@@ -40,16 +37,15 @@ public class ThreadTurn1 {
 
         new Thread(() -> {
             while (true) {
-                synchronized (lock) {
+                if (turn) {
                     System.out.println(chars2[idx2.get()]);
                     idx2.set((idx2.get() + 1) % chars2.length);
                     try {
                         Thread.sleep(1000);
-                        lock.notifyAll();
-                        lock.wait();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
+                    turn = false;
                 }
             }
         }, "t2").start();

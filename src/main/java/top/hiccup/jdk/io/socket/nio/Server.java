@@ -19,6 +19,13 @@ import java.util.Set;
  *
  * JDK的NIO底层由epoll实现，该实现饱受诟病的空轮询bug会导致cpu飙升100%（Netty解决了这个问题）
  *
+ * ## select、poll和epoll都是linux下I/O多路复用的实现，可以实现单线程管理多个连接。
+ *
+ * select是基于轮询的，轮询连接的状态，返回I/O状态，poll和select的原理基本相同，
+ * 只是poll没有最大连接数的限制，因为它是基于链表的，而select是基于数组的，有最大连接数的限制（32位1024个）。
+ *
+ * epoll和那两者的区别是：epoll不是基于轮询的检查，而是为每个fd注册回调，I/O准备好时，会执行回调，效率比select和poll高很多。
+ *
  * @author wenhy
  * @date 2018/2/5
  */

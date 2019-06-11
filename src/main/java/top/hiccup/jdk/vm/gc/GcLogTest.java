@@ -1,5 +1,8 @@
 package top.hiccup.jdk.vm.gc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 一般用参数：-XX:+PrintGCDetails（JDK9已经deprecated） 来打印GC时的日志，VM进程结束后打印堆信息
  *

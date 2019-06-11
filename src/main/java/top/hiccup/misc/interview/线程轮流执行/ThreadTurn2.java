@@ -1,4 +1,4 @@
-package top.hiccup.jdk.concurrent.thread.interview;
+package top.hiccup.misc.interview.线程轮流执行;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;

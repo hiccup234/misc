@@ -51,5 +51,4 @@ public class E_EnumSingleton {
         t1.start();
         t2.start();
     }
-
 }

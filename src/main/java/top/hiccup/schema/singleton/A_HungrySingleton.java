@@ -10,7 +10,7 @@ package top.hiccup.schema.singleton;
  * 3、创建频繁或又耗时耗资源且又经常用到的对象
  *
  * 如：JDK的Runtime类就是饿汉单例
- *    Spring容器的实例Bean默认也是饿汉单例，在容器启动时初始化，也可以设置为懒汉式（default-lazy-init="true"）
+ *    Spring容器的实例Bean默认也是饥饿单例，在容器启动时初始化，也可以设置为懒汉式（default-lazy-init="true"）
  *
  * @author wenhy
  * @date 2018/1/2
@@ -39,5 +39,4 @@ public class A_HungrySingleton {
         System.out.println(AHungrySingleton2.hashCode());
         System.out.println(AHungrySingleton1 == AHungrySingleton2);
     }
-
 }
