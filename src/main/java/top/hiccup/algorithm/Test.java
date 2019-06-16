@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.util.StringUtils;
+
 import sun.reflect.generics.tree.Tree;
 
 /**
@@ -126,28 +128,6 @@ public class Test {
         System.out.println(Arrays.toString(arr));
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     public class ListNode {
         int val;
         ListNode next;
@@ -156,6 +136,7 @@ public class Test {
             val = x;
         }
     }
+
 
     public class TreeNode {
         int val;
@@ -167,16 +148,61 @@ public class Test {
         }
     }
 
-    public class Solution {
-        // you need treat n as an unsigned value
-        public int reverseBits(int n) {
-            return Integer.valueOf(new StringBuilder(Integer.toBinaryString(n)).reverse().toString());
+    class Solution {
+        List<String> paths;
+
+        public List<String> binaryTreePaths(TreeNode root) {
+            paths = new ArrayList<>();
+            if (root == null) {
+                return paths;
+            }
+            pathInternal(root, new LinkedList<>());
+            return paths;
+        }
+
+        private void pathInternal(TreeNode node, LinkedList<Integer> list) {
+            if (node == null) {
+                return;
+            }
+            list.addLast(node.val);
+            if (node.left == null && node.right == null) {
+                StringBuilder sb = new StringBuilder();
+                for (Integer i : list) {
+                    sb.append(i);
+                    sb.append("->");
+                }
+                paths.add(sb.substring(0, sb.length() - 2));
+            }
+            pathInternal(node.left, list);
+            pathInternal(node.right, list);
+            list.removeLast();
         }
     }
 
     @org.junit.Test
     public void test2() {
         Solution solution = new Solution();
-        System.out.println(solution.reverseBits(2019));
+        TreeNode root = new TreeNode(5);
+
+        TreeNode t4 = new TreeNode(4);
+        TreeNode t8 = new TreeNode(8);
+        root.left = t4;
+        root.right = t8;
+
+        TreeNode t11 = new TreeNode(11);
+        t4.left = t11;
+
+        t11.left = new TreeNode(7);
+        t11.right = new TreeNode(2);
+
+        TreeNode t13 = new TreeNode(13);
+        TreeNode t42 = new TreeNode(4);
+        t8.left = t13;
+        t8.right = t42;
+
+        t42.left = new TreeNode(5);
+        t42.right = new TreeNode(1);
+
+        System.out.println(solution.pathSum(root, 22));
     }
 }
