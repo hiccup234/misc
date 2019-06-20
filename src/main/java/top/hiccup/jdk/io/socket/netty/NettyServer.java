@@ -20,30 +20,33 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
 /**
- * Netty线程模型：reactor
- * 线程模型（线程池，reactor，proactor）
- * <p>
- * 1、boss 对应BIO中接受新连接的线程，主要负责创建新连接
- * 2、worker 对应BIO中负责读取数据的线程(Handler)，主要用于读取数据以及业务逻辑处理
+ * 启动Netty服务端一般有三类属性必须指定：
+ * 1、Netty的线程模型 -- NioEventLoopGroup
+ * 2、I/O模型 -- NioServerSocketChannel.class
+ * 3、连接的读写处理逻辑 -- ChannelInboundHandlerAdapter
+ * 4、bind的端口
+ *
+ * boss 对应BIO中接受新连接的线程，主要负责创建新连接
+ * worker 对应BIO中负责读取数据的线程(Handler)，主要用于读取数据以及业务逻辑处理
  *
  * @author wenhy
  * @date 2019/1/13
  */
 public class NettyServer {
 
-    private static final int PORT = 23401;
+    private static final int PORT = 8888;
 
     public static void main(String[] args) {
         // 服务端启动引导类
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         // 监听端口，accept新连接的线程组
         NioEventLoopGroup boss = new NioEventLoopGroup();
-        // 处理每一条连接的数据读写的线程组
+        // 处理每一条连接的数据读写的线程组（与上面是同一个类）
         NioEventLoopGroup worker = new NioEventLoopGroup();
         serverBootstrap
-                // 配置引导类线程模型
+                // 配置引导类线程模型（n:n）
                 .group(boss, worker)
-                // 指定服务端的IO模型，有NIO和BIO（OioServerSocketChannel.class）
+                // 指定服务端的IO模型，常见有NIO和BIO（OioServerSocketChannel.class）和Linux特有的Epoll等
                 .channel(NioServerSocketChannel.class)
                 // 配置服务端channel的自定义属性
                 .attr(AttributeKey.newInstance("serverName"), "nettyServer")
@@ -99,23 +102,22 @@ public class NettyServer {
                         });
                     }
                 })
-                // 是否开启TCP底层心跳机制，true为开启
+                // 配置每条连接是否开启TCP底层心跳机制，true为开启
                 .childOption(ChannelOption.SO_KEEPALIVE, true)
-                // 是否开启Nagle算法，true表示关闭，false表示开启
-                // 如果要求高实时性，有数据需要发送时就立马发送就关闭，如果需要减少发送次数减少网络交互就开启。
+                // 配置每条连接是否开启Nagle算法，true表示关闭，false表示开启
+                // 如果要求高实时性，有数据需要发送时就立马发送就关闭，如果需要减少发送次数减少网络交互就开启
                 .childOption(ChannelOption.TCP_NODELAY, true)
                 // 绑定端口，异步方法（基于事件驱动的体现？），可以添加监听器来监听结果
-                .bind(PORT)
-                .addListener(new GenericFutureListener<Future<? super Void>>() {
+                .bind(PORT).addListener(new GenericFutureListener<Future<? super Void>>() {
                     @Override
                     public void operationComplete(Future<? super Void> future) throws Exception {
                         if (future.isSuccess()) {
                             System.out.println("绑定端口成功: " + PORT);
                         } else {
+                            // 这里还可以自增端口并重新绑定
                             System.out.println("绑定端口失败: " + PORT);
                         }
                     }
                 });
-
     }
 }

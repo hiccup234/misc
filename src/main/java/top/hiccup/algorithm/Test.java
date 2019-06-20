@@ -1,20 +1,9 @@
 package top.hiccup.algorithm;
 
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.util.StringUtils;
-
-import sun.reflect.generics.tree.Tree;
 
 /**
  * 测试
@@ -203,6 +192,6 @@ public class Test {
         t42.left = new TreeNode(5);
         t42.right = new TreeNode(1);
 
-        System.out.println(solution.pathSum(root, 22));
+//        System.out.println(solution.pathSum(root, 22));
     }
 }

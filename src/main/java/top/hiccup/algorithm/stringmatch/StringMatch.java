@@ -8,7 +8,9 @@ package top.hiccup.algorithm.stringmatch;
  *
  * 2、RK算法：Rabin-Karp算法，BF的改进版，借助哈希函数，给主串0~n-m的每个m长的字串求hash值，然后跟模式串做比较
  *
+ * 3、BM算法：Boyer-Moore，比较复杂难懂，但性能是KMP的3-4倍，坏字符规则+好后缀规则
  *
+ * 4、KMP算法：
  *
  * @author wenhy
  * @date 2019/6/14
