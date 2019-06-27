@@ -68,6 +68,7 @@
     java version "1.8.0_162
     
 
+    生成内存中Class对象的Dump文件（class字节码）： java -classpath "%JAVA_HOME%/lib/sa-jdi.jar" sun.jvm.hotspot.HSD
 
 ### JVM虚拟机人物
 
