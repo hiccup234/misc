@@ -2,8 +2,10 @@ package top.hiccup.algorithm;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 测试
@@ -138,60 +140,34 @@ public class Test {
     }
 
     class Solution {
-        List<String> paths;
-
-        public List<String> binaryTreePaths(TreeNode root) {
-            paths = new ArrayList<>();
-            if (root == null) {
-                return paths;
+        public char findTheDifference(String s, String t) {
+            if (s == null || t == null) {
+                throw new RuntimeException("invalid input");
             }
-            pathInternal(root, new LinkedList<>());
-            return paths;
-        }
-
-        private void pathInternal(TreeNode node, LinkedList<Integer> list) {
-            if (node == null) {
-                return;
-            }
-            list.addLast(node.val);
-            if (node.left == null && node.right == null) {
-                StringBuilder sb = new StringBuilder();
-                for (Integer i : list) {
-                    sb.append(i);
-                    sb.append("->");
+            char[] chars = t.toCharArray();
+            Map<Character, Integer> map = new HashMap<>(32);
+            for (char c : chars) {
+                if (map.containsKey(c)) {
+                    map.put(c, map.get(c) + 1);
+                } else {
+                    map.put(c, 1);
                 }
-                paths.add(sb.substring(0, sb.length() - 2));
             }
-            pathInternal(node.left, list);
-            pathInternal(node.right, list);
-            list.removeLast();
+            for (char c : s.toCharArray()) {
+                Integer count = map.get(c);
+                if (count != null && count > 1) {
+                    map.put(c, count - 1);
+                } else {
+                    map.remove(c);
+                }
+            }
+            return map.entrySet().iterator().next().getKey();
         }
     }
 
     @org.junit.Test
     public void test2() {
         Solution solution = new Solution();
-        TreeNode root = new TreeNode(5);
-
-        TreeNode t4 = new TreeNode(4);
-        TreeNode t8 = new TreeNode(8);
-        root.left = t4;
-        root.right = t8;
-
-        TreeNode t11 = new TreeNode(11);
-        t4.left = t11;
-
-        t11.left = new TreeNode(7);
-        t11.right = new TreeNode(2);
-
-        TreeNode t13 = new TreeNode(13);
-        TreeNode t42 = new TreeNode(4);
-        t8.left = t13;
-        t8.right = t42;
-
-        t42.left = new TreeNode(5);
-        t42.right = new TreeNode(1);
-
-//        System.out.println(solution.pathSum(root, 22));
+//        System.out.println(solution.isPowerOfTwo(32));
     }
 }
