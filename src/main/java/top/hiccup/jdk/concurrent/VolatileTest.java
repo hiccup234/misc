@@ -8,13 +8,12 @@ import org.junit.Test;
 import lombok.Data;
 
 /**
- * 【volatile关键字可见性测试】
- *
+ * volatile关键字可见性测试:
  * 1、修饰原始类型变量可以保证变量在线程间的可见性
  * 2、修饰对象或数组，如果对象属性或数组元素被修改，可以间接保证对象属性或数组元素的线程可见性（原因见test3分析）
  * 3、修饰List等，添加元素以及更新元素的字段都能保证线程可见性
  *
- * 参考这段代码：
+ * 守护线程上下文：
  * Map configOptions;
  * char[] configText;
  * volatile boolean initialized = false;
@@ -92,7 +91,7 @@ public class VolatileTest {
             synchronized (VolatileTest.class) {
                 int x = t2;
             }
-//            System.out.println(t2);
+            System.out.println(t2);
         }
         System.out.println("test2 end");
     }
@@ -106,7 +105,7 @@ public class VolatileTest {
      * 变量base加上volatile也能使线程退出循环结束
      * Q: volatile变量修饰对象或者数组时，当我们改变对象属性或者数组元素的时候，也能保证线程间的可见性？
      * A: volatile变量从语义上来讲只是保证了对象或数组引用的内存地址的线程可见性，
-     *    如果线程通过volatile变量访问其属性时，会提示JVM不要对这个属性做缓存拷贝（是缓存整个对象还是说仅仅是访问的这个属性呢？ 答：缓存要访问的属性到工作内存中）
+     *    如果线程通过volatile变量访问其属性时，会提示JVM不要对这个属性做缓存拷贝（是缓存整个对象还是说仅仅是访问的这个属性呢？ 答：缓存要访问的属性到高速缓存中）
      */
     @Test
     public void test3() {
@@ -133,6 +132,9 @@ public class VolatileTest {
         // 这里设置后，子线程也能看到，不然会NPE
         s.setBase(base);
 
+        // 就算这里提前访问了flag，也影响不到后面的sleep(800)
+        System.out.println(base.isFlag());
+
         new Thread(() -> {
             try {
                 Thread.sleep(500);
@@ -140,28 +142,30 @@ public class VolatileTest {
                 e.printStackTrace();
             }
             Base innerBase = s.getBase();
-            // 这里的innerBase引用不是volatile的，为什么设置的值也能立即被其他线程看到呢？
-            // 通过volatile根引用得到的引用都具有volatile特性吗？？（也就是说volatile有传播的特性？？）
-            // 这里先访问一次再设值也不会引起本地缓存
+            // 先访问一次再设值也不会引起本地缓存
             System.out.println(innerBase.isFlag());
+
+            // 这里的innerBase引用不是volatile的，为什么设置的值也能立即被其他线程看到呢？
+            // 通过volatile根引用得到的引用都具有volatile特性吗？？（也就是说volatile有传递的特性？？）
             innerBase.setFlag(false);
             System.out.println(innerBase.isFlag());
         }).start();
 
-        // TODO 这里有点意思，需要再研究下
+        // TODO 如果让主线程休眠2秒，让子线程先设置falg，则程序1也能立即退出，难道是因为最开始主线程没有访问属性，所以没有做本地缓存？
+        try {
+//            Thread.sleep(100);
+            // 这里的休眠时间长短也有区别
+            Thread.sleep(800);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        // 注意这两种访问形式，第一种并不是从volatile根引用发出的访问，无法使线程立即结束，而第二种可以
-        // 因为base是在当前线程创建的，所以会直接做本地缓存？（不是，新创建的对象都是放在堆上的（逃逸分析除外，这里已经逃逸））
+        // 1、如果直接通过base访问，程序是没办法立即结束的
+        while (base.isFlag()) { }
 
-        // TODO 如果让主线程休眠2秒，让子线程先设置falg则程序也能立即退出，难道是因为最开始主线程没有访问属性，所以没有做本地缓存？
-//        try {
-//            Thread.sleep(2000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        // 2、通过volatile引用访问是可以读到最新值，可能立即结束
+//        while (s.getBase().isFlag()) { }
 
-//        while (base.isFlag()) { }
-        while (s.getBase().isFlag()) { }
         System.out.println("test4 end");
     }
 
