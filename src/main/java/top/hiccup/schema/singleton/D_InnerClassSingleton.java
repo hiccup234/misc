@@ -17,7 +17,7 @@ public class D_InnerClassSingleton {
 
     public static D_InnerClassSingleton getInstance() {
         // javac编译后，NestClass是一个单独的.class文件，
-        // 加载D_InnerClassSingleton.class的时候不会自动加载NestClass的.class文件
+        // 加载D_InnerClassSingleton.class的时候不会自动加载NestClass.class文件
         // 当调用NestClass.instance的时候才会触发JVM加载NestClass类
         return NestClass.instance;
     }

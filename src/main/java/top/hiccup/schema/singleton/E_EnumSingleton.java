@@ -33,6 +33,7 @@ public class E_EnumSingleton {
         return InnerEnum.enumFactory.getInstance();
     }
 
+
     public static void main(String[] args) {
         Thread t1 = new Thread(new Runnable() {
             @Override
