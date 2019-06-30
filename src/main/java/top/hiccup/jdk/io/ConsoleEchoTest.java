@@ -1,9 +1,8 @@
 package top.hiccup.jdk.io;
 
-import java.io.*;
-import java.util.HashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  * IO练习：从控制台获取输入再回显到控制台
@@ -37,5 +36,4 @@ public class ConsoleEchoTest {
             }
         }
     }
-
 }

@@ -1,4 +1,4 @@
-package top.hiccup.jdk.log;
+package top.hiccup.misc.log;
 
 /**
  * 使用slf4j的MDC机制来实现简单的日志链路追踪，基于ThreadLocal

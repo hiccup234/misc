@@ -56,7 +56,7 @@ package top.hiccup.jdk.vm.gc;
  *======================================================================================================================
  * 目前生产采用：ParNew + CMS（互联网及B/S系统更加注重单服务的响应时间） （Idea 默认也是采用CMS） QPM=50000多 QPS=800~1000
  *  主机（Docker）：共享CPU，8G内存，宿主机256G内存
- *  JVM：配置：堆4G，老年代3G，新生代（Eden+Survivor）1G，非堆内存250M，线程池数量250
+ *   JVM配置：堆4G，老年代3G，新生代（Eden+Survivor）1G，非堆内存300M，线程池数量350
  *      参数：-Dfile.encoding=UTF-8 -server
  *           -Xms4096m -Xmx4096m -XX:NewSize=1024m -XX:MaxNewSize=1024m
  *           -XX:NewRatio=3 -XX:SurvivorRatio=8

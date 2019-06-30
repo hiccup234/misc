@@ -1,4 +1,4 @@
-package top.hiccup.jdk.log;
+package top.hiccup.misc.log;
 
 /**
  * Java生态日志框架:
