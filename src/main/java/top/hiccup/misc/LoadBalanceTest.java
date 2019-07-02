@@ -8,6 +8,8 @@ import java.util.Random;
 
 import org.junit.Test;
 
+import top.hiccup.jdk.container.jdk5.concurrent.atomic.AtomicInteger;
+
 /**
  * 常见负载均衡算法:
  * 
@@ -39,16 +41,19 @@ public class LoadBalanceTest {
         ipMap.put("192.168.0.3", 1);
     }
 
-    private volatile Integer pos = 0;
+    /**
+     * 考虑并发情况下的线程安全
+     */
+    private volatile AtomicInteger pos = new AtomicInteger(0);
 
     public synchronized String roundRobin() {
         List<String> ipList = new ArrayList<>(ipMap.keySet());
         String ip = null;
-        if (pos >= ipList.size()) {
-            pos = 0;
+        if (pos.get() >= ipList.size()) {
+            pos.set(0);
         }
-        ip = ipList.get(pos);
-        pos++;
+        ip = ipList.get(pos.get());
+        pos.getAndIncrement();
         return ip;
     }
 
@@ -63,11 +68,11 @@ public class LoadBalanceTest {
             }
         }
         String ip = null;
-        if (pos >= ipList.size()) {
-            pos = 0;
+        if (pos.get() >= ipList.size()) {
+            pos.set(0);
         }
-        ip = ipList.get(pos);
-        pos++;
+        ip = ipList.get(pos.get());
+        pos.getAndIncrement();
         return ip;
     }
 
