@@ -14,8 +14,8 @@ import org.junit.Test;
 public class $2_CycledList {
 
     /**
-     * 1、穷举比较法：遍历的时候记录已经访问的节点，并与之前访问的做比较，时间复杂度O(n^2)
-     * 注意这里要比较的是节点的内存地址是否相等，而不是元素是否相等
+     * 1、穷举比较法：遍历的时候记录已经访问的节点，并与之前访问的做比较，时间复杂度O(n)
+     * 注意这里要比较的是节点的内存地址是否相等，而不是元素是否相等，所以要求ListNode不能重写hashCode和equals方法
      */
     public static boolean cycled1(ListNode head) {
         if (head == null) {
@@ -75,20 +75,24 @@ public class $2_CycledList {
      *               如果n1从head出发，而n2从环上的相遇点出发，相同步长则他们一定会在环入口相遇（有等式可以验证）
      */
     public static ListNode cycled21(ListNode head) {
-        if (!cycled2(head)) {
-            return null;
-        }
+        boolean hasCycle = false;
         ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
             if (slow == fast) {
+                hasCycle = true;
+                break;
             }
+        }
+        // 如果没环则直接返回空
+        if (!hasCycle) {
+            return null;
         }
         ListNode p = head;
         while (p != slow) {
             p = p.next;
-            p = p.next;
+            slow = slow.next;
         }
         return p;
     }
@@ -99,16 +103,19 @@ public class $2_CycledList {
      * @return
      */
     public static long cycled22(ListNode head) {
-        if (!cycled2(head)) {
-            return -1;
-        }
+        boolean hasCycle = false;
         ListNode slow = head, fast = head;
         while (fast != null && fast.next != null) {
             slow = slow.next;
             fast = fast.next.next;
             if (slow == fast) {
+                hasCycle = true;
                 break;
             }
+        }
+        // 如果没环则直接返回-1
+        if (!hasCycle) {
+            return -1;
         }
         // 这里已经可以确认存在环，不用判断空指针，
         long length = 1;

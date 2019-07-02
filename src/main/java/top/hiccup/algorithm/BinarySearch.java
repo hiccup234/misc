@@ -42,7 +42,7 @@ public class BinarySearch {
 //             int mid = (left + right)/2;
             // 优化
 //            int mid = (left + right) >> 1;
-            // 再优化，防止left和right都很大的时候，计算移除
+            // 再优化，防止left和right都很大的时候，计算溢出
             int mid = left + ((right - left) >> 1);
 
             if (arr[mid] == target) {
