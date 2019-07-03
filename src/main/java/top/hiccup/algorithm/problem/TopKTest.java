@@ -89,6 +89,7 @@ public class TopKTest {
 
     private static void makeHeap(int[] topk) {
         // 将这k个元素转换为一颗最小堆（完全二叉树），则k/2 - 1为最后一个非叶子节点
+        // 注意这里是从最后一个非叶子节点开始调整，而不是从根节点i = 0开始
         for (int i = topk.length / 2 - 1; i >= 0; i--) {
             // 遍历每个非叶子节点
             adjustHeap(topk, i);
