@@ -3,7 +3,7 @@ package top.hiccup.algorithm.problem;
 import java.util.Arrays;
 
 /**
- * 面试常见的TopK问题:
+ * 面试常见的TopK问题:（记得检查K与数组长度的比较）
  * 
  * 1.直接排序 O(n*lg(n))
  * 几种排序法都可以（一般用快排），排序后直接取前k个元素即是TopK
@@ -36,9 +36,9 @@ import java.util.Arrays;
 public class TopKTest {
 
     /**
-     * 直接排序法
+     * 1、直接排序法
      */
-    private static int[] test1(int[] arr, int k) {
+    public static int[] test1(int[] arr, int k) {
         if (arr == null || arr.length == 0 || k == 0) {
             return null;
         }
@@ -49,9 +49,9 @@ public class TopKTest {
     }
 
     /**
-     * 局部排序法
+     * 2、局部排序法
      */
-    private static int[] test2(int[] arr, int k) {
+    public static int[] test2(int[] arr, int k) {
         if (arr == null || arr.length == 0 || k == 0) {
             return null;
         }
@@ -118,13 +118,12 @@ public class TopKTest {
         // TODO 由于替换后左右子树的最小堆特性可能会受到影响，所以要对子树再进行heapify，一定要记得
         // TODO 可以考虑把递归优化为循环遍历
         adjustHeap(topk, minIndex);
-
     }
 
     /**
-     * 最小堆法
+     * 3、最小堆法（求最大的K个数），用大顶堆来求最小的K个数
      */
-    static int[] test3(int[] arr, int k) {
+    public static int[] test3(int[] arr, int k) {
         int[] topk = new int[k];
         System.arraycopy(arr, 0, topk, 0, k);
         // 创建最小堆
@@ -136,7 +135,6 @@ public class TopKTest {
                 adjustHeap(topk, 0);
             }
         }
-
         return topk;
     }
 
@@ -181,9 +179,9 @@ public class TopKTest {
     }
 
     /**
-     * 减治法
+     * 4、减治法
      */
-    private static int[] test4(int[] arr, int k) {
+    public static int[] test4(int[] arr, int k) {
         nest(arr, 0, arr.length - 1, k);
         int[] topk = new int[k];
         System.arraycopy(arr, 0, topk, 0, k);
@@ -191,9 +189,9 @@ public class TopKTest {
     }
 
     /**
-     * bitmap法
+     * 5、bitmap法
      */
-    private static int[] test5(int[] arr, int k) {
+    public static int[] test5(int[] arr, int k) {
         // 先跟据数组元素的值域范围申请相应的内存空间做缓存，一个byte有8bit
         // TODO Java没有可以直接操纵bit的方法，如果内存限制不大，这里换成直接操作byte是不是更方便快捷
         byte[] cache = new byte[2 << 29];
@@ -232,5 +230,4 @@ public class TopKTest {
         topk = test5(data, 4);
         Arrays.stream(topk).forEach(System.out::println);
     }
-
 }
