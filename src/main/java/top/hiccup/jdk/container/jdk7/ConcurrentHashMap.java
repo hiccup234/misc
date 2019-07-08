@@ -15,8 +15,6 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * 参考JDK1.7
- *
  * 1、实现了JDK1.5新增的ConcurrentMap接口
  * 2、采用分段锁设计，锁粒度细化的思想
  * 3、ConcurrentHashMap是弱一致性的：（CAP理论）（get与containsKey都未加锁，所以可能读到过时数据）

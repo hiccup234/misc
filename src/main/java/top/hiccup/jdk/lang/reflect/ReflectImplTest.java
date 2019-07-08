@@ -19,6 +19,8 @@ import java.lang.reflect.Method;
  * @VM args: -Dsun.reflect.noInflation=true 可以关闭Inflation，使得反射一开始就采用动态实现
  *
  *
+ * # 支持反射机制的语言有：Python, Lua, C#, Java等
+ *
  * @author wenhy
  * @date 2018/8/12
  */
@@ -26,7 +28,6 @@ public class ReflectImplTest {
 
     /**
      * 反射调用目标方法
-     * @param i
      */
     public static void target(int i) throws InterruptedException {
         // 这样可以打印栈轨迹（JVM自身创建Exception及部分不可见栈轨迹看不到）
