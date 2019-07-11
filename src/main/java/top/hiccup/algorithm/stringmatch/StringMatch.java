@@ -112,7 +112,8 @@ public class StringMatch {
 
 
     /**
-     * major、pattern分别是主串和模式串，即在主串中查找模式串
+     * major、pattern分别是主串和模式串，即在主串中查找模式串。
+     * 整体时间复杂度为：O(n+m)
      */
     public static int kmp(char[] major, char[] pattern) {
         int mLen = major.length;
@@ -137,9 +138,10 @@ public class StringMatch {
     }
 
     /**
-     * 失效函数：pattern 表示模式串，pLen 表示模式串的长度
+     * 失效函数：pattern 表示模式串，pLen 表示模式串的长度，KMP算法中最复杂的逻辑
      */
     private static int[] getNexts(char[] pattern, int pLen) {
+        // 数组的下标对应模式串每个前缀子串的结尾下标
         int[] next = new int[pLen];
         next[0] = -1;
         int k = -1;
