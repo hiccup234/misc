@@ -12,15 +12,19 @@ import java.util.Arrays;
  * @date 2019/3/7
  */
 public class InheritedTest {
+
     // 表示这个注解可以被继承
     @Inherited
     @Retention(RetentionPolicy.RUNTIME)
-    private @interface SomeAnnotation {}
+    private @interface SomeAnnotation {
+    }
 
     @SomeAnnotation
-    private static class Base {}
+    private static class Base {
+    }
 
-    private static class Sub extends Base {}
+    private static class Sub extends Base {
+    }
 
     public static void main(String[] args) {
         Base base = new Base();

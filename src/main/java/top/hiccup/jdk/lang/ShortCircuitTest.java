@@ -1,4 +1,4 @@
-package top.hiccup.misc;
+package top.hiccup.jdk.lang;
 
 /**
  * 逻辑操作符短路测试

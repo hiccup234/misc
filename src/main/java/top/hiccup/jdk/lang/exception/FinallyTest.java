@@ -5,8 +5,7 @@ package top.hiccup.jdk.lang.exception;
  *  1.System.exit(1);
  *  2.多线程环境下线程被强制结束
  *
- * Tips: 一般情况下不要在finally块中return，因为这样会覆盖try中return的值
- *      （C#是禁止程序员从finally中return的）
+ * Tips: 一般情况下不要在finally块中return，因为这样会覆盖try中return的值（C#是禁止程序员从finally中return的）
  *
  * @author wenhy
  * @date 2018/9/18

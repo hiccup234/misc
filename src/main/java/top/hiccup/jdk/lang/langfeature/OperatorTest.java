@@ -11,7 +11,7 @@ public class OperatorTest {
     public static void main(String[] args) {
         int a = 3;
         a += a -= a*a;
-        // C++期望是 -12，而Java却是-3
+        // C++期望是-12，而Java却是-3
         System.out.println(a);
     }
 }

@@ -2,7 +2,7 @@ package top.hiccup.jdk.lang.string;
 
 /**
  * 转换字符串大小写，数字不变，其他变为*
- * <p>
+ *
  * 大小写转换，ASCLL 相差32
  *
  * @author wenhy

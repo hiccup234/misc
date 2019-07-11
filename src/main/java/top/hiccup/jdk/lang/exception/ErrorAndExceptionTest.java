@@ -32,6 +32,6 @@ package top.hiccup.jdk.lang.exception;
  * @author wenhy
  * @date 2018/9/18
  */
-public class ErrorAndException extends Throwable {
+public class ErrorAndExceptionTest extends Throwable {
 
 }
