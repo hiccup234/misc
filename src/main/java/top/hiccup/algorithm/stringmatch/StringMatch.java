@@ -2,16 +2,30 @@ package top.hiccup.algorithm.stringmatch;
 
 /**
  * 字符串匹配算法：主串与模式串，假设各自长度分别为n和m，则n >= pLen
- * <p>
+ * 
  * 1、BF算法：Brute Force暴力匹配算法，也叫朴素匹配算法，从主串0~mLen-m依此比较看是否跟模式串匹配，时间复杂度为O(mLen*pLen)。
  * 因为实现简单，字符串长度一般不大且有短路优化，所以工程中实际使用较多。
- * <p>
+ * 
  * 2、RK算法：Rabin-Karp算法，BF的改进版，借助哈希函数，给主串0~mLen-m的每个m长的字串求hash值，然后跟模式串做比较。
- * <p>
+ * 
  * 3、BM算法：Boyer-Moore，比较复杂难懂，但性能是KMP的3-4倍，坏字符规则+好后缀规则。
- * <p>
+ * 
  * 4、KMP算法：KMP算法是根据三位作者（D.E.Knuth，J.H.Morris 和 V.R.Pratt）的名字来命名的，算法的全称是Knuth Morris Pratt算法，简称为KMP算法。
  * KMP算法的核心思想跟BM算法非常相近。
+ *
+ *
+ * 一、单模式串匹配：
+ * 1. BF：简单场景，主串和模式串都不太长, O(m*n)。
+ * 2. KP：字符集范围不要太大且模式串不要太长，否则hash值可能冲突，O(n)。
+ * 3. naive-BM：模式串最好不要太长（因为预处理较重），比如IDE编辑器里的查找场景； 预处理O(m*m), 匹配O(n)， 实现较复杂，需要较多额外空间。
+ * 4. KMP：适合所有场景，整体实现起来也比BM简单，O(n+m)，仅需一个next数组的O(n)额外空间；但统计意义下似乎BM更快，原因不明。
+ * 5. 还有一种比BM/KMP更快，且实现+理解起来都更容易的的Sunday算法:
+ * http://www.inf.fh-flensburg.de/lang/algorithmen/pattern/sundayen.htm
+ * https://www.jianshu.com/p/2e6eb7386cd3
+ *
+ * 二、多模式串匹配：
+ * 1. naive-Trie: 适合多模式串公共前缀较多的匹配O(n*k)或者根据公共前缀进行查找O(k)的场景，比如搜索框的自动补全提示。
+ * 2. AC自动机: 适合大量文本中多模式串的精确匹配查找，平均O(n)，退化到Trie复杂度。
  *
  * @author wenhy
  * @date 2019/6/14
