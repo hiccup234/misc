@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.stringmatch;
+package top.hiccup.algorithm.string;
 
 import java.util.LinkedList;
 import java.util.Queue;

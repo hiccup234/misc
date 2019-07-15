@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.stringmatch;
+package top.hiccup.algorithm.string;
 
 /**
  * 字符串匹配算法：主串与模式串，假设各自长度分别为n和m，则n >= pLen

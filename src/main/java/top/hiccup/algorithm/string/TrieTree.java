@@ -1,4 +1,4 @@
-package top.hiccup.algorithm.stringmatch;
+package top.hiccup.algorithm.string;
 
 /**
  * 字典树：专门用来处理字符串匹配的数据结构（搜索引擎的关键词提示），时间复杂度为O(k)，k为要匹配的字符串长度。
