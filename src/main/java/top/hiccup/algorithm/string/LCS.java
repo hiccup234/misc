@@ -1,7 +1,7 @@
 package top.hiccup.algorithm.string;
 
 /**
- * 最长公共子序列：常用在git版本管理中
+ * 最长公共子序列LCS(Longest Common Sub)：常用在git版本管理中
  *
  * 1、当其中一个串长度为0的时候子序列为0
  *
