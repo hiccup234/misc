@@ -85,6 +85,7 @@ public class Graph {
         }
     }
 
+
     /**
      * 是否已经找到顶点t
      */
@@ -102,7 +103,9 @@ public class Graph {
     }
 
     private void recurDfs(int w, int t, boolean[] visited, int[] prev) {
-        if (found == true) return;
+        if (found == true) {
+            return;
+        }
         visited[w] = true;
         if (w == t) {
             found = true;
@@ -126,6 +129,5 @@ public class Graph {
         }
         System.out.print(t + " ");
     }
-
 }
 
