@@ -24,7 +24,7 @@ public class $5_MergeSort {
     private static void doSort(int[] arr, int left, int right, int[] tempArr) {
         // 递归出口
         if (left < right) {
-            int mid = (left + right) / 2;
+            int mid = left + ((right - left) >> 1);
             // 左边归并排序，使得左子序列有序
             doSort(arr, left, mid, tempArr);
             // 右边归并排序，使得右子序列有序

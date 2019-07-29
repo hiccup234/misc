@@ -9,9 +9,9 @@ package top.hiccup.algorithm.sort;
  * Q: 为什么插入排序比冒泡排序更受欢迎？
  * A: 插入排序跟冒泡排序的基本特性都相同，
  *    但是：
- *      冒泡排序：平均要交换n*(n-1)/4次（原始数据逆序度），比较的次数就更多了接近n*n(n-1)/2
+ *      冒泡排序：平均要交换n*(n-1)/4次（原始数据逆序度），比较的次数就更多了，接近n*n(n-1)/2
  *      插入排序：平均要移动n*(n-1)/4次（跟冒泡交换的次数对等），比较的次数跟移动的次数对等
- *    然而：
+ *    并且：
  *      冒泡的交换需要3次赋值操作，而插入排序的移动只需要1次赋值操作，而且插入排序的比较次数比冒泡会更少，
  *      所以插入的性能实际上更好，尽管算法复杂度是一样的。
  *
@@ -24,13 +24,13 @@ public class $3_InsertionSort {
     public static void sort(int[] arr, int left, int right) {
         for (int i = left + 1; i <= right; i++) {
             int temp = arr[i];
-            int j = i;
-            // 这里直接跟arr[i]做比较，而不是arr[j]与arr[j-1]比较，
+            int idx = i;
+            // 这里直接跟arr[i]做比较，而不是arr[idx]与arr[idx-1]比较，
             // 这样可以每次比较时不用swap，也更符合插入的思想（如果挨个挨个比较和替换就更像是冒泡了）
-            for (; j > 0 && temp < arr[j - 1]; j--) {
-                arr[j] = arr[j - 1];
+            for (; idx > left && temp < arr[idx - 1]; idx--) {
+                arr[idx] = arr[idx - 1];
             }
-            arr[j] = temp;
+            arr[idx] = temp;
         }
     }
 }

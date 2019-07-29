@@ -42,7 +42,7 @@ public class SortTest {
     }
 
     public static void main(String[] args) {
-        int[] data = {9, 275, 12, 6, 45, 999, 41, 12306, 456, 12, 532, 89};
+        int[] data = {49, 275, 12, 6, 45, 999, 41, 12306, 456, 12, 532, 89};
 
 //        $1_BubbleSort.sortImprove(data);
 //        $1_BubbleSort.sort2(data);
@@ -56,12 +56,12 @@ public class SortTest {
 //        $5_MergeSort.sort(data);
 //        data = $5_MergeSort.sort2(data);
 
-//        $6_QuickSort.quickSort(data, 0, data.length-1);
+        $6_QuickSort.quickSort(data, 0, data.length-1);
 //        $6_QuickSort.quickSortImprove(data, 0, data.length-1);
 //        $6_QuickSort.quickSortImprove2(data, 0, data.length-1);
 //        $6_QuickSort.quickSortImprove3(data, 0, data.length-1);
 
-        $7_HeapSort.sort(data);
+//        $7_HeapSort.sort(data);
 
 //        $8_CountingSort.sort(data);
 

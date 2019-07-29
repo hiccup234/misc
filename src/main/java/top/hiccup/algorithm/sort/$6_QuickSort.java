@@ -31,6 +31,21 @@ import static top.hiccup.algorithm.sort.SortTest.swap;
  * 意义：如果待排序的序列划分极端不平衡，递归的深度将趋近于n，而栈的大小是很有限的，
  * 每次递归调用都会耗费一定的栈空间，函数的参数越多，每次递归耗费的空间也越多。
  * 优化后，可以缩减堆栈深度，由原来的O(n)缩减为O(logn)，将会提高性能。
+ * TAIL-RECURSIVE-QUICKSORT(A, p, r)
+ *     while p < r
+ *         q = PARTITION(A, p, r)
+ *         TAIL-RECURSIVE-QUICKSORT(A, p, q-1)
+ *         p = q + 1
+ *
+ * TAIL-RECURSIVE-QUICKSORT'(A, p, r)
+ *     while p < r
+ *         q = PARTITION(A, p, r)
+ *         if (q - p < r - q)
+ *             TAIL-RECURSIVE-QUICKSORT'(A, p, q)
+ *             p = q + 1
+ *         else
+ *             TAIL-RECURSIVE-QUICKSORT'(A, q + 1, r)
+ *             r = q - 1
  *
  * @author wenhy
  * @date 2017/1/6
@@ -58,10 +73,37 @@ public class $6_QuickSort {
                 swap(arr, i, j);
             }
         }
-        swap(arr, left, i);
         // while结束时i==j（不一定，如果left == right，则i == j+1，当然在quickSort中作为递归出口已经排除了这种情况）
+        // TODO 一定要将基准数归位
+        arr[left] = arr[i];
+        arr[i] = part;
         return i;
     }
+
+    // 另外一种写法
+//    private static int partition(int[] arr, int left, int right) {
+//        int i = left, j = right;
+//        int part = arr[i];
+//        while (j > i) {
+//            // 先判断基准数和后面的数依次比较，TODO 这里为什么所有的案例都是先遍历后面呢？
+//            while (i < j && part <= arr[j]) {
+//                --j;
+//            }
+//            if (i < j) {
+//                arr[i] = arr[j];
+//                ++i;
+//            }
+//            while (i < j && part >= arr[i]) {
+//                ++i;
+//            }
+//            if (i < j) {
+//                arr[j] = arr[i];
+//                --j;
+//            }
+//        }
+//        arr[i] = part;
+//        return i;
+//    }
 
     public static void quickSort(int[] arr, int left, int right) {
         // 递归的出口，需要判断>=不能只判=（如果pivot就是数组的下标0则会导致left>right）
@@ -113,7 +155,7 @@ public class $6_QuickSort {
      * 快排实现优化三：三数取中 + 插入排序
      */
     private static int medianPartition(int[] arr, int left, int right) {
-        int median = left + (left + right) / 2;
+        int median = left + ((right - left) >> 1);
         if (arr[median] > arr[right]) {
             swap(arr, median, right);
         }
@@ -158,6 +200,7 @@ public class $6_QuickSort {
 
 
     //==================================================================================================================
+
     /**
      * 快排非递归实现，需要借助栈的概念来模拟递归调用
      */
