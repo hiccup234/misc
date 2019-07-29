@@ -22,8 +22,13 @@ import java.util.List;
  * 【直接内存溢出】
  * 1.NIO中使用了直接内存
  *
- * @VM args: -XX:PermSize  --XX:MaxPermSize （JDK1.8以前）
- * @VM args: -XX:MetaspaceSize=10M -XX:MaxMetaspaceSize=10M -XX:+PrintGCDetails （JDK1.8）
+ * @VM args: -XX:PermSize
+ *           --XX:MaxPermSize （JDK1.8以前）
+ * @VM args: -Xms10M
+ *           -Xmx10M
+ *           -XX:+PrintGCDetails
+ *           -XX:+HeapDumpOnOutOfMemoryError
+ *           -XX:HeapDumpPath=C:\Users\haiyang.wen\Desktop\HeapDump （JDK1.8常量池放在了堆上）
  *
  * @author wenhy
  * @date 2018/8/31
