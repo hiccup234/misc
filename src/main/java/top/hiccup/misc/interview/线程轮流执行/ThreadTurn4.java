@@ -55,6 +55,7 @@ public class ThreadTurn4 {
         }, "t2");
         ThreadHolder.t1.start();
         ThreadHolder.t2.start();
+        // 这里记得要对其中一个线程发起中断
         ThreadHolder.t1.interrupt();
     }
 }

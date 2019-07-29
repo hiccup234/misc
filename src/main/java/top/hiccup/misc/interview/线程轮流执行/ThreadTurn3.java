@@ -30,6 +30,8 @@ public class ThreadTurn3 {
                         e.printStackTrace();
                     }
                     turn = true;
+                } else {
+                    Thread.yield();
                 }
             }
         }, "t1").start();
@@ -46,6 +48,8 @@ public class ThreadTurn3 {
                         e.printStackTrace();
                     }
                     turn = false;
+                } else {
+                    Thread.yield();
                 }
             }
         }, "t2").start();
