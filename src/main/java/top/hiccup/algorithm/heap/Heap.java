@@ -57,6 +57,7 @@ public class Heap {
     private void heapifyUp() {
         // table[size]为刚插入的元素，可能不满足堆的特性
         int i = size;
+        // i/2为最后一个非叶子节点
         while (i / 2 > 0 && table[i] > table[i / 2]) {
             swap(table, i, i / 2);
             i = i / 2;

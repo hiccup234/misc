@@ -42,7 +42,7 @@ public class $7_HeapSort {
     }
 
     public static void sort(int[] arr) {
-        // 1、构建大顶堆
+        // 1、构建大顶堆，注意这里堆的数据是从数组下标0开始
         for (int i = arr.length / 2 - 1; i >= 0; i--) {
             // 从堆的最后一个非叶子结点从下至上，从右至左调整结构（参考TopKTest.test3）
             adjustHeap(arr, i, arr.length);

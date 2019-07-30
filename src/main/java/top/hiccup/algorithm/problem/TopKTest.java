@@ -127,7 +127,7 @@ public class TopKTest {
     public static int[] test3(int[] arr, int k) {
         int[] topk = new int[k];
         System.arraycopy(arr, 0, topk, 0, k);
-        // 创建最小堆
+        // 创建最小堆，注意这里是小顶堆，这样才能拿数组元素跟TOPK中最小的比较
         makeHeap(topk);
         // 创建完最小堆后topk[0]就是堆中最小的元素
         for (int i = k; i < arr.length; i++) {
