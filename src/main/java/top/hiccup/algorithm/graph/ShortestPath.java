@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 /**
  * 最短路径，一个顶点到另一个顶点就是单源最短路径
- * <p>
+ * 
  * Dijkstra 时间复杂度O(E*logV)
  *
  * @author wenhy
@@ -17,7 +17,9 @@ public class ShortestPath {
          * 有向有权图的邻接表表示
          */
         private LinkedList<Edge> adj[];
-        // 顶点个数
+        /**
+         * 顶点个数
+         */
         private int v;
 
         public Graph(int v) {
