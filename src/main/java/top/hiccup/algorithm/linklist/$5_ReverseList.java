@@ -47,6 +47,7 @@ public class $5_ReverseList {
             head.next = pCur.next;
             pCur.next = dummy.next;
             dummy.next = pCur;
+            // 最后一步会自动把head的next置为null，即新链表的结尾为null
             pCur = head.next;
         }
         return dummy.next;

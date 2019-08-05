@@ -30,6 +30,12 @@ import java.util.List;
  * 【类型擦除】
  *
  *
+ * 【PECS原则】
+ *  Producter Extends, Consumer Super，即遵循里氏替换原则
+ *
+ * 协变，父类型到子类型，变得越来越具体，在Java中体现在返回值类型不变或更加具体(异常类型也是如此)等。
+ * 逆变，父类型到子类型，变得越来越具体，但是方法的形参却变得更加抽象或不变。
+ *
  *
  * @author wenhy
  * @date 2018/8/27

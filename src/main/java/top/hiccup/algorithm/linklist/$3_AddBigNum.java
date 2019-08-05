@@ -36,7 +36,7 @@ public class $3_AddBigNum {
             ListNode listNode = new ListNode();
             if (sum > 10) {
                 listNode.val = sum - 10;
-                up = sum/10;
+                up = sum / 10;
             } else {
                 listNode.val = sum;
                 up = 0;
