@@ -84,10 +84,12 @@ public class LongAdder extends Striped64 implements Serializable {
      */
     public void add(long x) {
         Cell[] as; long b, v; int m; Cell a;
+        // TODO 初始化时cells为空，首先casBase，如果失败则证明可能竞争比较激烈，则要进入到if块
         if ((as = cells) != null || !casBase(b = base, b + x)) {
             boolean uncontended = true;
             if (as == null || (m = as.length - 1) < 0 ||
                 (a = as[getProbe() & m]) == null ||
+                // TODO 直接对定位到的Cell做cas，如果失败了再调用基类Striped64的longAccumulate
                 !(uncontended = a.cas(v = a.value, v + x)))
                 longAccumulate(x, null, uncontended);
         }
@@ -120,6 +122,7 @@ public class LongAdder extends Striped64 implements Serializable {
         Cell[] as = cells; Cell a;
         long sum = base;
         if (as != null) {
+            // TODO 注意，按注释所说这里返回的不是强一致性的结果，只有在调用sum时没有其他线程并发add，结果才是精确的
             for (int i = 0; i < as.length; ++i) {
                 if ((a = as[i]) != null)
                     sum += a.value;

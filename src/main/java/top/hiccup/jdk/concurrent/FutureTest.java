@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Future使用示例
@@ -34,7 +35,8 @@ public class FutureTest {
         System.out.println("请求完毕");
         while(true) {
             String result = null;
-            if((result = f.get()) != null) {
+            // TODO 注意，这里工程中一般要指定超时时间
+            if((result = f.get(1000, TimeUnit.SECONDS)) != null) {
                 System.out.println("数据处理完毕");
                 System.out.println("处理结果：" + result);
                 break;

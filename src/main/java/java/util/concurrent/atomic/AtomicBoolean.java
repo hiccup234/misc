@@ -109,6 +109,8 @@ public class AtomicBoolean implements java.io.Serializable {
      * spuriously and does not provide ordering guarantees</a>, so is
      * only rarely an appropriate alternative to {@code compareAndSet}.
      *
+     * TODO 跟上面compareAndSet不是完全一样的嚒？
+     *
      * @param expect the expected value
      * @param update the new value
      * @return {@code true} if successful

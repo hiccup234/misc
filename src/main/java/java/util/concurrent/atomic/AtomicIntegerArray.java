@@ -54,6 +54,7 @@ public class AtomicIntegerArray implements java.io.Serializable {
     private static final Unsafe unsafe = Unsafe.getUnsafe();
     private static final int base = unsafe.arrayBaseOffset(int[].class);
     private static final int shift;
+    // TODO 注意这里没有像AtomicInteger用volatile来修饰，那么数组元素的线程可见性怎么保证呢？
     private final int[] array;
 
     static {

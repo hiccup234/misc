@@ -20,7 +20,8 @@ public class ThreadOrderedExecuteTest {
     private static final int T_SIZE = 10;
 
     public static void main(String[] args) {
-        LongAdder adder = new LongAdder();
+        // TODO 这里不能使用LongAdder，它的sum不是精确值
+//        LongAdder adder = new LongAdder();
         final Object lock = new Object();
         AtomicInteger atomic = new AtomicInteger();
         for (int i = 0; i < T_SIZE; i++) {
@@ -30,9 +31,9 @@ public class ThreadOrderedExecuteTest {
                         // 这里内部类依赖了外部的递增变量i，且有时序要求，因为Java的闭包问题，所以只能通过线程名传入进来
                         String threadName = Thread.currentThread().getName();
                         long p = Long.valueOf(threadName.substring(1));
-                        if (adder.longValue() % T_SIZE == p) {
+                        if (atomic.get() % T_SIZE == p) {
                             System.out.print(Thread.currentThread().getName() + " -> ");
-                            adder.increment();
+                            atomic.incrementAndGet();
                             // TODO 这里要使用notifyAll，不然容易造成死锁
 //                            lock.notify();
                             lock.notifyAll();
