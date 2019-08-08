@@ -107,7 +107,7 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * 1、可重入互斥锁（独占锁），通过构造器可以确认是否为公平锁，默认是非公平锁
+ * 1、可重入互斥锁（独占锁），通过构造器可以指定是否为公平锁，默认是非公平锁
  * 2、主要包装了底层AQS的功能
  */
 public class ReentrantLock implements Lock, java.io.Serializable {
@@ -209,7 +209,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
         /**
          * Performs lock.  Try immediate barge, backing up to normal
          * acquire on failure.
-         * TODO 首先试着直接获取锁，如果失败再acquire
+         * TODO 首先试着直接cas替换同步器的state获取锁，如果失败再acquire
          */
         final void lock() {
             if (compareAndSetState(0, 1))

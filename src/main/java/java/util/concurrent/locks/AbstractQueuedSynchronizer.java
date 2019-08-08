@@ -303,6 +303,7 @@ import sun.misc.Unsafe;
  *     }
  * 3、Q：获取锁的时候，如果锁是空闲的，当前线程会不会入队列？
  *   A：如果锁没有竞争，则会直接获取锁，不会入队列
+ * 4、对CAS的使用体现在：出入队时，对head和tail的修改，以及对state，Node中的waitStatus，通过AQS尾部的cas方法可知
  */
 public abstract class AbstractQueuedSynchronizer
     extends AbstractOwnableSynchronizer
@@ -499,8 +500,8 @@ public abstract class AbstractQueuedSynchronizer
          * mode.
          */
         // TODO 用来区别是独占锁还是共享锁
-        // TODO 若nextWaiter=SHARED，则CLH队列是“独占锁”队列
-        // TODO 若nextWaiter=EXCLUSIVE（即nextWaiter==null），则CLH队列是“共享锁”队列
+        // TODO 若nextWaiter=SHARED，则CLH队列是“共享锁”队列
+        // TODO 若nextWaiter=EXCLUSIVE（即nextWaiter==null），则CLH队列是“独占锁”队列
         Node nextWaiter;
 
         /**

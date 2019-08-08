@@ -217,6 +217,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 1、读写锁涉及到锁降级的问题：同一线程先获取了写锁，在同步块中获取读锁，然后释放写锁，最后释放读锁
+ * 2、记住，读写锁用的是同一个同步器sync，将sync中state的高16位表示读，低16位表示写
  */
 public class ReentrantReadWriteLock
         implements ReadWriteLock, java.io.Serializable {
@@ -244,6 +245,7 @@ public class ReentrantReadWriteLock
      */
     public ReentrantReadWriteLock(boolean fair) {
         sync = fair ? new FairSync() : new NonfairSync();
+        // TODO 读写锁用的是同一个同步器
         readerLock = new ReadLock(this);
         writerLock = new WriteLock(this);
     }
