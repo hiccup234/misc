@@ -26,3 +26,16 @@ public class JavaPlatform {
         System.currentTimeMillis(); // 时间戳
     }
 }
+
+
+//class A {
+//    final Integer f() {
+//        return 1;
+//    }
+//}
+//
+//class B extends A {
+//    final Integer f() {
+//        return 2;
+//    }
+//}

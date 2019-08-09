@@ -648,7 +648,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
         public final int hashCode()   { return key.hashCode() ^ val.hashCode(); }
         public final String toString(){ return key + "=" + val; }
         // TODO 这里让子类继承，为什么不声明成Abstract呢？
-        // TODO 注意这里是final修饰的，也就是说ConcurrentHashMap的Node节点是不支持serValue方法的，那么用volatile修饰的用意又是什么呢？
+        // TODO 注意这里是final修饰的，也就是说ConcurrentHashMap的Node节点是不支持setValue方法的，那么用volatile修饰的用意又是什么呢？
         public final V setValue(V value) {
             throw new UnsupportedOperationException();
         }
@@ -930,7 +930,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     /**
      * {@inheritDoc}
      */
-    // TODO size方法没有加锁，所以结果可能并不准确，具有弱一致性，cell模式能保证size结果尽量准确
+    // TODO size方法没有加锁，所以结果可能并不准确，具有弱一致性，cell模式能保证size结果尽量准确，为什么不直接用LongAdder呢？
     public int size() {
         long n = sumCount();
         return ((n < 0L) ? 0 :
@@ -1106,7 +1106,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
                 }
             }
         }
-        // 这里的count cell的设计思路跟LongAdder是一样的，为了提供尽量精确的一致性（size方法是弱一致性的）
+        // TODO 这里的count cell的设计思路跟LongAdder是一样的，为了提供尽量精确的一致性（size方法是弱一致性的）
         addCount(1L, binCount);
         return null;
     }
@@ -1134,7 +1134,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * @throws NullPointerException if the specified key is null
      */
     public V remove(Object key) {
-        // TODO 直接替换节点value
+        // TODO 直接替换节点value，这就是ConcurrentHashMap不允许空value的原因嚒？还是说并发条件下没法通过空来判断是否不存在还是说本来就是空
         return replaceNode(key, null, null);
     }
 
@@ -1267,7 +1267,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      *
      * @return the set view
      */
-    // TODO 这里为什么是直接返回KeySetView，而Set<Entry<K,V>> entrySet()是Set呢?
+    // TODO 这里为什么是直接返回KeySetView而不是Set，而Set<Entry<K,V>> entrySet()是Set呢?
     public KeySetView<K,V> keySet() {
         KeySetView<K,V> ks;
         return (ks = keySet) != null ? ks : (keySet = new KeySetView<K,V>(this, null));
@@ -1325,7 +1325,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      *
      * @return the hash code value for this map
      */
-    // TODO 整个Map的hashCode？这里是不是也是弱一致性的？
+    // TODO 整个Map对象的hashCode？这里是不是也是弱一致性的？
     public int hashCode() {
         int h = 0;
         Node<K,V>[] t;
