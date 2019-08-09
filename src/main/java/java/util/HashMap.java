@@ -284,7 +284,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * Basic hash bin node, used for most entries.  (See below for
      * TreeNode subclass, and in LinkedHashMap for its Entry subclass.)
      */
-    // TODO JDK1.8将原来的Map.Entry转为Node节点
+    // TODO JDK8将原来的Map.Entry转为Node节点
     static class Node<K,V> implements Entry<K,V> {
         // TODO 这里的hash和key都是final的，一旦计算出来就不能再改变，而value是包访问修饰符
         final int hash;
@@ -302,7 +302,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         public final K getKey()        { return key; }
         public final V getValue()      { return value; }
         public final String toString() { return key + "=" + value; }
-        // TODO Objects是JDK1.7新增的对象工具类
+        // TODO Objects是JDK7新增的对象工具类
         public final int hashCode() {
             return Objects.hashCode(key) ^ Objects.hashCode(value);
         }
@@ -345,7 +345,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * never be used in index calculations because of table bounds.
      */
     // TODO 记住，如果key是null，则hash值是0，所以key为null的Entry是存在table[0]的
-    // TODO h>>> 16，表示无符号右移16位，高位补0， 异或：相同为0相异为1
+    // TODO h >>> 16，表示无符号右移16位，高位补0， 异或：相同为0相异为1
     // TODO 结果就是高16位与低16位异或，而h的高16位保持不变，这样做的目的就是解决table长度很小时hash碰撞太高的问题（高16位也参与到运算中来）
     static final int hash(Object key) {
         int h;
@@ -411,7 +411,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * (We also tolerate length zero in some operations to allow
      * bootstrapping mechanics that are currently not needed.)
      */
-    // TODO JDK1.7是Entry数组
+    // TODO JDK7是Entry数组，这是JDK8的改变，Node实现了Entry
     transient Node<K,V>[] table;
 
     /**
@@ -450,7 +450,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      *
      * @serial
      */
-    // TODO 注意这里是final修饰的
+    // TODO 注意这里是final修饰的，即创建对象后不能再修改
     final float loadFactor;
 
     /* ---------------- Public operations -------------- */
@@ -665,6 +665,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
             else {
                 // TODO 依此判断当前要put的key是不是在链表上，如果都不在则追加在末尾，并判断是否需要树化（链表上已经有8个，插入第9个的时候）
+                // TODO 这里跟JDK7不一样，JDK7判断如果不存在key，则在链表头添加
                 for (int binCount = 0; ; ++binCount) {
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
@@ -688,7 +689,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             }
         }
         ++modCount;
-        // TODO JDK1.7是先扩容再插值，1.8是先插值再扩容
+        // TODO JDK7是先扩容再插值，8是先插值再扩容
         if (++size > threshold)
             resize();
         afterNodeInsertion(evict);
