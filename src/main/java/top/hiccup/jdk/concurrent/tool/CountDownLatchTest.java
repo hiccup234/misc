@@ -32,7 +32,7 @@ public class CountDownLatchTest {
             public void run() {
                 try {
                     System.out.println("进入线程t11，等待其他线程处理完成...");
-                    // 同一个countDownLatch实例可以多次调用await()
+                    // TODO 同一个countDownLatch实例可以多次调用await()，这个特性很重要
                     countDown.await();
                     System.out.println("t11线程继续执行...");
                 } catch (InterruptedException e) {

@@ -113,7 +113,7 @@ import java.util.function.Function;
 
 
 /**
- * 1、采用跳跃表实现的Map，适合做快速查找
+ * 1、采用跳表实现的Map，适合做快速查找，某些情况下比TreeMap的红黑树更有优势
  */
 public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
     implements ConcurrentNavigableMap<K,V>, Cloneable, Serializable {

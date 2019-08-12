@@ -153,6 +153,11 @@ import java.util.concurrent.locks.AbstractQueuedSynchronizer;
  * @since 1.5
  * @author Doug Lea
  */
+
+
+/**
+ * 1、CountDownLatch整个类依赖于Sync的AQS的共享锁，整个代码看起来非常清爽
+ */
 public class CountDownLatch {
     /**
      * Synchronization control For CountDownLatch.
@@ -226,6 +231,8 @@ public class CountDownLatch {
      *
      * @throws InterruptedException if the current thread is interrupted
      *         while waiting
+     *
+     * TODO 注意，await方法可以响应中断
      */
     public void await() throws InterruptedException {
         sync.acquireSharedInterruptibly(1);

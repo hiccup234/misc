@@ -94,10 +94,10 @@ import sun.misc.SharedSecrets;
 
 
 /**
- * 1、没有初始容量，最适合于List大小通常保持很小，只读操作远多于写操作，需要在遍历期间防止线程间的冲突
+ * 1、没有初始容量，最适合于List大小通常保持很小，读远多于写，需要在遍历期间防止线程间的冲突
  * 2、因为通常需要复制整个基础数组，所以可变操作（add()、set() 和 remove() 等等）的开销很大
- * 3、迭代器支持hasNext(), next()等不可变操作，但不支持可变 remove()等操作
- * 4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突。在构造迭代器时，迭代器依赖于不变的数组快照
+ * 3、迭代器支持hasNext()，next()等不可变操作，但不支持可变remove()等操作
+ * 4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突，在构造迭代器时，迭代器依赖于不变的数组快照
  */
 public class CopyOnWriteArrayList<E>
     implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
@@ -167,7 +167,7 @@ public class CopyOnWriteArrayList<E>
      * Returns the number of elements in this list.
      *
      * @return the number of elements in this list
-     * TODO 这里没做同步
+     * TODO 这里没做同步，所以回参size不是强一致性的
      */
     public int size() {
         return getArray().length;
@@ -414,7 +414,7 @@ public class CopyOnWriteArrayList<E>
      * specified element.
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
-     * TODO 这里的写操作就需要同步了
+     * TODO 这里的写操作就需要同步了（所以适用于读多写少的场景）
      */
     public E set(int index, E element) {
         final ReentrantLock lock = this.lock;
@@ -425,6 +425,7 @@ public class CopyOnWriteArrayList<E>
 
             if (oldValue != element) {
                 int len = elements.length;
+                // TODO 这里做了数组的拷贝，CopyOnWrite就体现在这里
                 Object[] newElements = Arrays.copyOf(elements, len);
                 newElements[index] = element;
                 setArray(newElements);

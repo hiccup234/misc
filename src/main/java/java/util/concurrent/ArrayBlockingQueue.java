@@ -84,6 +84,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 1、有界阻塞队列，通过ReentrantLock来实现同步，所以是线程安全的
+ * 2、ArrayBlockingQueue入队和出队都需要争用同一把锁
  */
 public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         implements BlockingQueue<E>, java.io.Serializable {
@@ -169,7 +170,7 @@ public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         if (++putIndex == items.length)
             putIndex = 0;
         count++;
-        // TODO 插入了一个元素，通知因队列为空而阻塞的线程
+        // TODO 插入了一个元素，通知因队列为空而阻塞的线程，这里为什么不是signalAll呢？
         notEmpty.signal();
     }
 
