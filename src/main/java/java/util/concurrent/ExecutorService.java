@@ -135,6 +135,15 @@ import java.util.List;
  * @since 1.5
  * @author Doug Lea
  */
+
+
+/**
+ * 1、Q: 线程池shutdown与shutdownNow区别？
+ *  shutdown：线程池的状态则立刻变成SHUTDOWN状态。此时，则不能再往线程池中添加任何任务，否则将会抛出RejectedExecutionException异常。
+ *  但是，此时线程池不会立刻退出，直到添加到线程池中的任务都已经处理完成，才会退出。
+ *
+ *  shutdownNow：线程池的状态立刻变成STOP状态，并试图停止所有正在执行的线程，不再处理还在池队列中等待的任务，当然，它会返回那些未执行的任务。
+ */
 public interface ExecutorService extends Executor {
 
     /**

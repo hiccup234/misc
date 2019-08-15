@@ -158,6 +158,11 @@ import java.util.concurrent.atomic.AtomicLong;
  * @since 1.7
  * @author Doug Lea
  */
+
+
+/**
+ * ForkJoinPool为什么要用Contended修饰呢？
+ */
 @sun.misc.Contended
 public class ForkJoinPool extends AbstractExecutorService {
 
