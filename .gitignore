@@ -1,8 +1,13 @@
 # 需要忽略的目录和文件
 
-.idea/*
-target/
+# IDEA #
+.idea/
+*.iml
+
+# Eclipse #
 .settings/
 .classpath
 .project
-misc.iml
+
+# target/
+target/
