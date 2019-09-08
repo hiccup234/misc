@@ -20,7 +20,6 @@
             <version>3.3.1</version>
         </dependency>
 
-
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
@@ -100,25 +99,6 @@
             <artifactId>jmh-generator-annprocess</artifactId>
             <version>1.15</version>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>tools</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>tools</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>tools</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
-        </dependency>
-
 
     </dependencies>
 
