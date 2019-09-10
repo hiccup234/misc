@@ -32,8 +32,8 @@ public class Client {
                 while (true) {
                     out.println(dateFormat.format(new Date()) + ":" + Thread.currentThread().getName() + ":服务器你好..");
                     String response = in.readLine();
-                    System.out.println("Client接收到:" + response);
-                    Thread.sleep(100);
+                    System.out.println(Thread.currentThread().getName() + "接收到:" + response);
+                    Thread.sleep(1000);
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -22,6 +22,8 @@ public class Client {
         BufferedReader in = null;
         PrintWriter out = null;
         try {
+            // 1、创建Socket对象时，就会调用本地方法connect0去连接远程服务器，会导致远程服务器的accept0返回
+            // 即两端程序建立起了连接，如果服务端此时未启动则会抛异常：java.net.ConnectException: Connection refused: connect
             socket = new Socket(HOST, PORT);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);

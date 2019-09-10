@@ -17,14 +17,14 @@ import java.util.Set;
  * NIO(Non-block IO)：同步非阻塞（JDK1.5）
  * AIO(NIO2.0)：异步非阻塞（JDK1.7）
  *
- * JDK的NIO底层由epoll实现，该实现饱受诟病的空轮询bug会导致cpu飙升100%（Netty解决了这个问题）
+ * JDK的NIO底层由操作系统的select、poll、epoll、kqueue等系统调用支持，该实现饱受诟病的空轮询bug会导致cpu飙升100%（Netty解决了这个问题）
  *
  * ## select、poll和epoll都是linux下I/O多路复用的实现，可以实现单线程管理多个连接。
  *
  * select是基于轮询的，轮询连接的状态，返回I/O状态，poll和select的原理基本相同，
  * 只是poll没有最大连接数的限制，因为它是基于链表的，而select是基于数组的，有最大连接数的限制（32位1024个）。
  *
- * epoll和那两者的区别是：epoll不是基于轮询的检查，而是为每个fd注册回调，I/O准备好时，会执行回调，效率比select和poll高很多。
+ * epoll和前两者的区别是：epoll不是基于轮询的检查，而是为每个fd注册回调，I/O准备好时，会执行回调，效率比select和poll高很多。
  *
  * @author wenhy
  * @date 2018/2/5
@@ -35,9 +35,9 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         // 1、打开多路复用器（管理所有的通道Channel）
-        // Linux内核IO多路复用：select（轮询监听） 和 epoll（事件通知）
-        Selector serverSelector = Selector.open();
-        Selector clientSelector = Selector.open();
+        // Linux内核IO多路复用：select、poll（轮询监听） 和 epoll（事件通知）
+        Selector ioSelector = Selector.open();
+        Selector handleSelector = Selector.open();
 
         // 监听子线程
         new Thread(() -> {
@@ -49,22 +49,22 @@ public class Server {
                 // 4、绑定地址和端口
                 listenerChannel.socket().bind(new InetSocketAddress(PORT));
                 // 5、把服务器通道注册到多路复用器上，并且监听阻塞事件
-                listenerChannel.register(serverSelector, SelectionKey.OP_ACCEPT);
+                listenerChannel.register(ioSelector, SelectionKey.OP_ACCEPT);
                 System.out.println("Server start at port: " + PORT);
 
                 while (true) {
                     // 监测是否有新的连接，这里的1指的是阻塞的时间为 1ms
-                    if (serverSelector.select(1) > 0) {
-                        Set<SelectionKey> set = serverSelector.selectedKeys();
+                    if (ioSelector.select(1) > 0) {
+                        Set<SelectionKey> set = ioSelector.selectedKeys();
                         Iterator<SelectionKey> keyIterator = set.iterator();
                         while (keyIterator.hasNext()) {
                             SelectionKey key = keyIterator.next();
                             if (key.isAcceptable()) {
                                 try {
-                                    // 每来一个新连接，不需要创建一个线程，而是直接注册到clientSelector
+                                    // 每来一个新连接，不需要创建一个线程，而是直接注册到clientSelector（不管数据是否开始传输和完成）
                                     SocketChannel clientChannel = ((ServerSocketChannel) key.channel()).accept();
                                     clientChannel.configureBlocking(false);
-                                    clientChannel.register(clientSelector, SelectionKey.OP_READ);
+                                    clientChannel.register(handleSelector, SelectionKey.OP_READ);
                                 } finally {
                                     keyIterator.remove();
                                 }
@@ -82,8 +82,8 @@ public class Server {
             try {
                 while (true) {
                     // 批量轮询是否有哪些连接有数据可读，这里的1指的是阻塞的时间为 1ms
-                    if (clientSelector.select(1) > 0) {
-                        Set<SelectionKey> set = clientSelector.selectedKeys();
+                    if (handleSelector.select(1) > 0) {
+                        Set<SelectionKey> set = handleSelector.selectedKeys();
                         Iterator<SelectionKey> keyIterator = set.iterator();
                         while (keyIterator.hasNext()) {
                             SelectionKey key = keyIterator.next();
@@ -111,6 +111,9 @@ public class Server {
     }
 }
 
+
+// =====================================================================================================================
+
 class AnOtherServer implements Runnable {
     private Selector seletor;
     /**
@@ -134,7 +137,7 @@ class AnOtherServer implements Runnable {
             ssc.bind(new InetSocketAddress(port));
             // 5、把服务器通道注册到多路复用器上，并且监听阻塞事件
             ssc.register(this.seletor, SelectionKey.OP_ACCEPT);
-            System.out.println("NettyServer start, port :" + port);
+            System.out.println("NioServer start, port :" + port);
         } catch (IOException e) {
             e.printStackTrace();
         }
