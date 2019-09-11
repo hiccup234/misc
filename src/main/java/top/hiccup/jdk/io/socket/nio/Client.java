@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.Charset;
 
 /**
  * NIO客户端
@@ -39,10 +40,15 @@ public class Client {
                 buf.flip();
                 // 9、写出数据
                 socketChannel.write(buf);
+                Thread.sleep(50);
+                ByteBuffer readBuf = ByteBuffer.allocate(2048);
+                socketChannel.read(readBuf);
+                String s = Charset.forName("UTF-8").newDecoder().decode(readBuf).toString();
+                System.out.println(s);
                 // 10、清空缓冲区数据
                 buf.clear();
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             if (socketChannel != null) {

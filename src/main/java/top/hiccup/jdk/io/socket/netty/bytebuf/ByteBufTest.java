@@ -8,12 +8,13 @@ import io.netty.buffer.ByteBufAllocator;
  *
  *      Netty 使用了堆外内存（由具体的ByteBuf实现决定），需要我们手都分配和回收，通过引用计数的方式来管理内存的（实现ReferenceCounted接口）
  *      默认情况下，当创建完一个ByteBuf对象，它的引用计数为1，然后每次调用retain()方法 -- 保持，它的引用就加一，
- *      release()方法原理是将引用计数减一，减完之后如果发现引用计数为0，则直接回收ByteBuf底层的内存。
+ *      release()方法是将引用计数减一，减完之后如果发现引用计数为0，则直接回收ByteBuf底层的内存。
  * 
- *      注意：read/write 与 get/set 的唯一的区别就是：get/set 不会改变读写指针，而 read/write 会改变读写指针
- *      多个 ByteBuf 可以引用同一段内存，通过引用计数来控制内存的释放，遵循谁 retain() 谁 release() 的原则
+ *      注意：read/write 与 get/set 的唯一的区别就是：get/set 不会改变读写指针，而 read/write 会改变读写指针，
+ *      多个 ByteBuf 可以引用同一段内存，通过引用计数来控制内存的释放，遵循谁 retain() 谁 release() 的原则。
  *
- * 切片：slice()  复制，副本：duplicate()  拷贝：copy()比较：
+ *
+ * 切片：slice()  复制，副本：duplicate()  拷贝：copy()  三个方法的比较：
  *
  *      1、这三个方法的返回值都是一个新的ByteBuf对象
  *      2、slice() 方法从原始 ByteBuf 中截取一段，这段数据是从 readerIndex 到 writeIndex，

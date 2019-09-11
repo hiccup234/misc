@@ -13,6 +13,8 @@ package top.hiccup.jdk.vm.classloader;
  *
  * BootstrapClassLoader委托ContextClassLoader做第三方实现的加载，即破环了双亲委派模型。
  *
+ * SPI 对应的加载器为 ServiceLoader
+ *
  * @author wenhy
  * @date 2019/4/25
  */

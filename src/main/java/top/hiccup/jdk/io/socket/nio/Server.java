@@ -36,7 +36,7 @@ public class Server {
     public static void main(String[] args) throws IOException {
         // 1、打开多路复用器（管理所有的通道Channel）
         // Linux内核IO多路复用：select、poll（轮询监听） 和 epoll（事件通知）
-        Selector ioSelector = Selector.open();
+        Selector listenSelector = Selector.open();
         Selector handleSelector = Selector.open();
 
         // 监听子线程
@@ -49,13 +49,13 @@ public class Server {
                 // 4、绑定地址和端口
                 listenerChannel.socket().bind(new InetSocketAddress(PORT));
                 // 5、把服务器通道注册到多路复用器上，并且监听阻塞事件
-                listenerChannel.register(ioSelector, SelectionKey.OP_ACCEPT);
+                listenerChannel.register(listenSelector, SelectionKey.OP_ACCEPT);
                 System.out.println("Server start at port: " + PORT);
 
                 while (true) {
                     // 监测是否有新的连接，这里的1指的是阻塞的时间为 1ms
-                    if (ioSelector.select(1) > 0) {
-                        Set<SelectionKey> set = ioSelector.selectedKeys();
+                    if (listenSelector.select(1) > 0) {
+                        Set<SelectionKey> set = listenSelector.selectedKeys();
                         Iterator<SelectionKey> keyIterator = set.iterator();
                         while (keyIterator.hasNext()) {
                             SelectionKey key = keyIterator.next();
@@ -94,8 +94,14 @@ public class Server {
                                     // 使用ByteBuffer
                                     clientChannel.read(byteBuffer);
                                     byteBuffer.flip();
-                                    System.out.println(Charset.forName("UTF-8").newDecoder().decode(byteBuffer).toString());
+                                    String s = Charset.forName("UTF-8").newDecoder().decode(byteBuffer).toString();
+                                    System.out.println(s);
 //                                    System.out.println(new String(byteBuffer.array(), "UTF-8"));
+                                    ByteBuffer writeBuffer = ByteBuffer.allocate(2048);
+                                    writeBuffer.put(("你好，" + s).getBytes());
+                                    clientChannel.write(writeBuffer);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
                                 } finally {
                                     keyIterator.remove();
                                     key.interestOps(SelectionKey.OP_READ);
