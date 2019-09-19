@@ -157,7 +157,7 @@ import java.util.concurrent.locks.Lock;
 
 
 /**
- * 1、Semaphore本质也是一个共享锁，类似操作系统中的P/V操作
+ * 1、Semaphore本质也是一个共享锁，同一时间只允许permits个线程同时访问临界区代码，类似操作系统中的P/V操作
  */
 public class Semaphore implements java.io.Serializable {
     private static final long serialVersionUID = -3222578661600680210L;

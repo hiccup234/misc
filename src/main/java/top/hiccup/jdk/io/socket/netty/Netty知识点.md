@@ -1,6 +1,6 @@
 
 ## Netty定义
-    官网上说：Netty is an asynchronous event-driven network application framework 
+    官网上说：Netty is an asynchronous myEvent-driven network application framework 
             for rapid development of maintainable high performance protocol servers & clients.
 
 ## Netty线程模型

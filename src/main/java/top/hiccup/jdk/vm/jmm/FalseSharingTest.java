@@ -4,7 +4,7 @@ package top.hiccup.jdk.vm.jmm;
  * Java 对于伪共享的传统解决方案
  * 
  * 【伪共享】
- * CPU 缓存系统中是以缓存行（cache line）为单位存储的。目前主流的 CPU Cache 的 Cache Line 大小都是 64 Bytes。
+ * CPU 缓存系统中是以缓存行（cache line）为单位存储的。目前主流的 CPU Cache 的 Cache Line 大小都是 64 Bytes。旧的CPU有32Bytes的
  * 在多线程情况下，如果需要修改“共享同一个缓存行的变量”，就会无意中影响彼此的性能，这就是伪共享（False Sharing）。
  * 
  * https://mp.weixin.qq.com/s/pND6Xm7YGR2aropFApc0xA
