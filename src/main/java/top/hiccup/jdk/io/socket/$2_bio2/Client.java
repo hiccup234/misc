@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.socket.bio2;
+package top.hiccup.jdk.io.socket.$2_bio2;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -38,31 +38,25 @@ public class Client {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (in != null) {
-                    try {
+                try {
+                    if (in != null) {
                         in.close();
-                    } catch (Exception e1) {
-                        e1.printStackTrace();
                     }
-                }
-                if (out != null) {
-                    try {
+                    if (out != null) {
                         out.close();
-                    } catch (Exception e2) {
-                        e2.printStackTrace();
                     }
-                }
-                if (socket != null) {
-                    try {
+                    if (socket != null) {
                         // 客户端socket记得也要关闭
                         socket.close();
-                    } catch (Exception e3) {
-                        e3.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
                 socket = null;
             }
         };
+
+        // 启动两个客户端
         new Thread(runnable, "客户端1").start();
         new Thread(runnable, "客户端2").start();
     }

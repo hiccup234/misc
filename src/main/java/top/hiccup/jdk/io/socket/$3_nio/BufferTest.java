@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.socket.nio;
+package top.hiccup.jdk.io.socket.$3_nio;
 
 import java.nio.IntBuffer;
 

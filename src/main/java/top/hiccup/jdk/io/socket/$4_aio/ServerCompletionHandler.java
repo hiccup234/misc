@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.socket.aio;
+package top.hiccup.jdk.io.socket.$4_aio;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
