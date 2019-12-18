@@ -17,14 +17,18 @@ import java.util.Set;
  * NIO(Non-block IO)：同步非阻塞（JDK1.5）
  * AIO(NIO2.0)：异步非阻塞（JDK1.7）
  *
+ * =====================================================================================================================
  * JDK的NIO底层由操作系统的select、poll、epoll、kqueue等系统调用支持，该实现饱受诟病的空轮询bug会导致cpu飙升100%（Netty解决了这个问题）
  *
- * ## select、poll和epoll都是linux下I/O多路复用的实现，可以实现单线程管理多个连接。
+ * select、poll和epoll都是linux下I/O多路复用的实现，可以实现单线程管理多个连接。
  *
  * select是基于轮询的，轮询连接的状态，返回I/O状态，poll和select的原理基本相同，
  * 只是poll没有最大连接数的限制，因为它是基于链表的，而select是基于数组的，有最大连接数的限制（32位1024个）。
- *
  * epoll和前两者的区别是：epoll不是基于轮询的检查，而是为每个fd注册回调，I/O准备好时，会执行回调，效率比select和poll高很多。
+ *======================================================================================================================
+ *
+ * BIO中每个连接都要有一一对应的一个线程去处理，直到连接关闭
+ * NIO中通过selector选择器，把已经准备好的channel（连接）交给线程，一个线程可以管理多个channel
  *
  * @author wenhy
  * @date 2018/2/5
@@ -35,7 +39,7 @@ public class Server {
 
     public static void main(String[] args) throws IOException {
         // 1、打开多路复用器（管理所有的通道Channel）
-        // Linux内核IO多路复用：select、poll（轮询监听） 和 epoll（事件通知）
+        // Linux内核IO多路复用：select、poll（轮询监听）和 epoll（事件通知）
         Selector listenSelector = Selector.open();
         Selector handleSelector = Selector.open();
 
@@ -114,8 +118,22 @@ public class Server {
             } catch (IOException ignored) {
             }
         }).start();
+
+        System.out.println("主线程结束");
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // =====================================================================================================================
