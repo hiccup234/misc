@@ -57,7 +57,7 @@ public class NettyServer {
                                     String request = new String(data, "utf-8");
                                     System.out.println("NettyServer: " + request);
                                     // 写给客户端
-                                    String response = "我是反馈的信息";
+                                    String response = "这是反馈信息";
                                     ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
                                 }
                             });
