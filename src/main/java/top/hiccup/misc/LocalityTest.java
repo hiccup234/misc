@@ -5,6 +5,8 @@ package top.hiccup.misc;
  *
  * @author wenhy
  * @date 2019/10/24
+ *
+ * @VM -Xms1024m -Xmx8192m
  */
 public class LocalityTest {
 
@@ -37,15 +39,15 @@ public class LocalityTest {
 
     public static void main(String[] args) {
         long cacheTotal = 0;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             cacheTotal += cacheLine();
         }
-        System.out.println(cacheTotal / 20);
+        System.out.println(cacheTotal / 10);
 
         long noCacheTotal = 0;
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 10; i++) {
             noCacheTotal += noCacheLine();
         }
-        System.out.println(noCacheTotal / 20);
+        System.out.println(noCacheTotal / 10);
     }
 }
