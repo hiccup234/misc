@@ -58,7 +58,12 @@ public class NettyServer {
                                     System.out.println("NettyServer: " + request);
                                     // 写给客户端
                                     String response = "这是反馈信息";
-                                    ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
+
+//                                    ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
+                                    Packet packet = new Packet();
+                                    packet.body = response.getBytes();
+                                    ctx.writeAndFlush(packet);
+                                    System.out.println(packet.body.length);
                                 }
                             });
                         }
@@ -104,4 +109,11 @@ public class NettyServer {
             }
         });
     }
+}
+
+class Packet {
+    /**
+     * transient修饰的问题
+     */
+    public transient byte[] body;
 }
