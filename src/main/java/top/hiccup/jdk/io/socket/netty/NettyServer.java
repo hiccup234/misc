@@ -58,12 +58,12 @@ public class NettyServer {
                                     System.out.println("NettyServer: " + request);
                                     // 写给客户端
                                     String response = "这是反馈信息";
-
 //                                    ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));
                                     Packet packet = new Packet();
                                     packet.body = response.getBytes();
-                                    ctx.writeAndFlush(packet);
-                                    System.out.println(packet.body.length);
+//                                    ctx.writeAndFlush(packet);
+                                    ctx.channel().writeAndFlush(packet);
+                                    System.out.println("body length: " + packet.body.length);
                                 }
                             });
                         }
@@ -113,7 +113,8 @@ public class NettyServer {
 
 class Packet {
     /**
-     * transient修饰的问题
+     * transient修饰问你验证
+     * （transient修饰不会导致内存中的对象被Netty修改，需要注意MessageToByteEncoder里是否重写了encode方法）
      */
     public transient byte[] body;
 }
