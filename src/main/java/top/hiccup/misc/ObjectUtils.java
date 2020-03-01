@@ -23,11 +23,12 @@ public final class ObjectUtils {
 
     /**
      * 深拷贝对象：通过Java对象序列化技术实现，要求被拷贝的对象的类实现Serializable接口
+     *
      * @param object
      * @param <T>
      * @return
      */
-    public static <T extends Serializable> T deepClone(T object) {
+    public static final <T extends Serializable> T deepClone(T object) {
         Object cloneObj = null;
         ByteArrayOutputStream bout = null;
         ObjectOutputStream oos = null;
@@ -46,16 +47,16 @@ public final class ObjectUtils {
             e.printStackTrace();
         } finally {
             try {
-                if(null != bout) {
+                if (null != bout) {
                     bout.close();
                 }
-                if(null != oos) {
+                if (null != oos) {
                     oos.close();
                 }
-                if(null != bin) {
+                if (null != bin) {
                     bin.close();
                 }
-                if(null != ois) {
+                if (null != ois) {
                     ois.close();
                 }
             } catch (Exception e) {
@@ -65,20 +66,22 @@ public final class ObjectUtils {
         return (T) cloneObj;
     }
 
-
-
-    static class Dog implements Serializable {
-        private String name = null;
-    }
-
-    public static void main(String[] args) {
-        Dog d1 = new Dog();
-        Dog d2 = ObjectUtils.deepClone(d1);
-        System.out.println(d1);
-        System.out.println(d2);
-
-        System.out.println(int.class.getClassLoader());
-        System.out.println(Integer.class.getClassLoader());
+    /**
+     * 对象类型转换
+     *
+     * @param obj
+     * @param clazz
+     * @param <T>
+     * @return
+     */
+    public static final <T> T cast(Object obj, Class<T> clazz) {
+        if (obj == null) {
+            return null;
+        } else if (!clazz.isAssignableFrom(obj.getClass())) {
+            throw new RuntimeException(String.format("对象[%s]转换为[%s]失败", obj, clazz.getSimpleName()));
+        } else {
+            return (T) obj;
+        }
     }
 
 }
