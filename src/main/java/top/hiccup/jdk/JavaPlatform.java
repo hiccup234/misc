@@ -25,6 +25,7 @@ public class JavaPlatform {
         System.out.println("Hello world!");
         System.currentTimeMillis(); // 时间戳
     }
+
 }
 
 
