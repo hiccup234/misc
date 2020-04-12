@@ -1,12 +1,10 @@
-package top.hiccup.misc;
+package top.hiccup.misc.dev_tools;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.util.StringUtils;
 
 import java.io.*;
-import java.util.Map;
 
 /**
  * F
@@ -14,7 +12,7 @@ import java.util.Map;
  * @author wenhy
  * @date 2020/3/31
  */
-public class Switch {
+public class FileOperate {
 
     public static void main(String[] args) {
         FileInputStream in = null;
