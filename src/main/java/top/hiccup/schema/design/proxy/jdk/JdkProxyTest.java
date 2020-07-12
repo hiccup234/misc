@@ -1,11 +1,11 @@
-package top.hiccup.schema.proxy.jdk;
+package top.hiccup.schema.design.proxy.jdk;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-import top.hiccup.schema.proxy.BusiServiceImpl;
-import top.hiccup.schema.proxy.IBusiService;
+import top.hiccup.schema.design.proxy.BusiServiceImpl;
+import top.hiccup.schema.design.proxy.IBusiService;
 
 /**
  * JDK动态代理测试类：普通类final方法不能被动态代理

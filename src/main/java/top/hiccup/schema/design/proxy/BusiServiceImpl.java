@@ -1,4 +1,4 @@
-package top.hiccup.schema.proxy;
+package top.hiccup.schema.design.proxy;
 
 /**
  * 实现了接口的Service类

@@ -1,4 +1,4 @@
-package top.hiccup.schema.proxy;
+package top.hiccup.schema.design.proxy;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package top.hiccup.schema.proxy.jdk;
+package top.hiccup.schema.design.proxy.jdk;
 
 import sun.misc.ProxyGenerator;
 import java.io.FileNotFoundException;

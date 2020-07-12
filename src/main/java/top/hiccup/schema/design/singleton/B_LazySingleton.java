@@ -1,4 +1,4 @@
-package top.hiccup.schema.singleton;
+package top.hiccup.schema.design.singleton;
 
 /**
  * 单例模式：懒汉方式

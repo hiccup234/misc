@@ -1,4 +1,4 @@
-package top.hiccup.schema.singleton;
+package top.hiccup.schema.design.singleton;
 
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;

@@ -1,4 +1,4 @@
-package top.hiccup.schema.singleton;
+package top.hiccup.schema.design.singleton;
 
 /**
  * 单例模式：枚举方式，跟静态内部类的原理是一样的
