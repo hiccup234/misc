@@ -11,22 +11,22 @@ package top.hiccup.schema.design.factory;
  */
 public class SimpleFactory {
 
-    static abstract class Product {
+    static interface Product {
         public abstract String name();
         // other abstract busi method
     }
 
-    static class ConcreteProductA extends Product {
+    static class ConcreteProductA implements Product {
         @Override
         public String name() {
-            return "A";
+            return "Product A";
         }
     }
 
-    static class ConcreteProductB extends Product {
+    static class ConcreteProductB implements Product {
         @Override
         public String name() {
-            return "B";
+            return "Product B";
         }
     }
 
