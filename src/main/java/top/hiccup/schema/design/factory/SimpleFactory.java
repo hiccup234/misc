@@ -49,9 +49,9 @@ public class SimpleFactory {
 
     static class Program {
         public static void main(String[] args) {
-            Product product;
-            product = Factory.getProduct("A");
+            Product product = Factory.getProduct("A");
             System.out.println(product.name());
+
             product = Factory.getProduct("B");
             System.out.println(product.name());
         }
