@@ -1,18 +1,16 @@
-package top.hiccup.schema.design.proxy.jdk;
+package top.hiccup.schema.design.proxy.dynamic.jdk;
 
 import sun.misc.ProxyGenerator;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-class Cat {
-    public String test() {
-        return "abc";
-    }
-}
-
 /**
  * 测试向磁盘写增强后的class文件
+ *
+ * @author wenhy
+ * @date 2018/1/14
  */
 public class JdkProxySourceClassFileTest {
 
@@ -21,7 +19,7 @@ public class JdkProxySourceClassFileTest {
         writeClassToDisk(path, Cat.class.getName(), new Class[]{Cat.class});
     }
 
-    public static void writeClassToDisk(String path, String className, Class[] clazzs){
+    public static void writeClassToDisk(String path, String className, Class[] clazzs) {
         // Proxy.newProxyInstance最后也是调用到这个方法来生成class文件（btye数组），然后再加载
         byte[] classFile = ProxyGenerator.generateProxyClass(className, clazzs);
         FileOutputStream fos = null;
@@ -34,7 +32,7 @@ public class JdkProxySourceClassFileTest {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            if(fos != null){
+            if (fos != null) {
                 try {
                     fos.close();
                 } catch (IOException e) {
@@ -42,5 +40,12 @@ public class JdkProxySourceClassFileTest {
                 }
             }
         }
+    }
+}
+
+
+class Cat {
+    public String test() {
+        return "abc";
     }
 }

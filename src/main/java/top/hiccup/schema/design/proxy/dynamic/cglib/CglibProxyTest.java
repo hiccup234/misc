@@ -1,4 +1,4 @@
-package top.hiccup.schema.design.proxy.cglib;
+package top.hiccup.schema.design.proxy.dynamic.cglib;
 
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
@@ -6,8 +6,8 @@ import net.sf.cglib.proxy.MethodProxy;
 
 import java.lang.reflect.Method;
 
-import top.hiccup.schema.design.proxy.BusiServiceImpl;
-import top.hiccup.schema.design.proxy.IBusiService;
+import top.hiccup.schema.design.proxy.dynamic.BusiServiceImpl;
+import top.hiccup.schema.design.proxy.dynamic.IBusiService;
 
 /**
  * Cglib 的动态代理测试(通过继承实现，不要求被代理对象实现接口)
@@ -18,13 +18,16 @@ import top.hiccup.schema.design.proxy.IBusiService;
 public class CglibProxyTest {
 
     private class MyCallBack implements MethodInterceptor {
+
         private IBusiService busiService;
+
         public MyCallBack(IBusiService busiService) {
             this.busiService = busiService;
         }
+
         // 实现“成员方法拦截器”方法
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-            String str = (String)method.invoke(this.busiService, objects);
+            String str = (String) method.invoke(this.busiService, objects);
             return str.toUpperCase();
         }
     }
@@ -43,15 +46,18 @@ public class CglibProxyTest {
 
     private class MyCallBack2 implements MethodInterceptor {
         private BusiSeviceWithNoIntf busiSeviceWithNoIntf;
+
         public MyCallBack2(BusiSeviceWithNoIntf busiSeviceWithNoIntf) {
             this.busiSeviceWithNoIntf = busiSeviceWithNoIntf;
         }
+
         // 实现“成员方法拦截器”方法
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-            String str = (String)method.invoke(this.busiSeviceWithNoIntf, objects);
+            String str = (String) method.invoke(this.busiSeviceWithNoIntf, objects);
             return str.toUpperCase();
         }
     }
+
     private class MyCglibFactory2 {
         public BusiSeviceWithNoIntf produce(BusiSeviceWithNoIntf busiSeviceWithNoIntf) {
             Enhancer enhancer = new Enhancer();

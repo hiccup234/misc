@@ -1,4 +1,4 @@
-package top.hiccup.schema.design.proxy.cglib;
+package top.hiccup.schema.design.proxy.dynamic.cglib;
 
 /**
  * 没有实现接口的Service类

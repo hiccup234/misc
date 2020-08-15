@@ -1,11 +1,11 @@
-package top.hiccup.schema.design.proxy;
+package top.hiccup.schema.design.proxy.staticc;
 
 import org.junit.Test;
 
 /**
  * 代理一般分为：静态代理 和 动态代理
  *
- * 静态代理其实就是通过代码耦合起来
+ * 静态代理其实就是通过代码耦合起来，一旦原接口增加方法，目标对象与代理对象都要修改
  *
  * @author wenhy
  * @date 2019/2/16

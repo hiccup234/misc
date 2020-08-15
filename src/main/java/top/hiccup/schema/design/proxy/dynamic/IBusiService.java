@@ -1,4 +1,4 @@
-package top.hiccup.schema.design.proxy;
+package top.hiccup.schema.design.proxy.dynamic;
 
 /**
  * 定义BusiService接口
