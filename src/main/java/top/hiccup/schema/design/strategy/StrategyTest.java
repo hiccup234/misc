@@ -53,6 +53,7 @@ public class StrategyTest {
         DiscountContext discountContext = new DiscountContext(null);
         double originPrice = 89.9;
         System.out.println("普通会员打折价格：" + discountContext.getDiscountPrice(originPrice));
+        // TODO 这里会不会存在线程安全问题？
         discountContext.changeDiscountStrategy(new VipDiscount());
         System.out.println("VIP会员打折价格：" + discountContext.getDiscountPrice(originPrice));
     }
