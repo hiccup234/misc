@@ -43,6 +43,8 @@ import java.lang.reflect.AnnotatedElement;
  * @author  Josh Bloch
  * @since   1.5
  */
+
+// TODO 元注解有：@Documented  @Retention  @Target  @Inherited  @Native
 public interface Annotation {
     /**
      * Returns true if the specified object represents an annotation

@@ -40,6 +40,9 @@ package java.lang.annotation;
  * @since 1.5
  * @jls 9.6.3.2 @Retention
  */
+
+// TODO 这里很像语言的自举（bootstrap）啊，怎么解决无限递归的呢？
+
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)
