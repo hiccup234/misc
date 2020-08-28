@@ -145,7 +145,7 @@ class Thread implements Runnable {
     static {
         registerNatives();
     }
-
+    //TODO 为什么只有name是volatile修饰的？（name可以通过setName动态修改）
     private volatile String name;
     private int            priority;
     private Thread         threadQ;
@@ -924,6 +924,7 @@ class Thread implements Runnable {
                 return;
             }
         }
+        // TODO 这里为什么还要再interrupt0一次？
         interrupt0();
     }
 
@@ -944,6 +945,7 @@ class Thread implements Runnable {
      * @see #isInterrupted()
      * @revised 6.0
      */
+    // TODO 静态方法清除中断位标志
     public static boolean interrupted() {
         return currentThread().isInterrupted(true);
     }
@@ -961,6 +963,7 @@ class Thread implements Runnable {
      * @see     #interrupted()
      * @revised 6.0
      */
+    // TODO 实例方法不清除中断位
     public boolean isInterrupted() {
         return isInterrupted(false);
     }
