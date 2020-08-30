@@ -1,4 +1,4 @@
-package top.hiccup.jdk.lang.instrument;
+package top.hiccup.agent.instrument;
 
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;

@@ -127,7 +127,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.5.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
@@ -141,7 +141,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Premain-Class>top.hiccup.jdk.lang.instrument.PreMainAgent</Premain-Class>
+                            <Premain-Class>top.hiccup.agent.instrument.PreMainAgent</Premain-Class>
                             <Boot-Class-Path>D:\MyDev\Maven\m2\JDD\org\javassist\javassist\3.25.0-GA/javassist-3.25.0-GA.jar</Boot-Class-Path>
                         </manifestEntries>
                     </archive>

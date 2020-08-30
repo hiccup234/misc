@@ -1,4 +1,4 @@
-package top.hiccup.jdk.lang.instrument;
+package top.hiccup.agent.instrument;
 
 import javassist.*;
 import javassist.expr.ExprEditor;
