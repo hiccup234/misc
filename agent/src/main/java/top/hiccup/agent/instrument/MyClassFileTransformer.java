@@ -32,7 +32,7 @@ public class MyClassFileTransformer implements ClassFileTransformer {
                             Class<?> classBeingRedefined, ProtectionDomain protectionDomain,
                             byte[] classfileBuffer) throws IllegalClassFormatException {
         byte[] transformed = null;
-        System.out.println("Transforming " + className);
+        System.out.println("[MyTransforming] " + className);
         ClassPool pool = ClassPool.getDefault();
         CtClass cl = null;
         try {

@@ -38,8 +38,8 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Premain-Class>top.hiccup.jdk.lang.instrument.PreMainAgent</Premain-Class>
-                            <Boot-Class-Path>D:\MyDev\Maven\m2\JDD\org\javassist\javassist\3.25.0-GA/javassist-3.25.0-GA.jar</Boot-Class-Path>
+                            <Premain-Class>top.hiccup.agent.instrument.PreMainAgent</Premain-Class>
+                            <Boot-Class-Path>D:\MyDev\Maven\m2\JDD\org\javassist\javassist\3.25.0-GA\javassist-3.25.0-GA.jar</Boot-Class-Path>
                         </manifestEntries>
                     </archive>
                 </configuration>

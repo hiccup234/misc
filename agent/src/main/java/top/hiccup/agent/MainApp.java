@@ -1,4 +1,4 @@
-package top.hiccup.agent.app;
+package top.hiccup.agent;
 
 /**
  * 测试类
@@ -13,6 +13,8 @@ public class MainApp {
     }
 
     public void test() {
+        System.out.println("Hello World!");
+        System.out.println("Hello World!");
         System.out.println("Hello World!");
     }
 }
