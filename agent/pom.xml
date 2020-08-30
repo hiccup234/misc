@@ -17,6 +17,14 @@
             <artifactId>javassist</artifactId>
             <version>3.25.0-GA</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.sun</groupId>
+            <artifactId>tools</artifactId>
+            <version>1.8.0</version>
+            <scope>system</scope>
+            <systemPath>C:\Program Files\Java\jdk1.8.0_162\lib\tools.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -37,9 +45,12 @@
                 <version>2.2</version>
                 <configuration>
                     <archive>
+<!--                        <manifestEntries>-->
+<!--                            <Premain-Class>top.hiccup.agent.instrument.PreMainAgent</Premain-Class>-->
+<!--                            <Boot-Class-Path>D:\MyDev\Maven\m2\JDD\org\javassist\javassist\3.25.0-GA\javassist-3.25.0-GA.jar</Boot-Class-Path>-->
+<!--                        </manifestEntries>-->
                         <manifestEntries>
-                            <Premain-Class>top.hiccup.agent.instrument.PreMainAgent</Premain-Class>
-                            <Boot-Class-Path>D:\MyDev\Maven\m2\JDD\org\javassist\javassist\3.25.0-GA\javassist-3.25.0-GA.jar</Boot-Class-Path>
+                            <Premain-Class>top.hiccup.agent.agentmain.AgentMain</Premain-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>

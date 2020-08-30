@@ -1,15 +1,15 @@
 package top.hiccup.agent;
 
 /**
- * 测试类
+ * 程序启动之前启动代理(pre-main)
  *
  * @author wenhy
  * @date 2020/8/28
  */
-public class MainApp {
+public class MainInst {
 
     public static void main(String[] args) {
-        new MainApp().test();
+        new MainInst().test();
     }
 
     public void test() {

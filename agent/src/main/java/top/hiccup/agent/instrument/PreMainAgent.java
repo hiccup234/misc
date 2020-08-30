@@ -18,7 +18,8 @@ import java.lang.instrument.Instrumentation;
  * java.lang.instrument.Instrumentation 是 instrument 包中定义的一个接口，也是这个包的核心部分，
  * 集中了其中几乎所有的功能方法，例如类定义的转换和操作等等。
  *
- * java -javaagent:agent-1.0-SNAPSHOT.jar -cp "D:\MyDev\Maven\m2\JDD\org\javassist\javassist\3.25.0-GA/javassist-3.25.0-GA.jar;D:\MyDev\IDEA Workspace\Hiccup\misc\agent\target\agent-1.0-SNAPSHOT.jar" top.hiccup.agent.MainApp
+ * JVM运行：
+ * java -javaagent:agent-1.0-SNAPSHOT.jar -cp "D:\MyDev\Maven\m2\JDD\org\javassist\javassist\3.25.0-GA/javassist-3.25.0-GA.jar;D:\MyDev\IDEA Workspace\Hiccup\misc\agent\target\agent-1.0-SNAPSHOT.jar" top.hiccup.agent.MainInst
  *
  * @author wenhy
  * @date 2020/8/28
