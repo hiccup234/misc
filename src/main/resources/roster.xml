@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/css" href="mystyle.css"?>
+<roster>
+  学生花名册
+  <student>
+    <name>张三</name>
+    <origin>成都</origin>
+    <age>18</age>
+    <telephone>13311111111</telephone>
+  </student>
+  <student>
+    <name>李四</name>
+    <origin>北京</origin>
+    <age>19</age>
+    <telephone>13311112222</telephone>
+  </student>
+</roster>

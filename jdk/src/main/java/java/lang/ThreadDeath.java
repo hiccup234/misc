@@ -45,7 +45,7 @@ package java.lang;
  *
  * @since   JDK1.0
  */
-// TODO �̱߳�stop0��ʱ�򴫲�
+// TODO 线程被stop0的时候传参
 public class ThreadDeath extends Error {
     private static final long serialVersionUID = -4417128565033088268L;
 }
