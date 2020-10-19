@@ -3,21 +3,16 @@ package top.hiccup.algorithm.tree.bintree;
 import java.util.LinkedList;
 import java.util.List;
 
-import lombok.Data;
-
 /**
  * 二叉树树节点
  *
  * @author wenhy
  * @date 2019/3/31
  */
-@Data
 public class TreeNode {
-    int val;
-    TreeNode left;
-    TreeNode right;
 
-    public TreeNode() {}
+    public TreeNode() {
+    }
 
     public TreeNode(int val) {
         this.val = val;
@@ -35,29 +30,58 @@ public class TreeNode {
         this.right = treeNode.right;
     }
 
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    public int getVal() {
+        return val;
+    }
+
+    public void setVal(int val) {
+        this.val = val;
+    }
+
+    public TreeNode getLeft() {
+        return left;
+    }
+
+    public void setLeft(TreeNode left) {
+        this.left = left;
+    }
+
+    public TreeNode getRight() {
+        return right;
+    }
+
+    public void setRight(TreeNode right) {
+        this.right = right;
+    }
 
     /**
      * 二叉树的前中后序遍历
      */
     public static void preOrderPrint(TreeNode root) {
         if (root == null) {
-            return ;
+            return;
         }
         System.out.println(root);
         preOrderPrint(root.left);
         preOrderPrint(root.right);
     }
+
     public static void inOrderPrint(TreeNode root) {
         if (root == null) {
-            return ;
+            return;
         }
         inOrderPrint(root.left);
         System.out.println(root);
         inOrderPrint(root.right);
     }
+
     public static void postOrderPrint(TreeNode root) {
         if (root == null) {
-            return ;
+            return;
         }
         postOrderPrint(root.left);
         postOrderPrint(root.right);

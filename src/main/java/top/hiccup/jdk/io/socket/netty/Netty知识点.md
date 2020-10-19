@@ -25,9 +25,10 @@
     针对WebSocket和HTTP协议，Netty提供的ChannelHandler已经处理了拆包粘包问题。
     
 ### Unix五种IO模型
-
     1、阻塞式I/O：blocking IO
     2、非阻塞式I/O： nonblocking IO
     3、I/O多路复用（select，poll，epoll...）：IO multiplexing
     4、信号驱动式I/O（SIGIO）：signal driven IO
     5、异步I/O（POSIX的aio_系列函数）：asynchronous IO
+    
+    其实前四种I/O模型都是同步I/O操作，他们的区别在于第一阶段，而他们的第二阶段是一样的：在数据从内核复制到应用缓冲区期间（用户空间），进程阻塞于recvfrom调用。 

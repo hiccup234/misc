@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * 传统阻塞I/O：客户端类
+ * 传统阻塞I/O：客户端类（JDK1.4之前推出的API）
  *
  * @author wenhy
  * @date 2018/2/5
@@ -14,6 +14,7 @@ import java.net.Socket;
 public class Client {
 
     private static final String HOST = "127.0.0.1";
+
     private static final int PORT = 23401;
 
     public static void main(String[] args) {

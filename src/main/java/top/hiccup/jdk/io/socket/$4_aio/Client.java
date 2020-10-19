@@ -7,7 +7,7 @@ import java.nio.channels.AsynchronousSocketChannel;
 import java.util.concurrent.ExecutionException;
 
 /**
- * 客户端类
+ * 客户端类（JDK1.7时推出了AIO）
  *
  * @author wenhy
  * @date 2018/2/5

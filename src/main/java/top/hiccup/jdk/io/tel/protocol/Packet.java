@@ -1,9 +1,5 @@
 package top.hiccup.jdk.io.tel.protocol;
 
-import java.io.Serializable;
-
-import lombok.Data;
-
 /**
  * 自定义通信协议数据报
  *
@@ -13,7 +9,6 @@ import lombok.Data;
  * @author wenhy
  * @date 2019/1/13
  */
-@Data
 public abstract class Packet {
 
     /**
@@ -32,11 +27,41 @@ public abstract class Packet {
      * 数据长度
      */
     private int contentLength;
+
+    public byte getVersion() {
+        return version;
+    }
+
+    public void setVersion(byte version) {
+        this.version = version;
+    }
+
+    public byte getSerialize() {
+        return serialize;
+    }
+
+    public void setSerialize(byte serialize) {
+        this.serialize = serialize;
+    }
+
+    public short getCommand() {
+        return command;
+    }
+
+    public void setCommand(short command) {
+        this.command = command;
+    }
+
+    public int getContentLength() {
+        return contentLength;
+    }
+
+    public void setContentLength(int contentLength) {
+        this.contentLength = contentLength;
+    }
 }
 
-enum Serialize {
-    BYTES((byte)1, "字节数组"),
-    MSG((byte)2, "字符消息"),
+enum Serialize {    BYTES((byte)1, "字节数组"),    MSG((byte)2, "字符消息"),
     REQUEST((byte)3, "请求对象");
 
     private byte serialize;

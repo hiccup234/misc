@@ -163,6 +163,30 @@ class Consumer implements Runnable {
 
 @Data
 class DataItem {
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
+    public Float getQuota() {
+        return quota;
+    }
+
+    public void setQuota(Float quota) {
+        this.quota = quota;
+    }
+
     private String id;
     private String groupId;
     private Float quota;
@@ -172,15 +196,6 @@ class DataItem {
 class DataWareHouse {
 
     private static final int THREAD_POOL_SIZE = 10;
-    /**
-     * 缓存生产者线程从文件读取的数据
-     */
-    private LinkedBlockingQueue<DataItem> queue;
-    /**
-     * 存储消费者线程处理后的数据（排序、获取同组指标最小的数据）
-     */
-    private TreeMap<String, DataItem> treeMap;
-    private ExecutorService threadPool;
 
     public DataWareHouse() {
         queue = new LinkedBlockingQueue<>();
@@ -193,6 +208,44 @@ class DataWareHouse {
         });
         threadPool = new ThreadPoolExecutor(Runtime.getRuntime().availableProcessors(), 50,
                 600, TimeUnit.SECONDS, new ArrayBlockingQueue<>(500), new ThreadPoolExecutor.CallerRunsPolicy());
+    }
+
+    /**
+     * 缓存生产者线程从文件读取的数据
+     */
+    private LinkedBlockingQueue<DataItem> queue;
+    /**
+     * 存储消费者线程处理后的数据（排序、获取同组指标最小的数据）
+     */
+    private TreeMap<String, DataItem> treeMap;
+    private ExecutorService threadPool;
+
+    public LinkedBlockingQueue<DataItem> getQueue() {
+        return queue;
+    }
+
+    public void setQueue(LinkedBlockingQueue<DataItem> queue) {
+        this.queue = queue;
+    }
+
+    public static int getThreadPoolSize() {
+        return THREAD_POOL_SIZE;
+    }
+
+    public TreeMap<String, DataItem> getTreeMap() {
+        return treeMap;
+    }
+
+    public void setTreeMap(TreeMap<String, DataItem> treeMap) {
+        this.treeMap = treeMap;
+    }
+
+    public ExecutorService getThreadPool() {
+        return threadPool;
+    }
+
+    public void setThreadPool(ExecutorService threadPool) {
+        this.threadPool = threadPool;
     }
 }
 
