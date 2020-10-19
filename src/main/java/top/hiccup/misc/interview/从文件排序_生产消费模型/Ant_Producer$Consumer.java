@@ -1,24 +1,11 @@
 package top.hiccup.misc.interview.从文件排序_生产消费模型;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
-import lombok.Data;
+import java.util.concurrent.*;
 
 /**
  * 蚂蚁面试题：假设本地有一个文件夹，文件夹下面有若干文件（文件数大于50小于100），文件的存储格式是文本格式（后缀名是.txt)，文件的大小每个文件不会超过100k。
@@ -161,8 +148,11 @@ class Consumer implements Runnable {
     }
 }
 
-@Data
 class DataItem {
+    private String id;
+    private String groupId;
+    private Float quota;
+
     public String getId() {
         return id;
     }
@@ -186,13 +176,8 @@ class DataItem {
     public void setQuota(Float quota) {
         this.quota = quota;
     }
-
-    private String id;
-    private String groupId;
-    private Float quota;
 }
 
-@Data
 class DataWareHouse {
 
     private static final int THREAD_POOL_SIZE = 10;

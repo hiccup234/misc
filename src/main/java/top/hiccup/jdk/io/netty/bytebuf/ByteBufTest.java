@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.socket.netty.bytebuf;
+package top.hiccup.jdk.io.netty.bytebuf;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;

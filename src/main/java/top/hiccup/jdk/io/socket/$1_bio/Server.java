@@ -27,9 +27,12 @@ public class Server {
             System.out.println("Server start at port: " + PORT);
             // 2、阻塞等待客户端的请求到来，由本地方法accept0阻塞程序
             Socket socket = serverSocket.accept();
+
             // 3、这里存在的问题是：每来一个客户端请求就要创建一个线程，Windows目前最多能支持到1000个，Linux最多也只能到2000左右线程数
             // 而且频繁创建线程很消耗系统资源，但是如果由当前线程处理请求，则Server就没法监听其他客户端请求的到来了（只能串行一个一个响应客户端请求）
+            // 也可以交给当前线程处理
             new Thread(new ServerHandler(socket)).start();
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

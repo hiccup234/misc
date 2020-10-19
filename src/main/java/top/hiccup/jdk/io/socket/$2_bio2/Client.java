@@ -26,6 +26,7 @@ public class Client {
             PrintWriter out = null;
             try {
                 socket = new Socket(HOST, PORT);
+
                 in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 out = new PrintWriter(socket.getOutputStream(), true);
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -35,6 +36,7 @@ public class Client {
                     System.out.println(Thread.currentThread().getName() + "接收到:" + response);
                     Thread.sleep(1000);
                 }
+
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {

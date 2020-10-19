@@ -26,12 +26,14 @@ public class Client {
             // 即两端程序建立起了连接，如果服务端此时未启动则会抛异常：java.net.ConnectException: Connection refused: connect
             // 注意：这里的Socket类型跟服务器accept0返回的类型是同一个
             socket = new Socket(HOST, PORT);
+
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             out = new PrintWriter(socket.getOutputStream(), true);
             // 向服务器端发送数据
             out.println("你好服务器..");
             String response = in.readLine();
             System.out.println("Client接收到:" + response);
+
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

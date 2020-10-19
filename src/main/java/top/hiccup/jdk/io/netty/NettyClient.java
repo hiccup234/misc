@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.socket.netty;
+package top.hiccup.jdk.io.netty;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;

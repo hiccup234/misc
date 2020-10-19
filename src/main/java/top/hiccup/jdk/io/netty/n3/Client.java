@@ -1,4 +1,4 @@
-package top.hiccup.jdk.io.socket.netty.n3;
+package top.hiccup.jdk.io.netty.n3;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
@@ -40,8 +40,8 @@ public class Client {
 			 .handler(new ChannelInitializer<SocketChannel>() {
 					@Override
 					protected void initChannel(SocketChannel sc) throws Exception {
-						sc.pipeline().addLast(top.hiccup.jdk.io.socket.netty.n3.MarshallingCodeCFactory.buildMarshallingDecoder());
-						sc.pipeline().addLast(top.hiccup.jdk.io.socket.netty.n3.MarshallingCodeCFactory.buildMarshallingEncoder());
+						sc.pipeline().addLast(top.hiccup.jdk.io.netty.n3.MarshallingCodeCFactory.buildMarshallingDecoder());
+						sc.pipeline().addLast(top.hiccup.jdk.io.netty.n3.MarshallingCodeCFactory.buildMarshallingEncoder());
 						//超时handler（当服务器端与客户端在指定时间以上没有任何进行通信，则会关闭响应的通道，主要为减小服务端资源占用）
 						sc.pipeline().addLast(new ReadTimeoutHandler(5)); 
 						sc.pipeline().addLast(new ClientHandler());
