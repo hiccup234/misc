@@ -23,3 +23,11 @@
         
     自定义协议常用第四种拆包器，类比Java的字节码文件格式和Redis的压缩表，可以做到数据结构紧凑，节省网络带宽。
     针对WebSocket和HTTP协议，Netty提供的ChannelHandler已经处理了拆包粘包问题。
+    
+### Unix五种IO模型
+
+    1、阻塞式I/O：blocking IO
+    2、非阻塞式I/O： nonblocking IO
+    3、I/O多路复用（select，poll，epoll...）：IO multiplexing
+    4、信号驱动式I/O（SIGIO）：signal driven IO
+    5、异步I/O（POSIX的aio_系列函数）：asynchronous IO
