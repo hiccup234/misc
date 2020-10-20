@@ -7,7 +7,7 @@ import java.nio.channels.SocketChannel;
 import java.nio.charset.Charset;
 
 /**
- * NIO客户端（JDK1.4时推出了NIO--IO多路复用模型）
+ * NIO客户端
  *
  * @author wenhy
  * @date 2018/2/5

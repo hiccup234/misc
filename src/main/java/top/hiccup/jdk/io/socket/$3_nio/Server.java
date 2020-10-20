@@ -13,22 +13,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 /**
- * BIO：同步阻塞，如果网络传输速度很慢，处理I/O的线程就要一直等待，直到数据传输完毕
- * NIO(Non-block IO)：同步非阻塞（JDK1.5）
- * AIO(NIO2.0)：异步非阻塞（JDK1.7）
- *
- * =====================================================================================================================
- * JDK的NIO底层由操作系统的select、poll、epoll、kqueue等系统调用支持，该实现饱受诟病的空轮询bug会导致cpu飙升100%（Netty解决了这个问题）
- *
- * select、poll和epoll都是linux下I/O多路复用的实现，可以实现单线程管理多个连接。
- *
- * select是基于轮询的，轮询连接的状态，返回I/O状态，poll和select的原理基本相同，
- * 只是poll没有最大连接数的限制，因为它是基于链表的，而select是基于数组的，有最大连接数的限制（32位1024个）。
- * epoll和前两者的区别是：epoll不是基于轮询的检查，而是为每个fd注册回调，I/O准备好时，会执行回调，效率比select和poll高很多。
- *======================================================================================================================
- *
- * BIO中每个连接都要有一一对应的一个线程去处理，直到连接关闭
- * NIO中通过selector选择器，把已经准备好的channel（连接）交给线程，一个线程可以管理多个channel
+ * nio
  *
  * @author wenhy
  * @date 2018/2/5
@@ -59,13 +44,14 @@ public class Server {
                 while (true) {
                     // 监测是否有新的连接，这里的1指的是阻塞的时间为 1ms
                     if (listenSelector.select(1) > 0) {
+                        // 返回的是这个Selector轮询的所有的channel
                         Set<SelectionKey> set = listenSelector.selectedKeys();
                         Iterator<SelectionKey> keyIterator = set.iterator();
                         while (keyIterator.hasNext()) {
                             SelectionKey key = keyIterator.next();
                             if (key.isAcceptable()) {
                                 try {
-                                    // 每来一个新连接，不需要创建一个线程，而是直接注册到clientSelector（不管数据是否开始传输和完成）
+                                    // 每来一个新连接，不需要创建一个线程，而是直接注册到clientSelector
                                     SocketChannel clientChannel = ((ServerSocketChannel) key.channel()).accept();
                                     clientChannel.configureBlocking(false);
                                     clientChannel.register(handleSelector, SelectionKey.OP_READ);
@@ -124,20 +110,7 @@ public class Server {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-// =====================================================================================================================
-
+// 另一种实现方式
 class AnOtherServer implements Runnable {
     private Selector seletor;
     /**

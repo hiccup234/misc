@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
- * 传统阻塞I/O：客户端类（JDK1.4之前推出的API）
+ * 传统阻塞I/O：客户端类（JDK1.5之前推出的API）
  *
  * @author wenhy
  * @date 2018/2/5
