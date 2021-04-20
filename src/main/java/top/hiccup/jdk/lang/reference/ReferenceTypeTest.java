@@ -75,7 +75,7 @@ public class ReferenceTypeTest {
         try {
             // 幻象引用的get方法永远返回null
             System.out.println("P-->"+p.get());
-            // Remove 是一个阻塞方法，可以指定 timeout，或者选择一直阻塞
+            // Remove 是一个阻塞方法，可以指定 timeout，或者选择一直阻塞（remove可以理解为获取的意思）
             Reference<Object> ref = refQueue.remove(1000L);
             if (ref != null) {
                 System.out.println(p);
