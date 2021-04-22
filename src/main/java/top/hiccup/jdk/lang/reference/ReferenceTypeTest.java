@@ -41,6 +41,7 @@ import java.lang.ref.ReferenceQueue;
  *
  * ====================================================================================================================
  *
+ *  // 怀疑应用存在引用（或 finalize）导致的回收问题，可以用这几个参数查看
  * @VM args: -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintReferenceGC
  *
  * @author wenhy
