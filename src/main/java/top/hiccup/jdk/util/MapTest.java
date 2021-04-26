@@ -1,13 +1,11 @@
-package top.hiccup.jdk.container;
+package top.hiccup.jdk.util;
 
-import java.lang.instrument.Instrumentation;
+import org.junit.Test;
+
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.WeakHashMap;
-
-import org.junit.Test;
 
 /**
  * 1、Hashtable：早期(1.0)Java类库的哈希表实现，本身是同步的（线程安全），不支持null键和null值

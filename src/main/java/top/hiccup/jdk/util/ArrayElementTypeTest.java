@@ -1,4 +1,4 @@
-package top.hiccup.jdk.container;
+package top.hiccup.jdk.util;
 
 /**
  * 数组元素的类型要求匹配

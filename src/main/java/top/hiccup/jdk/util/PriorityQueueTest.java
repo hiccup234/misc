@@ -1,4 +1,4 @@
-package top.hiccup.jdk.container;
+package top.hiccup.jdk.util;
 
 import java.util.Iterator;
 import java.util.concurrent.PriorityBlockingQueue;
