@@ -21,3 +21,26 @@ sunpkcs11.jar           PKCS#11 证书工具
 
 zipfs.jar               Zip File System Provider（文件压缩包）
 
+
+
+## rt.jar（runtime）主要包路径
+-com
+    -oracle
+    -sun
+-java
+    -applet     网页小程序
+    -awt        图形界面设计
+    -beans      配合反射，序列化等
+    -io         普通IO，文件IO，流（重要）
+    -lang       Java语言相关特性（重要）
+    -math       数学软件包BigDecimal、BigInteger
+    -net        网络包
+    -nio        非阻塞IO（重要）
+    -rmi        远程调用
+    -security   
+    -sql
+    -text       文本转换SimpleDateFormat等
+    -util       工具包，JUC（重要）
+-javax
+-org
+-sun
