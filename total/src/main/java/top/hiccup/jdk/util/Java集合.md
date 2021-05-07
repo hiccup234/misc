@@ -43,7 +43,7 @@
    2、不是线程安全的，可以用Collections.synchronizedMap来构造同步的Map
    3、要求数组长度为2的n次方
 [OK]LinkedHashMap
-   1、LinkedHashMap直接继承自HashMap，然后添加双向链表数据结构，以支持按插入顺序遍历
+   1、LinkedHashMap直接继承自HashMap，然后添加双向链表数据结构，以支持按插入顺序遍历（访问顺序：put/get/compute）
 [OK]TreeMap
    1、TreeMap基于红黑树（Red-Black tree）实现，基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n)
    2、TreeMap也是非同步，线程不安全的
@@ -66,7 +66,7 @@
    2、因为通常需要复制整个基础数组，所以可变操作（add()、set() 和 remove() 等等）的开销很大
    3、迭代器支持hasNext(), next()等不可变操作，但不支持可变 remove()等操作
    4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突。在构造迭代器时，迭代器依赖于不变的数组快照
-[]ConcurrentSkipListMap
+[?]ConcurrentSkipListMap
    1、采用跳跃表实现
    2、可以保持插入的元素排序
 

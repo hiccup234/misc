@@ -26,9 +26,11 @@ public class ContainerFailFastTest {
         intList.add(2);
         intList.add(4);
         intList.add(9);
+        // ConcurrentModificationException
         for (Integer i : intList) {
             System.out.println(i);
             if (i.intValue() == 2) {
+                // 删除数组元素要用Iterator.remove
                 intList.remove(i);
             }
         }
