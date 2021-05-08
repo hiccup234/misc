@@ -795,6 +795,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * Replaces all linked nodes in bin at index for given hash unless
      * table is too small, in which case resizes instead.
      */
+    // TODO 树化操作，1、防止链表过长影响存取性能 2、安全问题：java hash dos 攻击，大量伪造hash值相同得key，导致服务器CPU占用高
     final void treeifyBin(Node<K,V>[] tab, int hash) {
         int n, index; Node<K,V> e;
         if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
