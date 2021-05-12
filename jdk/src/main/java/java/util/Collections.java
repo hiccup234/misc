@@ -104,6 +104,19 @@ public class Collections {
     private static final int INDEXOFSUBLIST_THRESHOLD =   35;
 
     /**
+     * TODO 主要结构有：
+     * 1、List 排序方法
+     * 2、List 二分查找
+     * 3、List 反转
+     * 4、List 打算元素顺序 shuffle
+     * 5、List 填充、拷贝、最小大值
+     * 6、List 元素移动
+     * 7、unmodifiable 装饰 Collection,Set,List,Map
+     * 8、synchronized 装饰 Collection,Set,List,Map
+     * 9、checked 装饰 Collection,Set,List,Map 用来做类型检查
+     */
+
+    /**
      * Sorts the specified list into ascending order, according to the
      * {@linkplain Comparable natural ordering} of its elements.
      * All elements in the list must implement the {@link Comparable}
@@ -2547,6 +2560,7 @@ public class Collections {
     /**
      * @serial include
      */
+    // TODO 装饰器模式 Collections.SynchronizedMap
     private static class SynchronizedMap<K,V>
         implements Map<K,V>, Serializable {
         private static final long serialVersionUID = 1978198479659022715L;
