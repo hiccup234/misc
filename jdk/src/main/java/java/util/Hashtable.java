@@ -131,7 +131,7 @@ import java.util.function.Function;
 
 
 /**
- * 1、HashMap的同步版本，初始化容量为11，扩容时*2倍+1
+ * 1、HashMap的同步版本（基本都是在public方法上加synchronized），初始化容量为11，扩容时*2倍+1
  * 2、不要求数组的长度为2的n次方，这点与HashMap不同，主要是因为取index采用了普通的取余：int index = (hash & 0x7FFFFFFF) % tab.length;
  */
 public class Hashtable<K,V>
