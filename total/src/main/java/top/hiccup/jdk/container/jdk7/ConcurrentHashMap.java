@@ -16,10 +16,10 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 1、实现了JDK1.5新增的ConcurrentMap接口
- * 2、采用分段锁设计，锁粒度细化的思想
+ * 2、采用分段锁设计，锁粒度细化的思想，Segment继承自ReentrantLock，每个Segment都是一个小的HashMap，每次加锁是锁在Segment上的；‘67
  * 3、ConcurrentHashMap是弱一致性的：（CAP理论）（get与containsKey都未加锁，所以可能读到过时数据）
- *      如果要求强一致性，那么必须使用Collections.synchronizedMap()方法来装饰一个普通的HashMap或者HashTable
- * 4、get 和 containsKey 方法没有加锁做同步
+ *      如果要求强一致性，那么必须使用Collections.synchronizedMap()方法来装饰一个普通的HashMap或者用HashTable
+ * 4、get 和 containsKey 方法没有加锁做同步（利用了volatile的线程可见性）
  *      containsValue 和 contains 是用来判断当前map是否存在参数value，要先给所有段加上锁，判断完之后再解锁
  * 5、ConcurrentHashMap 跟 HashTable 一样，因为并发的原因它们并不支持空的key和value
  *
@@ -35,19 +35,19 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
 
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
-    // 默认并发度，即分段锁个数，即Segment[]的数组长度，并发度可能为25等，这时Segment[]数组长度就位32（2的N次方）
+    // TODO 默认并发度，即分段锁个数，即Segment[]的数组长度，并发度可能为25等，这时Segment[]数组长度就位32（2的N次方）
     static final int DEFAULT_CONCURRENCY_LEVEL = 16;
 
     static final int MAXIMUM_CAPACITY = 1 << 30;
 
-    // 每个SEGMENT片段table的最小容量，默认至少为2，避免当使用next指针时，需要立即扩容
+    // TODO 每个SEGMENT片段table的最小容量，默认至少为2，避免当使用next指针时，需要立即扩容
     static final int MIN_SEGMENT_TABLE_CAPACITY = 2;
 
-    // 最大Segment[]的数组长度
+    // TODO 最大Segment[]的数组长度
     static final int MAX_SEGMENTS = 1 << 16; // slightly conservative
 
-    // 在重排序lock之前，非同步化尝试调用size和containsValue方法的次数。
-    // 这个为了避免无限制的尝试，当table需要持续性的修改，这样做是为了尽可能的保证获取准确的结果
+    // TODO 在重排序lock之前，非同步化尝试调用size和containsValue方法的次数。
+    // TODO 这个为了避免无限制的尝试，当table需要持续性的修改，这样做是为了尽可能的保证获取准确的结果
     static final int RETRIES_BEFORE_LOCK = 2;
 
     private static class Holder {
@@ -84,17 +84,17 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * hash code of keys to make hash collisions harder to find.
      */
     /**
-     * hash种子：避免过多的hash碰撞（collisions）
+     * TODO hash种子：避免过多的hash碰撞（collisions）
      */
     private transient final int hashSeed = randomHashSeed(this);
 
     /**
-     * 获取ConcurrentHashMap实例的随机种子
+     * TODO 获取ConcurrentHashMap实例的随机种子
      */
     private static int randomHashSeed(ConcurrentHashMap instance) {
-//        if (sun.misc.VM.isBooted() && Holder.ALTERNATIVE_HASHING) {
-////            return sun.misc.Hashing.randomHashSeed(instance);
-////        }
+        if (sun.misc.VM.isBooted() && Holder.ALTERNATIVE_HASHING) {
+//            return sun.misc.Hashing.randomHashSeed(instance);
+        }
         return 0;
     }
 
@@ -103,7 +103,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * key's hash code are used to choose the segment.
      */
     /**
-     * 段索引的掩码，通过hash值的高位来索引段的选择
+     * TODO 段索引的掩码，通过hash值的高位来索引段的选择
      */
     final int segmentMask;
 
@@ -111,7 +111,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * Shift value for indexing within segments.
      */
     /**
-     * 索引在片段中的偏移量
+     * TODO 索引在片段中的偏移量
      */
     final int segmentShift;
 
@@ -119,7 +119,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * The segments, each of which is a specialized hash table.
      */
     /**
-     * 注意这个Segment数组是final的
+     * TODO 注意这个Segment数组是final的
      */
     final Segment<K,V>[] segments;
 
@@ -132,17 +132,15 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * out as a user-visible Map.Entry.
      */
     /**
-     * 这里与HashMap的Entry不同，这里是HashEntry，而且也是final的
-     * @param <K>
-     * @param <V>
+     * TODO  这里与HashMap的Entry不同，这里是HashEntry，而且也是final的
      */
     static final class HashEntry<K,V> {
-        // key和hash是final的，不可修改
+        // TODO key和hash是final的，不可修改
         final int hash;
         final K key;
-        // 注意这里的volatile关键字，如果在get的时候有线程并发的put或者remove了的话，要保证当前读线程感知到
+        // TODO 注意这里的volatile关键字，如果在get的时候有线程并发的put或者remove了的话，要保证当前读线程能感知到
         volatile V value;
-        // next引用也是volatile的
+        // TODO next引用也是volatile的
         volatile HashEntry<K,V> next;
 
         HashEntry(int hash, K key, V value, HashEntry<K,V> next) {
@@ -163,7 +161,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         // Unsafe mechanics
         static final sun.misc.Unsafe UNSAFE;
         static final long nextOffset;
-        // 静态代码块
+        // TODO 静态代码块
         static {
             try {
                 UNSAFE = sun.misc.Unsafe.getUnsafe();
@@ -219,8 +217,8 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
      * simplify some locking and avoid separate construction.
      */
     /**
-     * Segment继承自ReentrantLock，提供可重入锁机制，一个Segment管理着一个小的 hash tables
-     * TODO 为什么是直接继承而不是组合 has a呢？
+     * TODO Segment继承自ReentrantLock，提供可重入锁机制，一个Segment管理着一个小的 hash tables
+     * TODO 为什么是直接继承而不是组合 has a 呢？
      */
     static final class Segment<K,V> extends ReentrantLock implements Serializable {
         private static final long serialVersionUID = 2249069246763182397L;
@@ -287,14 +285,14 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
          * Doubles size of table and repacks entries, also adding the
          * given node to new table
          */
-        // 动态扩容，原来容量 << 1 变为2倍
+        // TODO 动态扩容，原来容量 << 1 变为2倍
         private void rehash(HashEntry<K,V> node) {
             HashEntry<K,V>[] oldTable = table;
             int oldCapacity = oldTable.length;
             int newCapacity = oldCapacity << 1;
             threshold = (int)(newCapacity * loadFactor);
             HashEntry<K,V>[] newTable = (HashEntry<K,V>[]) new HashEntry[newCapacity];
-            // 2 的N次方 -1
+            // TODO 2 的N次方 -1
             int sizeMask = newCapacity - 1;
             for (int i = 0; i < oldCapacity ; i++) {
                 HashEntry<K,V> e = oldTable[i];
@@ -474,7 +472,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         }
 
         final void clear() {
-            lock(); // 先获取锁，锁住当前段
+            lock(); // TODO 先获取锁，锁住当前段
             try {
                 HashEntry<K,V>[] tab = table;
                 for (int i = 0; i < tab.length ; i++)
@@ -482,7 +480,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
                 ++modCount;
                 count = 0;
             } finally {
-                unlock(); // 记得要在finally里释放
+                unlock(); // TODO 记得要在finally里释放
             }
         }
     }
@@ -553,9 +551,9 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
             ++sshift;
             ssize <<= 1;
         }
-        // 偏移量，2的多少次方
+        // TODO 偏移量，2的多少次方
         this.segmentShift = 32 - sshift;
-        // 段掩码
+        // TODO 段掩码
         this.segmentMask = ssize - 1;
         if (initialCapacity > MAXIMUM_CAPACITY)
             initialCapacity = MAXIMUM_CAPACITY;
@@ -594,7 +592,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
     }
 
     public boolean isEmpty() {
-        // 统计每个段的实际元素数量
+        // TODO 统计每个段的实际元素数量
         long sum = 0L;
         final Segment<K,V>[] segments = this.segments;
         for (int j = 0; j < segments.length; ++j) {
@@ -714,7 +712,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         long last = 0;
         int retries = -1;
         try {
-            outer:      // Java标号，用来退出多重循环
+            outer:      // TODO Java标号，用来退出多重循环
             for (;;) {
                 if (retries++ == RETRIES_BEFORE_LOCK) {
                     for (int j = 0; j < segments.length; ++j)
@@ -799,7 +797,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
     public boolean remove(Object key, Object value) {
         int hash = hash(key);
         Segment<K,V> s;
-        // value要是传null的话可以马上判断并返回false，因为ConcurrentHashMap不包含为null的value
+        // TODO value要是传null的话可以马上判断并返回false，因此ConcurrentHashMap不包含为null的value
         return value != null && (s = segmentForHash(hash)) != null &&
                 s.remove(key, hash, value) != null;
     }
@@ -1037,7 +1035,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
                 seg.unlock();
             }
         }
-        //TODO 为什么这里要写两个null呢？一个引用4字节
+        // TODO 为什么这里要写两个null呢？一个引用4字节
         s.writeObject(null);
         s.writeObject(null);
     }
@@ -1075,7 +1073,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
     private static final int TSHIFT;
     private static final long HASHSEED_OFFSET;
 
-    // 静态代码块，放在代码最后，类加载完成且初始化完静态变量后执行这里
+    // TODO 静态代码块，放在代码最后，类加载完成且初始化完静态变量后执行这里
     static {
         int ss, ts;
         try {

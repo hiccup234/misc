@@ -141,8 +141,8 @@ import java.util.Set;
 /**
  * 1、HashMap中可以允许key和value同时为空（只能有一个为null的key，放在第一个桶中，即table[0]中）
  * 2、动态扩容是把hash表的数组长度扩为原来的2倍（数组长度必须是2的x次方，方便快速定位 hash & n-1）
- * 3.默认初始化容量（数组长度）为16，加载因子为0.75
- * 4.如果加载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间），如果考虑直接用数组存储的话，则没法处理hash冲突的问题
+ * 3、默认初始化容量（数组长度）为16，负载因子为0.75
+ * 4、如果负载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间），如果考虑直接用数组存储的话，则没法处理hash冲突的问题
  *
  * JDK1.7的HashMap在不正当使用（多线程并发访问）下容易出现：
  * 1、扩容时形成循环链表，从而导致下次get或put时CPU100%的死循环
@@ -170,7 +170,7 @@ public class HashMap<K,V>
     /**
      * The load factor used when none specified in constructor.
      */
-    // TODO 默认的加载因子为0.75
+    // TODO 默认的负载因子为0.75
     static final float DEFAULT_LOAD_FACTOR = 0.75f;
 
     /**
