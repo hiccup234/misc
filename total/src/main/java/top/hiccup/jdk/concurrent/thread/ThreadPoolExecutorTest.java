@@ -1,6 +1,9 @@
 package top.hiccup.jdk.concurrent.thread;
 
-import java.util.concurrent.*;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 在使用有界队列时，若有新的任务提交：
@@ -8,6 +11,9 @@ import java.util.concurrent.*;
  * 2、若大于corePoolSize，则将任务加入队列，
  * 3、若队列已满，则在总线程数不大于maximumPoolSize的前提下，创建新的线程并执行本次提交的任务（注意注意：队列里的任务不会优先执行）
  * 4、若队列已满，且线程数大于maximumPoolSize，则执行拒绝策略。
+ *
+ * submit 与 execute 区别？
+ * ThreadPoolExecutor shutdown 过程
  *
  * @author wenhy
  * @date 2019/1/9
