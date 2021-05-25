@@ -39,7 +39,7 @@ public class CopyFileTest {
         try (FileChannel sourceChannel = new FileInputStream(source).getChannel();
              FileChannel targetChannel = new FileOutputStream(dest).getChannel()) {
             for (long count = sourceChannel.size(); count > 0; ) {
-                // transferTo可以实现零拷贝方法，省去内核态和用户态的切换
+                // transferTo可以实现零拷贝方法，省去内核态和用户态的切换（应用读取数据时，先在内核态将数据从磁盘读取到内核缓存，再切换到用户态将数据从内核缓存读取到用户缓存。）
                 long transferred = sourceChannel.transferTo(
                         sourceChannel.position(), count, targetChannel);
                 sourceChannel.position(sourceChannel.position() + transferred);
