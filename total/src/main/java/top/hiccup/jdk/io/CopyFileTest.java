@@ -1,11 +1,6 @@
 package top.hiccup.jdk.io;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 
@@ -14,7 +9,7 @@ import java.nio.file.Files;
  * 1、利用java.io的Stream类库来完成拷贝
  * 2、利用java.io的transferTo方法完成拷贝
  * 3、Java标准库java.nio.file.Files.copy
- *
+ * <p>
  * 对于 Copy 的效率，这个其实与操作系统和配置等情况相关，总体上来说，NIO transferTo/From 的方式可能更快，
  * 因为它更能利用现代操作系统底层机制，避免不必要拷贝和上下文切换。
  *
@@ -40,8 +35,7 @@ public class CopyFileTest {
              FileChannel targetChannel = new FileOutputStream(dest).getChannel()) {
             for (long count = sourceChannel.size(); count > 0; ) {
                 // transferTo可以实现零拷贝方法，省去内核态和用户态的切换（应用读取数据时，先在内核态将数据从磁盘读取到内核缓存，再切换到用户态将数据从内核缓存读取到用户缓存。）
-                long transferred = sourceChannel.transferTo(
-                        sourceChannel.position(), count, targetChannel);
+                long transferred = sourceChannel.transferTo(sourceChannel.position(), count, targetChannel);
                 sourceChannel.position(sourceChannel.position() + transferred);
                 count -= transferred;
             }
@@ -51,9 +45,9 @@ public class CopyFileTest {
     /**
      * copy方法有几个重载版本
      * public static Path copy(Path source, Path target, CopyOption... options)
-     *
+     * <p>
      * public static long copy(InputStream in, Path target, CopyOption... options)
-     *
+     * <p>
      * public static long copy(Path source, OutputStream out)
      */
     public static void copyFileByFiles(File source, File dest) throws IOException {
