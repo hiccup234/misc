@@ -10,6 +10,9 @@ import java.util.List;
 /**
  * JVM直接内存溢出测试
  *
+ * 最大直接内存： -XX:MaxDirectMemorySize=512M
+ * 直接内存诊断： -XX:NativeMemoryTracking={summary|detail}
+ *
  * @author wenhy
  * @date 2018/9/5
  */
