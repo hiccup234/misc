@@ -11,7 +11,8 @@ import java.util.List;
  * JVM直接内存溢出测试
  *
  * 最大直接内存： -XX:MaxDirectMemorySize=512M
- * 直接内存诊断： -XX:NativeMemoryTracking={summary|detail}
+ * 直接内存诊断， Native Memory Tracking（NMT）： -XX:NativeMemoryTracking={summary|detail}
+ * 激活 NMT 通常都会导致 JVM 出现 5%~10% 的性能下降
  *
  * @author wenhy
  * @date 2018/9/5
