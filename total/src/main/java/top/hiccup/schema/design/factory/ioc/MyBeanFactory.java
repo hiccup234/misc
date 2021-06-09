@@ -1,6 +1,6 @@
 package top.hiccup.schema.design.factory.ioc;
 
-public interface ApplicationContext {
+public interface MyBeanFactory {
 
     Object getBean(String beanName) throws Exception;
 }

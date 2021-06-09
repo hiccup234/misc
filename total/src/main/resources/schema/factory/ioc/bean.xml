@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="GBK"?>
+<beans>
+    <bean id="user" class="top.hiccup.schema.design.factory.ioc.beans.User">
+        <property name="name" value="hiccup"/>
+        <property name="age" ref="21"/>
+    </bean>
+    <!-- 配置一个prototype行为的Bean实例 -->
+    <bean id="now" class="java.util.Date" scope="prototype"/>
+</beans>

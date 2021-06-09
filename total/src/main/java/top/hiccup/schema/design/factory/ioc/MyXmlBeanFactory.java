@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class YeekuXmlApplicationContext implements ApplicationContext {
+public class MyXmlBeanFactory implements MyBeanFactory {
 
     /**
      * 保存容器中所有单例模式的Bean实例
@@ -24,10 +24,13 @@ public class YeekuXmlApplicationContext implements ApplicationContext {
      */
     private Element root;
 
-    public YeekuXmlApplicationContext(String filePath) throws Exception {
+    public MyXmlBeanFactory(String filePath) throws Exception {
         SAXReader reader = new SAXReader();
-        String path = System.getProperties().getProperty("user.dir") + "\\src\\";
-        doc = reader.read(path + filePath);
+        String path = System.getProperties().getProperty("classpath");
+
+        System.out.println(path);
+
+        doc = reader.read(filePath);
         root = doc.getRootElement();
         initPool();
         initProp();

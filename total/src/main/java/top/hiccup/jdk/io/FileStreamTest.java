@@ -1,15 +1,6 @@
 package top.hiccup.jdk.io;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.util.HashMap;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.io.*;
 
 /**
  * IO练习：文件输入流示例
@@ -30,7 +21,7 @@ public class FileStreamTest {
             while (true) {
                 String lineStr = br.readLine();
                 bw.write(lineStr);
-                if("Q".equals(lineStr.toUpperCase())) {
+                if ("Q".equals(lineStr.toUpperCase())) {
                     bw.flush();
                     break;
                 }
@@ -63,13 +54,13 @@ public class FileStreamTest {
                 System.out.println(3);
         }
 
-        try{
+        try {
             throw new Exception("1");
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new Exception("2");
-        }catch (Exception e) {
+        } catch (Exception e) {
             throw new Exception("3");
-        }finally {
+        } finally {
             throw new Exception("4");
         }
     }
