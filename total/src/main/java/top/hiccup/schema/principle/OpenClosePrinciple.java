@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author wenhy
  * @date 2018/8/18
  */
-public class $6_OpenClosePrinciple {
+public class OpenClosePrinciple {
 
     interface User {
     }
