@@ -30,7 +30,7 @@ import java.util.List;
  *
  * 【线程状态切换】
  * Thread类中定义了NEW, RUNNABLE, BLOCKED, WAITING, TIMED_WAITING, TERMINATED六种线程状态
- * 注意：从JavaAPI的较都出发线程并没有RUNNING状态，所以jstack打印出来的线程栈也没有RUNNING状态的线程（见thread-status.jpg）
+ * 注意：JavaAPI中线程并没有RUNNING状态，所以jstack打印出来的线程栈也没有RUNNING状态的线程（见thread-status.jpg）
  *
  *
  * @author wenhy
