@@ -5,7 +5,7 @@ import java.util.TreeMap;
 import java.util.concurrent.locks.StampedLock;
 
 /**
- * JDK8新增StampedLock锁测试
+ * JDK8新增StampedLock锁测试（可以用来替代读写锁）
  *
  * @author wenhy
  * @date 2019/4/11
