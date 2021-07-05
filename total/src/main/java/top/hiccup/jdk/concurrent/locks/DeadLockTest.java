@@ -8,7 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 /**
- * 一个简单的死锁案例（100%会发生死锁，再也不怕面试官让手写死锁了）
+ * 一个简单的死锁案例（100%会发生死锁）
  *
  * 【死锁的4个必要条件】
  * 1、互斥条件 -- 获取到资源的线程（进程）具有排他性，即独占资源
@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
  * 3、死锁检测：mxBean.findDeadlockedThreads()可以检测死锁的存在
  * 4、避免一个线程获取多个锁
  *
- * ## 可以通过jstack来查看线程栈找出死锁（工具会自动帮忙分析）
+ * ## 可以通过jstack来查看线程栈找出死锁（工具会自动帮忙分析，jps找出Java进程号，jstack + 进程号）
  *
  * @author wenhy
  * @date 2019/1/9
