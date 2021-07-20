@@ -14,9 +14,9 @@ import java.util.concurrent.Executors;
  * CountDownLatch和CyclicBarrier的区别：
  *
  * 1、CountDownLatch：老师（主线程）上课点名，点完所有学生后才开始上课，被阻塞的线程是老师
- *      不可重复使用
+ *      不可重复使用，偏向事件模型
  * 2、CyclicBarrier：教官（主线程）让一排士兵（工作线程）依此报数，报完后整体右转跑步前进，被阻塞的线程是士兵
- *      可重复使用
+ *      可重复使用，偏向线程模型
  *
  * (01) CountDownLatch的作用是允许1或N个线程等待其他线程完成执行；而CyclicBarrier则是允许N个线程相互等待。
  * (02) CountDownLatch的计数器无法被重置；CyclicBarrier的计数器可以被重置后使用，因此它被称为是循环的barrier。

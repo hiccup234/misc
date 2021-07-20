@@ -5,6 +5,8 @@ import java.util.concurrent.CountDownLatch;
 /**
  * 使用CountDownLacth的示例场景：常用于监听某些初始化操作，等初始化完成再通知主线程继续工作
  *
+ * Phaser功能与CountDownLatch相似，
+ *
  * @author wenhy
  * @date 2018/1/7
  */
