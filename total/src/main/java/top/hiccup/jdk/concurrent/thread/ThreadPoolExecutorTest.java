@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * 在使用有界队列时，若有新的任务提交：
- * 1、如果线程池实际线程数小于corePoolSize，则优先创建线程并执行
+ * 1、如果线程池实际线程数小于corePoolSize，则优先创建线程并执行（即使有空闲的核心线程，也会创建新的线程去执行）
  * 2、若大于corePoolSize，则将任务加入队列，
  * 3、若队列已满，则在总线程数不大于maximumPoolSize的前提下，创建新的线程并执行本次提交的任务（注意注意：队列里的任务不会优先执行）
  * 4、若队列已满，且线程数大于maximumPoolSize，则执行拒绝策略。
