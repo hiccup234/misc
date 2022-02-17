@@ -1,10 +1,7 @@
 package top.hiccup.algorithm;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -119,6 +116,12 @@ public class Test {
         System.out.println(Arrays.toString(arr));
     }
 
+    @org.junit.Test
+    public void test2() {
+        Solution solution = new Solution();
+//        System.out.println(solution.isPowerOfTwo(32));
+    }
+
     public class ListNode {
         int val;
         ListNode next;
@@ -127,7 +130,6 @@ public class Test {
             val = x;
         }
     }
-
 
     public class TreeNode {
         int val;
@@ -163,11 +165,5 @@ public class Test {
             }
             return map.entrySet().iterator().next().getKey();
         }
-    }
-
-    @org.junit.Test
-    public void test2() {
-        Solution solution = new Solution();
-//        System.out.println(solution.isPowerOfTwo(32));
     }
 }
