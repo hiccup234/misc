@@ -665,7 +665,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
             else {
                 // TODO 依此判断当前要put的key是不是在链表上，如果都不在则追加在末尾，并判断是否需要树化（链表上已经有8个，插入第9个的时候）
-                // TODO 这里跟JDK7不一样，JDK7判断如果不存在key，则在链表头添加
+                // TODO 这里跟JDK7不一样，JDK7判断如果不存在key，则在链表头添加（防止使用不当出现CPU100%的问题）
                 for (int binCount = 0; ; ++binCount) {
                     if ((e = p.next) == null) {
                         p.next = newNode(hash, key, value, null);
@@ -722,6 +722,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                 newThr = oldThr << 1; // double threshold
         }
         else if (oldThr > 0) // initial capacity was placed in threshold
+            // TODO 旧表未初始化，但旧阈值(oldThr)>0 对应情况：new时指定了initialCapacity，直接用new时的值
             newCap = oldThr;
         else {               // zero initial threshold signifies using defaults
             newCap = DEFAULT_INITIAL_CAPACITY;
@@ -766,7 +767,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                             }
                             // TODO 否则另外列一个链表，表示需要重新哈希的元素（需要移动到新位置的节点）
                             // TODO 注意：重新哈希后，同一链表上的元素的新下标是有固定规律的，要么留在原下标，要么增加固定oldCap的步长
-                            // TODO      按我的理解，这里采用了类似一致性哈希的思想，防止扩容时大规模元素的重hash和移动插入
+                            // TODO 按我的理解，这里采用了类似一致性哈希的思想，防止扩容时大规模元素的重hash和移动插入
                             else {
                                 if (hiTail == null)
                                     hiHead = e;
