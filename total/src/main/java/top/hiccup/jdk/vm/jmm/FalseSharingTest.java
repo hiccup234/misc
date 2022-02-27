@@ -9,7 +9,7 @@ package top.hiccup.jdk.vm.jmm;
  * 
  * https://mp.weixin.qq.com/s/pND6Xm7YGR2aropFApc0xA
  * 
- * 【缓存一致性协议】 MESI（由Intel提出）
+ * 【缓存一致性协议】 MESI（由Intel提出，各CPU通过snooping技术嗅探其他CPU缓存行中的变量状态）
  * 在 MESI 协议中，每个 Cache line 有4个状态，可用 2 个 bit 表示，它们分别是：
  * M(Modified)： 这行数据有效，数据被修改了，和内存中的数据不一致，数据只存在于本 Cache 中；
  * E(Exclusive)：这行数据有效，数据和内存中的数据一致，数据只存在于本 Cache 中；
