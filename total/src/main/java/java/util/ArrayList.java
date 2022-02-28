@@ -126,16 +126,16 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Shared empty array instance used for empty instances.
-     * TODO 相对1.7新增了共享的空数组，采用饿汉模式加载，会不会存在线程安全问题？ 带参数的构造器使用
      */
+    // TODO 相对1.7新增了共享的空数组，采用饿汉模式加载，会不会存在线程安全问题？ 带参数的构造器使用
     private static final Object[] EMPTY_ELEMENTDATA = {};
 
     /**
      * Shared empty array instance used for default sized empty instances. We
      * distinguish this from EMPTY_ELEMENTDATA to know how much to inflate when
      * first element is added.
-     * TODO 无参构造器使用，无参构造器默认容量是10，带参则要用参数作为初始容量，所以分开
      */
+    // TODO 无参构造器使用，无参构造器默认容量是10，带参则要用参数作为初始容量，所以分开
     private static final Object[] DEFAULTCAPACITY_EMPTY_ELEMENTDATA = {};
 
     /**
@@ -143,8 +143,8 @@ public class ArrayList<E> extends AbstractList<E>
      * The capacity of the ArrayList is the length of this array buffer. Any
      * empty ArrayList with elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA
      * will be expanded to DEFAULT_CAPACITY when the first element is added.
-     * TODO 这里不是泛型E的数组
      */
+    // TODO 这里不是泛型E的数组
     transient Object[] elementData; // non-private to simplify nested class access
 
     /**
@@ -203,8 +203,8 @@ public class ArrayList<E> extends AbstractList<E>
      * Trims the capacity of this <tt>ArrayList</tt> instance to be the
      * list's current size.  An application can use this operation to minimize
      * the storage of an <tt>ArrayList</tt> instance.
-     * TODO 修剪容器大小，多次扩容后删除等操作后可以调用此方法
      */
+    // TODO 修剪容器大小，多次扩容后删除等操作后可以调用此方法
     public void trimToSize() {
         modCount++;
         if (size < elementData.length) {
@@ -258,8 +258,8 @@ public class ArrayList<E> extends AbstractList<E>
      * Some VMs reserve some header words in an array.
      * Attempts to allocate larger arrays may result in
      * OutOfMemoryError: Requested array size exceeds VM limit
-     * TODO Object[]数组限制的大小
      */
+    // TODO Object[]数组限制的大小
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
 
     /**
@@ -363,10 +363,10 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * Returns a shallow copy of this <tt>ArrayList</tt> instance.  (The
      * elements themselves are not copied.)
-     * TODO 浅拷贝
      *
      * @return a clone of this <tt>ArrayList</tt> instance
      */
+    // TODO 浅拷贝
     public Object clone() {
         try {
             ArrayList<?> v = (ArrayList<?>) super.clone();
@@ -389,11 +389,11 @@ public class ArrayList<E> extends AbstractList<E>
      *
      * <p>This method acts as bridge between array-based and collection-based
      * APIs.
-     * TODO 这里返回的是一个拷贝数组，所以修改返回的数组不会影响原有的List
      *
      * @return an array containing all of the elements in this list in
      *         proper sequence
      */
+    // TODO 这里返回的是一个拷贝数组，所以修改返回的数组不会影响原有的List
     public Object[] toArray() {
         return Arrays.copyOf(elementData, size);
     }

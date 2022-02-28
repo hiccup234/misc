@@ -124,11 +124,11 @@ public class Arrays {
      * offers O(n log(n)) performance on many data sets that cause other
      * quicksorts to degrade to quadratic performance, and is typically
      * faster than traditional (one-pivot) Quicksort implementations.
-     * TODO JDK1.6及以前排序算法都是用的经典快排，JDK1.7时换成了两路快排
-     * TODO 其实两路快排在时间复杂度上并不比经典快排优秀（元素比较次数更多）
-     * TODO 但是现代计算机CPU性能普遍高出内存读写性能很多，两路快排可以减少内存读写次数（如果元素值没被替换则多次读也只算一次，因为有高速缓存）
      * @param a the array to be sorted
      */
+    // TODO JDK1.6及以前排序算法都是用的经典快排，JDK1.7时换成了两路快排
+    // TODO 其实两路快排在时间复杂度上并不比经典快排优秀（元素比较次数更多）
+    // TODO 但是现代计算机CPU性能普遍高出内存读写性能很多，两路快排可以减少内存读写次数（如果元素值没被替换则多次读也只算一次，因为有高速缓存）
     public static void sort(int[] a) {
         DualPivotQuicksort.sort(a, 0, a.length - 1, null, 0, 0);
     }
@@ -447,8 +447,8 @@ public class Arrays {
      * @param a the array to be sorted
      *
      * @since 1.8
-     * TODO 并行排序
      */
+    // TODO 并行排序
     public static void parallelSort(byte[] a) {
         int n = a.length, p, g;
         if (n <= MIN_ARRAY_SORT_GRAN ||
@@ -1179,8 +1179,8 @@ public class Arrays {
      * compatibility with broken comparators) using a system property.
      * Cannot be a static boolean in the enclosing class due to
      * circular dependencies. To be removed in a future release.
-     * TODO 是否使用遗留的归并排序算法
      */
+    // TODO 是否使用遗留的归并排序算法
     static final class LegacyMergeSort {
         private static final boolean userRequested =
             java.security.AccessController.doPrivileged(
