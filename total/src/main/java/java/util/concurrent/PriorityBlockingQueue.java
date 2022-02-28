@@ -97,10 +97,7 @@ import java.util.function.Consumer;
  * @param <E> the type of elements held in this collection
  */
 
-
-/**
- * 利用数据结构堆，可以实现优先级队列
- */
+// TODO 利用数据结构堆，可以实现优先级队列
 @SuppressWarnings("unchecked")
 public class PriorityBlockingQueue<E> extends AbstractQueue<E>
     implements BlockingQueue<E>, java.io.Serializable {

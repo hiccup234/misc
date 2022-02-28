@@ -238,12 +238,9 @@ import java.util.function.*;
  * @param <V> the type of mapped values
  */
 
-
-/**
- * 1、JDK7采用Segment锁分段的思想（继承自ReentrantLock），JDK8是在每条链表头加锁（synchronized），锁粒度更加的细化
- * 2、get方法并没有加锁，因为只需要通过Node中被volatile修饰的val提供的线程可见性即可，注意：next节点也是volatile修饰的
- * 3、哈希表的一种实现方式（数组+链表），数组长度都是2^n以方便快速定位元素下标（h & (length - 1)），扩容也都是扩为2倍或4、8等
- */
+// TODO JDK7采用Segment锁分段的思想（继承自ReentrantLock），JDK8是在每条链表头加锁（synchronized），锁粒度更加的细化
+// TODO get方法并没有加锁，因为只需要通过Node中被volatile修饰的val提供的线程可见性即可，注意：next节点也是volatile修饰的
+// TODO 哈希表的一种实现方式（数组+链表），数组长度都是2^n以方便快速定位元素下标（h & (length - 1)），扩容也都是扩为2倍或4、8等
 public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     implements ConcurrentMap<K,V>, Serializable {
     private static final long serialVersionUID = 7249069246763182397L;

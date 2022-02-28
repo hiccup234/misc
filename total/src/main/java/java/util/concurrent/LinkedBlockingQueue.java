@@ -73,10 +73,7 @@ import java.util.function.Consumer;
  * @param <E> the type of elements held in this collection
  */
 
-
-/**
- * 1、单向链表实现的阻塞队列，名义上的无界队列，默认最大size为Integer.MAX_VALUE
- */
+// TODO 1、单向链表实现的阻塞队列，名义上的无界队列，默认最大size为Integer.MAX_VALUE
 public class LinkedBlockingQueue<E> extends AbstractQueue<E>
         implements BlockingQueue<E>, java.io.Serializable {
     private static final long serialVersionUID = -6903933977591709194L;

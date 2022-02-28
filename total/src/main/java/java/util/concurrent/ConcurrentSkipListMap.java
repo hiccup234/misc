@@ -97,10 +97,7 @@ import java.util.function.Function;
  * @since 1.6
  */
 
-
-/**
- * 1、采用跳表实现的Map，适合做快速查找，某些情况下比TreeMap的红黑树更有优势
- */
+// TODO 1、采用跳表实现的并发Map，适合做快速查找，某些情况下比TreeMap的红黑树更有优势
 public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
     implements ConcurrentNavigableMap<K,V>, Cloneable, Serializable {
     /*
@@ -549,8 +546,8 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
      * fields, they have different types and are handled in different
      * ways, that can't nicely be captured by placing field in a
      * shared abstract class.
-     * TODO 跳跃表数据结构，每个节点都有指向右边以及下一级索引的指针
      */
+    // TODO 跳跃表数据结构，每个节点都有指向右边以及下一级索引的指针
     static class Index<K,V> {
         final Node<K,V> node;
         final Index<K,V> down;

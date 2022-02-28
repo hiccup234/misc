@@ -321,11 +321,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Doug Lea
  */
 
-
-/**
- * 1、常用来实现自定义的线程池
- * 2、多注意execute和addWorker方法
- */
+// TODO 1、常用来实现自定义的线程池
+// TODO 2、多注意execute和addWorker方法
 public class ThreadPoolExecutor extends AbstractExecutorService {
     /**
      * The main pool control state, ctl, is an atomic integer packing

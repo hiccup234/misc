@@ -105,11 +105,8 @@ import java.util.concurrent.TimeUnit;
  * @author Doug Lea
  */
 
-
-/**
- * 1、可重入互斥锁（独占锁），通过构造器可以指定是否为公平锁，默认是非公平锁
- * 2、主要包装了底层AQS的功能
- */
+// TODO 1、可重入互斥锁（独占锁），通过构造器可以指定是否为公平锁，默认是非公平锁
+// TODO 2、主要包装了底层AQS的功能
 public class ReentrantLock implements Lock, java.io.Serializable {
     private static final long serialVersionUID = 7373984872572414699L;
     /** Synchronizer providing all implementation mechanics */
@@ -209,8 +206,8 @@ public class ReentrantLock implements Lock, java.io.Serializable {
         /**
          * Performs lock.  Try immediate barge, backing up to normal
          * acquire on failure.
-         * TODO 首先试着直接cas替换同步器的state获取锁，如果失败再acquire
          */
+        // TODO 首先试着直接cas替换同步器的state获取锁，如果失败再acquire
         final void lock() {
             if (compareAndSetState(0, 1))
                 setExclusiveOwnerThread(Thread.currentThread());
@@ -236,8 +233,8 @@ public class ReentrantLock implements Lock, java.io.Serializable {
         /**
          * Fair version of tryAcquire.  Don't grant access unless
          * recursive call or no waiters or is first.
-         * TODO 跟NonfairSync的tryAcquire不同，这里要判断阻塞队列是否为空
          */
+        // TODO 跟NonfairSync的tryAcquire不同，这里要判断阻塞队列是否为空
         protected final boolean tryAcquire(int acquires) {
             final Thread current = Thread.currentThread();
             int c = getState();

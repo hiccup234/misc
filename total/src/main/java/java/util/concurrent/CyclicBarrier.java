@@ -137,10 +137,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Doug Lea
  */
 
-
-/**
- * 1、CyclicBarrier是可以重复使用的，在计数未达到parties时所有线程都要阻塞等待
- */
+// TODO 1、CyclicBarrier是可以重复使用的，在计数未达到parties时所有线程都要阻塞等待
 public class CyclicBarrier {
     /**
      * Each use of the barrier is represented as a generation instance.
@@ -152,9 +149,8 @@ public class CyclicBarrier {
      * and all the rest are either broken or tripped.
      * There need not be an active generation if there has been a break
      * but no subsequent reset.
-     *
-     * TODO 因为是Cyclic的，可以重复使用，所以这里声明了Generation类
      */
+    // TODO 因为是Cyclic的，可以重复使用，所以这里声明了Generation类
     private static class Generation {
         boolean broken = false;
     }

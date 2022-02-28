@@ -80,13 +80,10 @@ import java.util.function.UnaryOperator;
  * @param <E> the type of elements held in this collection
  */
 
-
-/**
- * 1、没有初始容量，最适合于List大小通常保持很小，读远多于写，需要在遍历期间防止线程间的冲突
- * 2、因为通常需要复制整个基础数组，所以可变操作（add()、set() 和 remove() 等等）的开销很大
- * 3、迭代器支持hasNext()，next()等不可变操作，但不支持可变remove()等操作
- * 4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突，在构造迭代器时，迭代器依赖于不变的数组快照
- */
+// TODO 1、没有初始容量，最适合于List大小通常保持很小，读远多于写，需要在遍历期间防止线程间的冲突
+// TODO 2、因为通常需要复制整个基础数组，所以可变操作（add()、set() 和 remove() 等等）的开销很大
+// TODO 3、迭代器支持hasNext()，next()等不可变操作，但不支持可变remove()等操作
+// TODO 4、使用迭代器进行遍历的速度很快，并且不会与其他线程发生冲突，在构造迭代器时，迭代器依赖于不变的数组快照
 public class CopyOnWriteArrayList<E>
     implements List<E>, RandomAccess, Cloneable, java.io.Serializable {
     private static final long serialVersionUID = 8673264195747942595L;
