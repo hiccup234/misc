@@ -624,7 +624,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
         public final int hashCode()   { return key.hashCode() ^ val.hashCode(); }
         public final String toString(){ return key + "=" + val; }
         // TODO 这里让子类继承，为什么不声明成Abstract呢？
-        // TODO 注意这里是final修饰的，也就是说ConcurrentHashMap的Node节点是不支持setValue方法的，那么用volatile修饰的用意又是什么呢？
+        // TODO 注意这里是final修饰的，也就是说ConcurrentHashMap的Node节点是不支持setValue方法的，那么用volatile修饰的用意又是什么呢？（保证多线程get时的可见性，get没有加锁）
         public final V setValue(V value) {
             throw new UnsupportedOperationException();
         }
@@ -788,7 +788,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
      * creation, or 0 for default. After initialization, holds the
      * next element count value upon which to resize the table.
      */
-    // TODO 数组长度
+    // TODO 数组扩容的控制变量，涉及cas
     private transient volatile int sizeCtl;
 
     /**
@@ -906,7 +906,7 @@ public class ConcurrentHashMap<K,V> extends AbstractMap<K,V>
     /**
      * {@inheritDoc}
      */
-    // TODO size方法没有加锁，所以结果可能并不准确，具有弱一致性，cell模式能保证size结果尽量准确，为什么不直接用LongAdder呢？
+    // TODO size方法没有加锁，所以结果可能并不准确，具有弱一致性，cell模式能保证size结果尽量准确，为什么不直接用LongAdder呢？（提高并发性能，否则LongAdder容易产生自旋瓶颈）
     public int size() {
         long n = sumCount();
         return ((n < 0L) ? 0 :
