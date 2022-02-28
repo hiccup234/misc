@@ -46,11 +46,8 @@ package java.util;
  * @since   JDK1.0
  */
 
-
-/**
- * 1、继承自Vector，所以是线程安全的
- * 2、其实更应该继承或直接使用LinkedList来实现
- */
+// TODO 1、继承自Vector，所以是线程安全的
+// TODO 2、其实更应该继承或直接使用LinkedList来实现
 public
 class Stack<E> extends Vector<E> {
     /**

@@ -105,14 +105,11 @@ import java.util.function.UnaryOperator;
  * @since   1.2
  */
 
-
-/**
- * 1、底层采用数组实现，默认初始化容量为10，1.8初始化为空，添加第一个元素后膨胀为10
- * 2、扩容方法底层采用Arrays.copyOf（System.arraycopy）来实现数组的复制
- *   每次扩容增大1.5倍，如果容量int整数溢出了，则每次add容量只加1，addAll方法容量加原容器的size
- * 3、允许null元素，且允许多个null
- * 4、ArrayList的clone其实是浅拷贝
- */
+// TODO 1、底层采用数组实现，默认初始化容量为10，1.8初始化为空，添加第一个元素后膨胀为10
+// TODO 2、扩容方法底层采用Arrays.copyOf（System.arraycopy）来实现数组的复制
+// TODO    每次扩容增大1.5倍，如果容量int整数溢出了，则每次add容量只加1，addAll方法容量加原容器的size
+// TODO 3、允许null元素，且允许多个null
+// TODO 4、ArrayList的clone其实是浅拷贝
 public class ArrayList<E> extends AbstractList<E>
         implements List<E>, RandomAccess, Cloneable, java.io.Serializable
 {

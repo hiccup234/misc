@@ -76,10 +76,7 @@ import sun.misc.SharedSecrets;
  * @since 1.5
  */
 
-
-/**
- * 1、底层存储结构跟其他Map不同，key和value分别用数组存储
- */
+// TODO 底层存储结构跟其他Map不同，key和value分别用数组存储
 public class EnumMap<K extends Enum<K>, V> extends AbstractMap<K, V>
     implements java.io.Serializable, Cloneable
 {

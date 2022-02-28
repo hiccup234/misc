@@ -103,18 +103,16 @@ public class Collections {
     private static final int REPLACEALL_THRESHOLD     =   11;
     private static final int INDEXOFSUBLIST_THRESHOLD =   35;
 
-    /**
-     * TODO 主要结构有：
-     * 1、List 排序方法
-     * 2、List 二分查找
-     * 3、List 反转
-     * 4、List 打算元素顺序 shuffle
-     * 5、List 填充、拷贝、最小大值
-     * 6、List 元素移动
-     * 7、unmodifiable 装饰 Collection,Set,List,Map
-     * 8、synchronized 装饰 Collection,Set,List,Map
-     * 9、checked 装饰 Collection,Set,List,Map 用来做类型检查
-     */
+    // TODO 主要结构有：
+    // TODO 1、List 排序方法
+    // TODO 2、List 二分查找
+    // TODO 3、List 反转
+    // TODO 4、List 打算元素顺序 shuffle
+    // TODO 5、List 填充、拷贝、最小大值
+    // TODO 6、List 元素移动
+    // TODO 7、unmodifiable 装饰 Collection,Set,List,Map
+    // TODO 8、synchronized 装饰 Collection,Set,List,Map
+    // TODO 9、checked 装饰 Collection,Set,List,Map 用来做类型检查
 
     /**
      * Sorts the specified list into ascending order, according to the

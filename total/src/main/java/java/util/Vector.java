@@ -81,10 +81,8 @@ import java.util.function.UnaryOperator;
  * @since   JDK1.0
  */
 
-/**
- * 1、底层数据结构也是基于数组，历次JDK升级对Vector改动几乎没有，处于被废弃状态
- * 2、通过synchronized关键字来保证线程安全
- */
+// TODO 1、底层数据结构也是基于数组，历次JDK升级对Vector改动几乎没有，处于被废弃状态
+// TODO 2、通过synchronized关键字来保证线程安全
 public class Vector<E>
     extends AbstractList<E>
     implements List<E>, RandomAccess, Cloneable, java.io.Serializable
@@ -104,9 +102,9 @@ public class Vector<E>
      * The number of valid components in this {@code Vector} object.
      * Components {@code elementData[0]} through
      * {@code elementData[elementCount-1]} are the actual items.
-     * TODO 为什么不用size呢?
      * @serial
      */
+    // TODO 为什么不用size呢?
     protected int elementCount;
 
     /**

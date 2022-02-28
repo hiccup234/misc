@@ -108,11 +108,8 @@ import java.util.function.Consumer;
  * @since 1.2
  */
 
-
-/**
- * 1、TreeMap基于红黑树（Red-Black tree）实现，基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n)
- * 2、TreeMap也是非同步，线程不安全的
- */
+// TODO 1、TreeMap基于红黑树（Red-Black tree）实现，基本操作 containsKey、get、put 和 remove 的时间复杂度是 log(n)
+// TODO 2、TreeMap也是非同步，线程不安全的
 public class TreeMap<K,V>
     extends AbstractMap<K,V>
     implements NavigableMap<K,V>, Cloneable, Serializable
@@ -148,8 +145,8 @@ public class TreeMap<K,V>
      * put a string key into a map whose keys are integers), the
      * {@code put(Object key, Object value)} call will throw a
      * {@code ClassCastException}.
-     * TODO 默认构造函数，对元素按自然序排列
      */
+    // TODO 默认构造函数，对元素按自然序排列
     public TreeMap() {
         comparator = null;
     }
