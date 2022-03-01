@@ -19,7 +19,7 @@ public class B_LazySingleton {
      * 一定要记得加synchronized
      */
     public static synchronized B_LazySingleton getInstance() {
-        if(null == instance) {
+        if (null == instance) {
             instance = new B_LazySingleton();
         }
         return instance;

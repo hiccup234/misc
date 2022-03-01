@@ -9,30 +9,12 @@ package top.hiccup.schema.design.singleton;
  */
 public class E_EnumSingleton {
 
-    private E_EnumSingleton() { }
-
-    private enum InnerEnum {
-        /**
-         * 占位枚举值
-         */
-        enumFactory;
-        private E_EnumSingleton instance;
-
-        /**
-         * TODO 注意这里是枚举类的构造器
-         */
-        private InnerEnum() {
-            instance = new E_EnumSingleton();
-        }
-        public E_EnumSingleton getInstance() {
-            return instance;
-        }
+    private E_EnumSingleton() {
     }
 
     public static E_EnumSingleton getInstance() {
         return InnerEnum.enumFactory.getInstance();
     }
-
 
     public static void main(String[] args) {
         Thread t1 = new Thread(new Runnable() {
@@ -51,5 +33,25 @@ public class E_EnumSingleton {
         });
         t1.start();
         t2.start();
+    }
+
+
+    private enum InnerEnum {
+        /**
+         * 占位枚举值
+         */
+        enumFactory;
+        private E_EnumSingleton instance;
+
+        /**
+         * TODO 注意这里是枚举类的构造器
+         */
+        private InnerEnum() {
+            instance = new E_EnumSingleton();
+        }
+
+        public E_EnumSingleton getInstance() {
+            return instance;
+        }
     }
 }

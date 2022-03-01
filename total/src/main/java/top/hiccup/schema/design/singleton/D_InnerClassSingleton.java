@@ -1,4 +1,4 @@
- package top.hiccup.schema.design.singleton;
+package top.hiccup.schema.design.singleton;
 
 /**
  * 单例模式：静态内部类实现方式
@@ -9,10 +9,7 @@
  */
 public class D_InnerClassSingleton {
 
-    private D_InnerClassSingleton() { }
-
-    private static class NestClass {
-        private static final D_InnerClassSingleton instance = new D_InnerClassSingleton();
+    private D_InnerClassSingleton() {
     }
 
     public static D_InnerClassSingleton getInstance() {
@@ -21,7 +18,6 @@ public class D_InnerClassSingleton {
         // 当调用NestClass.instance的时候才会触发JVM加载NestClass类
         return NestClass.instance;
     }
-
 
     public static void main(String[] args) {
         Thread t1 = new Thread(new Runnable() {
@@ -40,5 +36,9 @@ public class D_InnerClassSingleton {
         });
         t1.start();
         t2.start();
+    }
+
+    private static class NestClass {
+        private static final D_InnerClassSingleton instance = new D_InnerClassSingleton();
     }
 }

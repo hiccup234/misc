@@ -1,9 +1,9 @@
 package top.hiccup.schema.principle;
 
+import org.junit.Test;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import org.junit.Test;
 
 /**
  * 开闭原则（对扩展开放，对修改关闭）
@@ -13,16 +13,12 @@ import org.junit.Test;
  */
 public class OpenClosePrinciple {
 
-    interface User {
-    }
+    private static Map<Class<?>, ServiceProvider> providers = new HashMap<>();
 
-    class OrdinaryUser implements User {
-    }
-
-    class VIPUser implements User {
-    }
-
-    class VVIPUser extends VIPUser {
+    static {
+        providers.put(OrdinaryUser.class, new OrdinaryUserServiceProvider());
+        providers.put(VIPUser.class, new VIPUserServiceProvider());
+        providers.put(VVIPUser.class, new VVIPUserServiceProvider());
     }
 
     /**
@@ -33,16 +29,12 @@ public class OpenClosePrinciple {
      */
     public <T extends User> void service(T user) {
         if (user instanceof OrdinaryUser) {
-            // 普通用户...
-            System.out.println(user.getClass().getName());
-        } else if (user instanceof VIPUser) {
-            // VIP用户...
-            System.out.println(user.getClass().getName());
+            System.out.println("欢迎光临：" + user.getName());
         } else if (user instanceof VVIPUser) {
-            // VVIP用户...
-            System.out.println(user.getClass().getName());
+            System.out.println("欢迎光``光``光``临``：" + user.getName());
+        } else if (user instanceof VIPUser) {
+            System.out.println("欢迎光``临：" + user.getName());
         }
-        // ...
     }
 
     /**
@@ -54,40 +46,6 @@ public class OpenClosePrinciple {
     public <T extends User> void service2(T user) {
         providers.get(user.getClass()).doService(user);
     }
-
-    interface ServiceProvider {
-        <T extends User> void doService(T user);
-    }
-
-    static class OrdinaryUserServiceProvider implements ServiceProvider {
-        @Override
-        public <T extends User> void doService(T user) {
-            System.out.println(user.getClass().getName());
-        }
-    }
-
-    static class VIPUserServiceProvider implements ServiceProvider {
-        @Override
-        public <T extends User> void doService(T user) {
-            System.out.println(user.getClass().getName());
-        }
-    }
-
-    static class VVIPUserServiceProvider implements ServiceProvider {
-        @Override
-        public <T extends User> void doService(T user) {
-            System.out.println(user.getClass().getName());
-        }
-    }
-
-    private static Map<Class<?>, ServiceProvider> providers = new HashMap<>();
-
-    static {
-        providers.put(OrdinaryUser.class, new OrdinaryUserServiceProvider());
-        providers.put(VIPUser.class, new VIPUserServiceProvider());
-        providers.put(VVIPUser.class, new VVIPUserServiceProvider());
-    }
-
 
     @Test
     public void test() {
@@ -104,5 +62,51 @@ public class OpenClosePrinciple {
         service2(user2);
         user2 = new VVIPUser();
         service2(user2);
+    }
+
+    interface User {
+        String getName();
+    }
+
+    interface ServiceProvider {
+        <T extends User> void doService(T user);
+    }
+
+    static class OrdinaryUserServiceProvider implements ServiceProvider {
+        @Override
+        public <T extends User> void doService(T user) {
+            System.out.println("欢迎光临：" + user.getName());
+        }
+    }
+
+    static class VIPUserServiceProvider implements ServiceProvider {
+        @Override
+        public <T extends User> void doService(T user) {
+            System.out.println("欢迎光``临：" + user.getName());
+        }
+    }
+
+    static class VVIPUserServiceProvider implements ServiceProvider {
+        @Override
+        public <T extends User> void doService(T user) {
+            System.out.println("欢迎光``光``光``临``：" + user.getName());
+        }
+    }
+
+    class OrdinaryUser implements User {
+        @Override
+        public String getName() {
+            return "xxx";
+        }
+    }
+
+    class VIPUser implements User {
+        @Override
+        public String getName() {
+            return "尊贵的xxx";
+        }
+    }
+
+    class VVIPUser extends VIPUser {
     }
 }
