@@ -9,39 +9,43 @@ package top.hiccup.schema.design;
 public class MockFutureSchema {
 
     public static void main(String[] args) throws InterruptedException {
-        FutureClient fc = new FutureClient();
-        FutureData futureData = fc.sendRequest("发送请求");
+        FutureData futureData = Executor.execute("发送请求");
+        System.out.println("再处理点其他事情。。");
         System.out.println(futureData.getRealData().getDataName());
+        System.out.println("请求结束");
     }
 
 }
 
-class FutureClient {
-    public FutureData sendRequest(String str) {
+/**
+ * 类比Executor
+ */
+class Executor {
+    public static FutureData execute(String str) {
         System.out.println(str);
         final FutureData data = new FutureData();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //新线程异步处理
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                data.setRealData(new RealData("真实数据"));
+        new Thread(() -> {
+            //新线程异步处理
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
+            data.setRealData(new RealData("名字叫小可爱"));
         }).start();
         return data;
     }
 }
-class FutureData implements Data {
-    //FutureData持有一个RealData的引用
+
+class FutureData {
+    /**
+     * FutureData只是持有一个RealData的引用
+     */
     private RealData realData;
     private volatile boolean isReady = false;
 
     public synchronized RealData getRealData() {
-        while(!isReady) {
+        while (!isReady) {
             try {
                 System.out.println("线程阻塞");
                 wait();
@@ -53,8 +57,8 @@ class FutureData implements Data {
     }
 
     public synchronized void setRealData(RealData realData) {
-        if(isReady) {
-            return ;
+        if (isReady) {
+            return;
         }
         this.realData = realData;
         isReady = true;
@@ -63,7 +67,8 @@ class FutureData implements Data {
         notify();
     }
 }
-class RealData implements Data {
+
+class RealData {
     private String dataName;
 
     public RealData(String dataName) {
@@ -77,7 +82,4 @@ class RealData implements Data {
     public void setDataName(String dataName) {
         this.dataName = dataName;
     }
-}
-interface Data {
-    int i = 0;
 }

@@ -52,27 +52,3 @@ public class PhoneFactory {
         System.out.println(produce(new IPhoneProduceStrategy()));
     }
 }
-
-
-class PhoneFactory2 {
-    static class Phone {
-    }
-
-    static class APhone extends Phone {
-    }
-
-    static class IPhone extends Phone {
-    }
-    public <T> T produce2(Class<T> clazz) throws IllegalAccessException, InstantiationException {
-        System.out.println("开始生产");
-        T product = clazz.newInstance();
-        System.out.println("完成生产");
-        return product;
-    }
-    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
-        PhoneFactory2 factory2 = new PhoneFactory2();
-        System.out.println(factory2.produce2(APhone.class));
-        System.out.println(factory2.produce2(IPhone.class));
-        System.out.println(factory2.produce2(APhone.class));
-    }
-}

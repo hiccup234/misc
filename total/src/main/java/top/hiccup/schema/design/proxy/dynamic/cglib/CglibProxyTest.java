@@ -26,6 +26,7 @@ public class CglibProxyTest {
         }
 
         // 实现“成员方法拦截器”方法
+        @Override
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
             String str = (String) method.invoke(this.busiService, objects);
             return str.toUpperCase();
@@ -52,6 +53,7 @@ public class CglibProxyTest {
         }
 
         // 实现“成员方法拦截器”方法
+        @Override
         public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
             String str = (String) method.invoke(this.busiSeviceWithNoIntf, objects);
             return str.toUpperCase();

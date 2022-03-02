@@ -47,15 +47,13 @@ public class FactoryMethod {
         }
     }
 
-    static class Program {
-        public static void main(String[] args) {
-            Factory factory = new ConcreteFactoryA();
-            Product product = factory.getProduct();
-            System.out.println(product.name());
+    public static void main(String[] args) {
+        Factory factory = new ConcreteFactoryA();
+        Product product = factory.getProduct();
+        System.out.println(product.name());
 
-            factory = new ConcreteFactoryB();
-            product = factory.getProduct();
-            System.out.println(product.name());
-        }
+        factory = new ConcreteFactoryB();
+        product = factory.getProduct();
+        System.out.println(product.name());
     }
 }
