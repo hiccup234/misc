@@ -7,4 +7,5 @@ package top.hiccup.misc.log;
  * @date 2019/4/15
  */
 public class MDCTest {
+
 }

@@ -65,7 +65,7 @@
     本机测试：
     -XX:InitialHeapSize=266502400 -XX:MaxHeapSize=4264038400 -XX:+PrintCommandLineFlags
     -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:-UseLargePagesIndividualAllocation -XX:+UseParallelGC
-    java version "1.8.0_162
+    java version "1.8.0_162"
     
 
     生成内存中Class对象的Dump文件（class字节码）： java -classpath "%JAVA_HOME%/lib/sa-jdi.jar" sun.jvm.hotspot.HSD
