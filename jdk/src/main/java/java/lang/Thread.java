@@ -145,7 +145,7 @@ class Thread implements Runnable {
     static {
         registerNatives();
     }
-    //TODO Ϊʲôֻ��name��volatile���εģ���name����ͨ��setName��̬�޸ģ�
+    //TODO 
     private volatile String name;
     private int            priority;
     private Thread         threadQ;
@@ -924,7 +924,7 @@ class Thread implements Runnable {
                 return;
             }
         }
-        // TODO ����Ϊʲô��Ҫ��interrupt0һ�Σ�
+        // TODO ????????????interrupt0??��?
         interrupt0();
     }
 
@@ -945,7 +945,7 @@ class Thread implements Runnable {
      * @see #isInterrupted()
      * @revised 6.0
      */
-    // TODO ��̬��������ж�λ��־
+    // TODO ???????????��?��???
     public static boolean interrupted() {
         return currentThread().isInterrupted(true);
     }
@@ -963,7 +963,7 @@ class Thread implements Runnable {
      * @see     #interrupted()
      * @revised 6.0
      */
-    // TODO ʵ������������ж�λ
+    // TODO ?????????????��?��
     public boolean isInterrupted() {
         return isInterrupted(false);
     }

@@ -25,9 +25,9 @@ public class LocalityTest {
         // 这里步长比fill1增加了16倍，理论上“访问内存”的次数少了16倍，性能基本应该能提升16倍左右
         // 但是由于x86缓存行一般64Byte，所以对数组遍历时可以有效利用局部性原理，一次性从内存中加载64字节
         // 就算步长增加到16倍，也都还是可以直接访问缓存行，而不用去内存加载
-//        for (int i = 0; i < MAX; i += 16) {
+        for (int i = 0; i < MAX; i += 16) {
 //      for (int i = 0; i < MAX; i += 32) {
-        for (int i = 0; i < MAX; i += 64) {
+//      for (int i = 0; i < MAX; i += 64) {
             arr[i] = 1;
         }
         return System.currentTimeMillis() - startTime;

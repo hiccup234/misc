@@ -1,4 +1,4 @@
-package top.hiccup.misc;
+package top.hiccup.jdk.concurrent;
 
 import java.lang.reflect.Field;
 import java.util.concurrent.ConcurrentLinkedQueue;
