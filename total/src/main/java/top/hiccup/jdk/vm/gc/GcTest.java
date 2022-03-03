@@ -6,7 +6,7 @@ package top.hiccup.jdk.vm.gc;
  * 【引用计数】
  * 名词解释：为每个对象添加一个引用计数器，为0则可以回收该对象
  * 存在问题：1.需要额外的空间来存储引用计数器
- *         2.更新操作繁琐（引用a指向对象1，现修改为指向对象2，需要原子性的把对象1的引用计数减1和对象2的引用计数加1，涉及锁的问题）
+ *         2.更新操作繁琐（引用a指向对象a，现修改为指向对象b，需要原子性的把对象a的引用计数减1和对象2的引用计数加b，涉及锁的问题）
  *         3.无法处理循环引用对象（Spring Framework中也只能处理单例Bean的循环引用：采用提前暴露对象引用的方式）
  *
  * 【可达性分析】
@@ -21,7 +21,7 @@ package top.hiccup.jdk.vm.gc;
  * 解决方法：Stop-the-world以及安全点（safepoint），简单粗暴，直接暂停所有其他的非垃圾回收线程直到GC完成，这样就能保证线程安全
  *         GC线程向JVM发出STW请求，JVM等待所有线程到达安全点后才允许GC进行独占的工作
  *
- * 安全点举例：1.Java程序调用本地方法时，本地方法不会再访问Java对象和调用Java方法，那么JVM的堆就不会发生变化
+ * 安全点举例：1.Java程序调用本地方法时，本地方法不会再访问Java对象和调用Java方法，那么就不会引起JVM堆的变化
  *            这段本地代码就可以作为同一个安全点，只要不离开当前安全点，JVM便能在GC的同时运行这段本地代码
  *          2.线程状态为阻塞时，处于JVM线程调度器的控制下，也是属于安全点
  *
@@ -44,7 +44,7 @@ package top.hiccup.jdk.vm.gc;
  *          这三个收集器都是采用的【标记- 复制】算法
  *
  * 2、老年代：Serial Old（标记-压缩），Parallel Old（标记-压缩，只能跟Parallel Scavenge配合使用），
- *          CMS（标记-清除，并发回收，STW请求较少，JDK9已deprecated，注意：CMS只是表记清除，没做压缩）
+ *          CMS（标记-清除，并发回收，STW请求较少，JDK9已deprecated，注意：CMS只是表记清除，没做压缩，有压缩功能）
  *
  * 3、G1(Garbage First)：横跨新生代和老年代的垃圾回收器（本身仍然存在年代的概念），
  *         直接将堆分成许多Region，Region之间采用复制算法，整体可以看作“标记-压缩”算法，可有效避免内存碎片问题
@@ -73,8 +73,8 @@ package top.hiccup.jdk.vm.gc;
  *    在client模式下采用-XX:+UseSerialGC 串行回收器（默认，老年代则默认为Serial Old），-XX:+PrintGCDetails 为 “DefNew” “Tenured” “Perm”
  *
  *    在server模式下采用-XX:+UseParNewGC 新生代并行回收器，-XX:+PrintGCDetails 为 “ParNew” “Tenured”（老年代仍为串行回收）
- *                   -XX:+UseParallelGC 并行回收器（默认），-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”（有Full GC）
- *                   -XX:+UseParallelOldGC 老年代并行回收器，-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”（有Full GC）
+ *                   -XX:+UseParallelGC 并行回收器（默认），-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”
+ *                   -XX:+UseParallelOldGC 老年代并行回收器，-XX:+PrintGCDetails 为 “PSYoungGen” “ParOldGen”
  *                   -XX:+UseConcMarkSweepGC CMS并发回收器，-XX:+PrintGCDetails 为 “ParNew” “CMS”
  *
  *    Parallel Scavenge收集器：

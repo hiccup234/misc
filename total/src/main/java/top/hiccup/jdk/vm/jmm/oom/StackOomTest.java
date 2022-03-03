@@ -22,7 +22,7 @@ public class StackOomTest {
             recursion();
         } catch (Throwable t) {
             System.out.println("递归调用深度：" + count);
-//            t.printStackTrace();
+            t.printStackTrace();
         }
     }
 }

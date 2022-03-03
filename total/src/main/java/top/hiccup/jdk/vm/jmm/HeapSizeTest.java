@@ -17,7 +17,7 @@ import java.util.List;
  * JDK1.8新生代默认最小1.5M，eden/from/to各512K，eden/from/to默认最小512K且大小是512K的整数倍
  *
  * -XX:SurvivorRatio=8 设置新生代中eden与survivor的比例（默认为8）
- *  eden:from=8:1，因此eden:(from+to)=8:2，即一个from占年轻代的1/10
+ *  eden:from:to=8:1:1，因此eden:(from+to)=8:2，即一个from占年轻代的1/10
  *
  *
  * @VM args: -Xms20m -Xmx20m -Xmn1m -XX:+PrintGCDetails
