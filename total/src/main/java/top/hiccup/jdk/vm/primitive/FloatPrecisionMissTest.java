@@ -23,7 +23,7 @@ public class FloatPrecisionMissTest {
         double tradeAmount2 = totalAmount2 - freeAmount2;
         System.out.println(tradeAmount2);
 
-        // 直接用double的构造方法也会出现精度问题
+        // 直接用double参数的构造方法也会出现精度问题
         BigDecimal tradeAmount3 = new BigDecimal(totalAmount2).subtract(new BigDecimal(freeAmount2));
         System.out.println(tradeAmount3);
 

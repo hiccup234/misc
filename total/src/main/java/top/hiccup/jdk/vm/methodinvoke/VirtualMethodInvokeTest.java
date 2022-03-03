@@ -6,7 +6,7 @@ package top.hiccup.jdk.vm.methodinvoke;
  * Java字节码中与方法调用相关有5个指令
  * 1.invokestatic：用于调用静态方法
  * 2.invokespecial：用于调用私有实例方法、构造器，以及使用super关键字调用父类的实例方法或构造器（这个时候已经可以确认目标方法）和所有实现的接口中的默认方法（JDK1.8）
- * 3.invokevirtual：用于调用菲斯有实例方法
+ * 3.invokevirtual：用于调用非私有实例方法
  * 4.invokeinterface：用于调用接口方法
  * 5.invokedynamic：用于调用动态方法
  *

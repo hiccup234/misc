@@ -26,6 +26,7 @@ public class StaticMethodInvokeTest {
         Super f = new Super();
         f.staticMethod();
         f = new Sub();
+        // 这里还是会打印Super
         f.staticMethod();
 
         Sub.staticMethod();
