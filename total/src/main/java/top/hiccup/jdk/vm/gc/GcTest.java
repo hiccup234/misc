@@ -124,5 +124,4 @@ public class GcTest {
         new Thread(GcTest::bar).start();
     }
 
-
 }

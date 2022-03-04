@@ -2,7 +2,7 @@ package top.hiccup.jdk.lang;
 
 /**
  * 接口中的域隐式地是static和final的
- * Java 5 enum出来前常被当做定义常量的地方：@org.springframework.transaction.TransactionDefinition
+ * Java 5 enum出来前常被当做定义常量的地方：@see org.springframework.transaction.TransactionDefinition
  *
  * @author wenhy
  * @date 2018/5/26

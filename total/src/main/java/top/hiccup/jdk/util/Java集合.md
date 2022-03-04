@@ -32,12 +32,12 @@
    1、HashMap中可以允许key和value同时为空（只能有一个为null的key，放在第一个桶中）
    3、动态扩容是把hash表的数组长度扩为原来的2倍（长度必须是2的x次方，方便hash定位）
    4、JDK1.8对hash表的链表长度默认超过8时做了优化，改成红黑树来实现
-   5、默认初始化容量（数组长度）为16，加载因子为0.75
-   6、如果加载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间）
+   5、默认初始化容量（数组长度）为16，负载因子为0.75
+   6、如果负载因子小于1，则Map的size永远小于哈希表的数组长度，（默认0.75的初衷就是空间换时间）
       如果考虑直接用数组存储的话，则没法处理hash冲突的问题
    7、HashMap将“key为null”的元素放在table的位置0处，即table[0]中
 [OK]WeakHashMap
-   1、key采用弱引用，可以用来做内存缓存，当发生GC时就会被回收掉（这里怎么没提供一个SoftHashMap呢？）
+   1、key采用弱引用，可以用来做内存缓存，当发生GC时就会被回收掉（这里怎么没提供一个SoftHashMap呢？MinorGC频繁，所以没意义，而Weak一般是等到FullGC）
    2、不是线程安全的，可以用Collections.synchronizedMap来构造同步的Map
    3、要求数组长度为2的n次方
 [OK]LinkedHashMap
@@ -53,6 +53,8 @@
 
 [OK]HashTable
    1、HashMap的同步版本，初始化容量为11，扩容时*2倍+1
+   2、不要求数组长度为2的n次方，因为hash方法是直接取模操作 %
+   
 [OK]ConcurrentHashMap
    1、JDK1.7采用锁分段的思想，一个Segment就是一个ReenTrantLock
    2、Segment数组不能扩容，扩容是针对Segment元素（一个小型HashMap）进行的

@@ -40,7 +40,7 @@ public class Jdk8LambdaTest {
         System.out.println();
 
         numbers.stream()
-                .filter((num) -> num > 15)
+                .filter((Integer num) -> num > 15)
                 .forEach((num) -> System.out.println(num));
 
         new Thread(new Runnable() {

@@ -23,7 +23,6 @@ public class ClassExceptionAndErrorTest {
 
     private static final String NON_CLASS = "top.hiccup.jdk.lang.NonClass";
 
-
     public static void main(String[] args) {
         // 抛出ClassNotFoundException情况1
         try {
