@@ -42,7 +42,6 @@ package java.lang.annotation;
  */
 
 // TODO 这里很像语言的自举（bootstrap）啊，怎么解决无限递归的呢？
-
 @Documented
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.ANNOTATION_TYPE)

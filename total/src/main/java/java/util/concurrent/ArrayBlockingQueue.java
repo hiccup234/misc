@@ -76,11 +76,8 @@ import java.util.concurrent.locks.ReentrantLock;
  * @param <E> the type of elements held in this collection
  */
 
-
-/**
- * 1、有界阻塞队列，通过ReentrantLock来实现同步，所以是线程安全的
- * 2、ArrayBlockingQueue入队和出队都需要争用同一把锁
- */
+// TODO 1、有界阻塞队列，通过ReentrantLock来实现同步，所以是线程安全的
+// TODO 2、ArrayBlockingQueue入队和出队都需要争用同一把锁
 public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         implements BlockingQueue<E>, java.io.Serializable {
 

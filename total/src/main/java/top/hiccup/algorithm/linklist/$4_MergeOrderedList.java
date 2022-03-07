@@ -11,9 +11,6 @@ import org.junit.Test;
 public class $4_MergeOrderedList {
 
     public static ListNode mergeList(ListNode head1, ListNode head2) {
-        if (head1 == null && head2 == null) {
-            return null;
-        }
         if (head1 == null) {
             return head2;
         }

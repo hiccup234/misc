@@ -82,11 +82,8 @@ import java.util.function.Consumer;
  * @param <E> the type of elements held in this collection
  */
 
-
-/**
- * 1、利用堆来实现优先级队列，底层存储结构为数组，可动态扩容
- * 2、PriorityQueue利用的是小顶堆，堆化调整做了优化，父节点和子节点不再直接swap，而是类似插入排序做数组元素移动
- */
+// TODO 1、利用堆来实现优先级队列，底层存储结构为数组，可动态扩容
+// TODO 2、PriorityQueue利用的是小顶堆，堆化调整做了优化，父节点和子节点不再直接swap，而是类似插入排序做数组元素移动
 public class PriorityQueue<E> extends AbstractQueue<E>
     implements java.io.Serializable {
 
