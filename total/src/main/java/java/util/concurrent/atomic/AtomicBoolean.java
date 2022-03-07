@@ -113,7 +113,7 @@ public class AtomicBoolean implements java.io.Serializable {
      * @param update the new value
      * @return {@code true} if successful
      */
-    // TODO 跟上面compareAndSet不是完全一样的嚒？
+    // TODO 跟上面compareAndSet不是完全一样的嚒？ 少了一个final，可以重写
     public boolean weakCompareAndSet(boolean expect, boolean update) {
         int e = expect ? 1 : 0;
         int u = update ? 1 : 0;

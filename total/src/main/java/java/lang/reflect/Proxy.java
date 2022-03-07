@@ -227,10 +227,7 @@ import java.util.function.BiFunction;
  * @since       1.3
  */
 
-
-/**
- * 1、JDK动态代理类，所有生成的代理对象都继承至Proxy，可通过反编译查看
- */
+// TODO 1、JDK动态代理类，所有生成的代理对象都继承至Proxy，可通过反编译查看
 public class Proxy implements java.io.Serializable {
 
     private static final long serialVersionUID = -2222568056686623797L;
@@ -256,7 +253,7 @@ public class Proxy implements java.io.Serializable {
     /**
      * Prohibits instantiation.
      */
-    // TODO 防止通过程序直接生成Proxy对象，只能通过Proxy.newProxyInstance
+    // TODO 防止程序直接生成Proxy对象，只能通过Proxy.newProxyInstance
     private Proxy() {
     }
 

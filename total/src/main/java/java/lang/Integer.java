@@ -784,6 +784,7 @@ public final class Integer extends Number implements Comparable<Integer> {
 
         static {
             // high value may be configured by property
+            // TODO 缓存的值域范围是可以配置的
             int h = 127;
             String integerCacheHighPropValue =
                 sun.misc.VM.getSavedProperty("java.lang.Integer.IntegerCache.high");
