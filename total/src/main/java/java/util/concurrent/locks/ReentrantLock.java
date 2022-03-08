@@ -159,6 +159,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
                 free = true;
                 setExclusiveOwnerThread(null);
             }
+            // TODO 这里为什么没有用compareAndSetState呢？
             setState(c);
             return free;
         }
@@ -207,7 +208,7 @@ public class ReentrantLock implements Lock, java.io.Serializable {
          * Performs lock.  Try immediate barge, backing up to normal
          * acquire on failure.
          */
-        // TODO 首先试着直接cas替换同步器的state获取锁，如果失败再acquire
+        // TODO 首先试着直接cas替换同步器的state获取锁，如果失败再acquire（不考虑等待队列里是否还有其他线程在等待）
         final void lock() {
             if (compareAndSetState(0, 1))
                 setExclusiveOwnerThread(Thread.currentThread());

@@ -289,6 +289,8 @@ import java.util.concurrent.TimeUnit;
  * @author Doug Lea
  */
 
+// TODO CLH锁是由Craig, Landin, and Hagersten这三个人发明的锁，取三个人名字的首字母，所以叫 CLH Lock。
+
 // TODO 1、先是通过tryAcquire()尝试获取锁。获取成功的话就直接返回；失败的话再通过acquireQueued()获取锁。
 // TODO 2、尝试失败的情况下，会先通过addWaiter()来将“当前线程”加入到"CLH队列"末尾；然后调用acquireQueued()方法，
 // TODO    在方法中会自旋尝试获取锁（公平锁判断是否是队列头），如果失败则判断是否需要阻塞当前线程并在CLH队列中继续等待获取锁，
@@ -399,6 +401,7 @@ public abstract class AbstractQueuedSynchronizer
         /** Marker to indicate a node is waiting in exclusive mode */
         static final Node EXCLUSIVE = null;
 
+        // TODO 等待状态中取消等待（超时等待）
         /** waitStatus value to indicate thread has cancelled */
         static final int CANCELLED =  1;
         /** waitStatus value to indicate successor's thread needs unparking */
@@ -642,6 +645,7 @@ public abstract class AbstractQueuedSynchronizer
                 return node;
             }
         }
+        // TODO 为什么addWaiter还要enq呢？
         enq(node);
         return node;
     }
@@ -654,8 +658,9 @@ public abstract class AbstractQueuedSynchronizer
      * @param node the node
      */
     private void setHead(Node node) {
+        // TODO 为什么没有cas？
         head = node;
-        // TODO 头节点不保存线程等信息（因为头节点一定时对应当前线程）
+        // TODO 头节点不保存线程等信息（因为头节点一定是对应当前线程）
         node.thread = null;
         node.prev = null;
     }

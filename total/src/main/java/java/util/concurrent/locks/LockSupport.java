@@ -121,7 +121,7 @@ import java.util.concurrent.ThreadLocalRandom;
  * }}</pre>
  */
 
-// TODO LockSupport是用来创建锁和其他同步类的基本线程阻塞原语：
+// TODO LockSupport是用来创建锁和其他同步类的基本线程阻塞原语，底层调用UNSAFE的native方法。
 // TODO LockSupport中的park()和unpark()的作用分别是阻塞线程和唤醒线程，
 // TODO 而且park()和unpark()不会遇到“Thread.suspend和Thread.resume所可能引发的死锁”问题。
 public class LockSupport {
