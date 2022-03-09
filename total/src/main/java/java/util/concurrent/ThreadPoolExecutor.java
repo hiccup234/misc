@@ -459,9 +459,9 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * expire.
      */
     // TODO 阻塞队列
-    // 1、如果线程池中的线程小于corePoolSize时就直接创建新线程来执行任务。
-    // 2、如果线程池中的线程大于corePoolSize时就会暂时把任务存储到工作队列workQueue中等待执行。
-    // 3、如果工作队列workQueue也满时，当线程数小于最大线程池数maximumPoolSize时就会创建新线程来处理，而线程数大于等于最大线程池数maximumPoolSize时就会执行拒绝策略。
+    // TODO 1、如果线程池中的线程小于corePoolSize时就直接创建新线程来执行任务。
+    // TODO 2、如果线程池中的线程大于corePoolSize时就会暂时把任务存储到工作队列workQueue中等待执行。
+    // TODO 3、如果工作队列workQueue也满时，当线程数小于最大线程池数maximumPoolSize时就会创建新线程来处理，而线程数大于等于最大线程池数maximumPoolSize时就会执行拒绝策略。
     private final BlockingQueue<Runnable> workQueue;
 
     /**
@@ -483,7 +483,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
      * Set containing all worker threads in pool. Accessed only when
      * holding mainLock.
      */
-    // TODO 工作线程集
+    // TODO 工作线程集合
     private final HashSet<Worker> workers = new HashSet<Worker>();
 
     /**
@@ -567,7 +567,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
     /**
      * The default rejected execution handler
      */
-    // TODO 默认为拒绝策略，抛出RejectedExecutionException
+    // TODO 默认的拒绝策略，抛出RejectedExecutionException
     private static final RejectedExecutionHandler defaultHandler =
         new AbortPolicy();
 
