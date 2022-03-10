@@ -945,7 +945,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
                 if (compareAndIncrementWorkerCount(c))
                     break retry;
                 c = ctl.get();  // Re-read ctl
-                // TODO 检查线程池状态
+                // TODO 检查线程池状态（前面inc的不减回来嚒？）
                 if (runStateOf(c) != rs)
                     continue retry;
                 // else CAS failed due to workerCount change; retry inner loop
@@ -1099,6 +1099,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             }
 
             try {
+                // TODO 三目运算符：poll带超时的阻塞，如果超过指定时间还没获取到任务就返回空，获取不到任务则普通worker执行完run方法后线程就销毁了
+                // TODO             take会一直阻塞线程，直到获取到任务，这也是核心线程数能得到维持的原因
                 Runnable r = timed ?
                     workQueue.poll(keepAliveTime, TimeUnit.NANOSECONDS) :
                     workQueue.take();
@@ -1394,7 +1396,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
          * and so reject the task.
          */
         int c = ctl.get();
-        // TODO 1、线程池当前任务数量小于corePoolSize则直接添加Worker（核心池线程）并启动执行
+        // TODO 1、线程池当前worker数量小于corePoolSize则直接添加Worker（核心池线程）并启动执行
+        // TODO 即使有其他空闲并阻塞的核心线程也会直接新建核心线程，提交的任务也不会进入队列
         if (workerCountOf(c) < corePoolSize) {
             if (addWorker(command, true))
                 return;
@@ -1407,7 +1410,8 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             int recheck = ctl.get();
             if (! isRunning(recheck) && remove(command))
                 reject(command);
-            // TODO 否则，如果"线程池中任务数量"为0，则通过addWorker(null, false)尝试新建一个线程，新建线程对应的任务为null
+            // TODO 否则，如果"线程池中线程数量"为0，则通过addWorker(null, false)尝试新建一个线程，新建线程对应的任务为null，新建的线程直接从队列里获取任务
+            // TODO Q: 为什么这里要再recheck呢？A: 因为有allowCoreThreadTimeOut参数，
             else if (workerCountOf(recheck) == 0)
                 addWorker(null, false);
         }
