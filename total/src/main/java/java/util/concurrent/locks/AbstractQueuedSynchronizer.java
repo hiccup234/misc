@@ -301,7 +301,7 @@ import java.util.concurrent.TimeUnit;
 // TODO             selfInterrupt();
 // TODO     }
 // TODO 3、Q：获取锁的时候，如果锁是空闲的，当前线程会不会入队列？
-// TODO    A：如果锁没有竞争，则会直接获取锁，不会入队列
+// TODO    A：如果锁没有竞争，则会直接获取锁，不会入队列（非公平锁）
 // TODO 4、对CAS的使用体现在：出入队时，对head和tail的修改，以及对state，Node中的waitStatus，通过AQS尾部的cas方法可知
 public abstract class AbstractQueuedSynchronizer
     extends AbstractOwnableSynchronizer
