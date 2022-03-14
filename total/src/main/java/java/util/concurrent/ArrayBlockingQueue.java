@@ -158,7 +158,7 @@ public class ArrayBlockingQueue<E> extends AbstractQueue<E>
         // assert items[putIndex] == null;
         final Object[] items = this.items;
         items[putIndex] = x;
-        // TODO 这里相当于把数组当成循环数组使用，首尾连起来形成一个环
+        // TODO 这里相当于把数组当成循环数组使用，首尾连起来形成一个环，防止大规模数组元素移动
         if (++putIndex == items.length)
             putIndex = 0;
         count++;

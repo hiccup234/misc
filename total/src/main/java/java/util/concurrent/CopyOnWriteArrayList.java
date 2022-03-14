@@ -152,8 +152,8 @@ public class CopyOnWriteArrayList<E>
      * Returns the number of elements in this list.
      *
      * @return the number of elements in this list
-     * TODO 这里没做同步，所以回参size不是强一致性的
      */
+    // TODO 这里没做同步，所以回参size不是强一致性的
     public int size() {
         return getArray().length;
     }
@@ -388,8 +388,8 @@ public class CopyOnWriteArrayList<E>
      * {@inheritDoc}
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
-     * TODO get操作同样也没有做同步，因为写操作都是在快照数组做，所以不会影响对原来数组的读
      */
+    // TODO get操作同样也没有做同步，因为写操作都是在快照数组做，所以不会影响对原来数组的读
     public E get(int index) {
         return get(getArray(), index);
     }
@@ -399,8 +399,8 @@ public class CopyOnWriteArrayList<E>
      * specified element.
      *
      * @throws IndexOutOfBoundsException {@inheritDoc}
-     * TODO 这里的写操作就需要同步了（所以适用于读多写少的场景）
      */
+    // TODO 这里的写操作就需要同步了（所以适用于读多写少的场景）
     public E set(int index, E element) {
         final ReentrantLock lock = this.lock;
         lock.lock();
