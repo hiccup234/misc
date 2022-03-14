@@ -138,6 +138,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 
 // TODO 1、CyclicBarrier是可以重复使用的，在计数未达到parties时所有线程都要阻塞等待
+// TODO 2、所有线程在Condition上await，直到count==parties，再signalAll唤醒所有线程，这样就实现了Barrier的功能
 public class CyclicBarrier {
     /**
      * Each use of the barrier is represented as a generation instance.
@@ -152,6 +153,7 @@ public class CyclicBarrier {
      */
     // TODO 因为是Cyclic的，可以重复使用，所以这里声明了Generation类
     private static class Generation {
+        // TODO 为啥没用volatile修饰呢？（有ReentrantLock，可以保证线程间的可见性）
         boolean broken = false;
     }
 
