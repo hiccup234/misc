@@ -129,6 +129,7 @@ class MCSLock {
         if (predecessor != null) {
             predecessor.next = node;
             while (node.isBlock) {
+                // 自旋等待
             }
         } else {
             // 只有一个线程在使用锁，没有前驱来通知它，所以得自己标记自己为非阻塞
