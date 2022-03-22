@@ -7,7 +7,7 @@ package top.hiccup.jdk.concurrent.thread;
  *
  * 2、java.lang.Thread#isInterrupted() 判断目标线程是否被中断，不会清除中断标记。
  *
- * 3、java.lang.Thread#interrupted()  判断目标线程是否被中断，会清除中断标记。
+ * 3、java.lang.Thread#interrupted() 判断目标线程是否被中断，会清除中断标记。
  *
  * 【注意】java.lang.Thread#sleep()抛出中断异常后会清除中断标记
  *

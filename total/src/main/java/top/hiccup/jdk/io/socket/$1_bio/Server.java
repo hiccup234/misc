@@ -25,7 +25,7 @@ public class Server {
             // 1、绑定和监听端口，本地方法bind0和listen0
             serverSocket = new ServerSocket(PORT);
             System.out.println("Server start at port: " + PORT);
-            // 2、阻塞等待客户端的请求到来，由本地方法accept0阻塞程序
+            // 2、阻塞等待客户端的请求到来，由本地方法accept0阻塞程序，TCP三次握手后就会返回accept(从accept队列里取出一个已建立的连接返回--有sync队列和accept队列)
             Socket socket = serverSocket.accept();
 
             // 3、这里存在的问题是：每来一个客户端请求就要创建一个线程，Windows目前最多能支持到1000个，Linux最多也只能到2000左右线程数
