@@ -31,7 +31,7 @@ public class Server {
         // 监听子线程
         new Thread(() -> {
             try {
-                // 2、打开服务器通道，对应IO编程中服务端启动
+                // 2、打开服务器通道，对应BIO编程中服务端启动
                 ServerSocketChannel listenerChannel = ServerSocketChannel.open();
                 // 3、设置服务器通道为非阻塞模式
                 listenerChannel.configureBlocking(false);
@@ -51,7 +51,7 @@ public class Server {
                             SelectionKey key = keyIterator.next();
                             if (key.isAcceptable()) {
                                 try {
-                                    // 每来一个新连接，不需要创建一个线程，而是直接注册到clientSelector
+                                    // 每来一个新连接，不需要创建一个线程，而是直接注册到handleSelector
                                     SocketChannel clientChannel = ((ServerSocketChannel) key.channel()).accept();
                                     clientChannel.configureBlocking(false);
                                     clientChannel.register(handleSelector, SelectionKey.OP_READ);

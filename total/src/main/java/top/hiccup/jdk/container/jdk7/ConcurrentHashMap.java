@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 1、实现了JDK1.5新增的ConcurrentMap接口
- * 2、采用分段锁设计，锁粒度细化的思想，Segment继承自ReentrantLock，每个Segment都是一个小的HashMap，每次加锁是锁在Segment上的；‘67
+ * 2、采用分段锁设计，锁粒度细化的思想，Segment继承自ReentrantLock，每个Segment都是一个小的HashMap，每次加锁是锁在Segment上的
  * 3、ConcurrentHashMap是弱一致性的：（CAP理论）（get与containsKey都未加锁，所以可能读到过时数据）
  *      如果要求强一致性，那么必须使用Collections.synchronizedMap()方法来装饰一个普通的HashMap或者用HashTable
  * 4、get 和 containsKey 方法没有加锁做同步（利用了volatile的线程可见性）
